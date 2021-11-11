@@ -1,3 +1,5 @@
 from django.shortcuts import render
+from .models import *
 
-# Create your views here.
+def home(req):
+    return render(req, 'users/home.html')
