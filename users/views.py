@@ -1,4 +1,5 @@
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
@@ -9,16 +10,26 @@ def homePage(req):
     return render(req, 'users/index.html')
 
 def registrationPage(req):
-    form = CreateUserForm()
-    if req.method == 'Post':
-        form = CreateUserForm(req.Post)
-        if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(req, 'Account was created for '+user)
-            return redirect('home')
+
+    if req.method == 'POST':
+        fName = req.POST.get('fName')
+        lName = req.POST.get('fName')
+        email = req.POST.get('email')
+        username = req.POST.get('username')
+        password1 = req.POST.get('password1')
+        password2 = req.POST.get('password2')
+
+        myUser = User.objects.create_user(username, email, password1)
+        myUser.first_name = fName
+        myUser.last_name = lName
+
+        myUser.save()
+
+        messages.success(req, 'Congratulations '+fName+' '+lName+', Your account has been successfully created.')
+
+        return redirect('login')
     
-    context = {'form':form}
+    context = {}
     return render(req,'users/register.html',context)
 
 
