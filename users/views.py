@@ -13,7 +13,7 @@ def registrationPage(req):
 
     if req.method == 'POST':
         fName = req.POST.get('fName')
-        lName = req.POST.get('fName')
+        lName = req.POST.get('lName')
         email = req.POST.get('email')
         username = req.POST.get('username')
         password1 = req.POST.get('password1')
@@ -22,7 +22,6 @@ def registrationPage(req):
         myUser = User.objects.create_user(username, email, password1)
         myUser.first_name = fName
         myUser.last_name = lName
-
         myUser.save()
 
         messages.success(req, 'Congratulations '+fName+' '+lName+', Your account has been successfully created.')
@@ -34,6 +33,11 @@ def registrationPage(req):
 
 
 def loginPage(req):
+
+    if req.method == 'POST':
+        username = req.POST.get('username')
+        password1 = req.POST.get('password1')
+
     context = {}
     return render(req,'users/login.html',context)
 
