@@ -1,6 +1,16 @@
 {% extends 'users/main.html' %}
+{% load static %}
 
 {% block content %}
-<h1>Home</h1>
+<style>
+    body{
+        background:linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("{% static 'images/books-cover.png' %}");
+        color: white;
+    }
+</style>
+<div class="banner-div">
+    <h1>Welcome to Boi-Binimoy!</h1>
+    <h4>You can find you desire book from our website.</h4>
+</div>
 
 {% endblock %}
