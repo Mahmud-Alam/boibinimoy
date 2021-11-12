@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
     <div class="container">
-      <a class="navbar-brand" href="#">BOI-BINIMOY</a>
+      <a class="navbar-brand" href="{% url 'home' %}">BOI-BINIMOY</a>
       <div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,7 +8,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">About us</a>
@@ -17,7 +17,7 @@
                 <a class="nav-link" href="#">Contact</a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-info fw-bold text-light" href="#">Login</a>
+                <a class="btn btn-darkred fw-bold text-light" href="{% url 'login' %}">Login</a>
               </li>
             </ul>
           </div>
