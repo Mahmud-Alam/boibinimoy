@@ -44,6 +44,10 @@
                                         <label for="">Email</label>
                                         <input type="email" id="email" class="form-control" name="email" placeholder="Enter Your Email Address" Required>
                                     </div>
+                                    <br>
+                                    {% for message in messages %}
+                                    <strong style="color: darkred;" id="messages">{{message}}</strong>
+                                    {% endfor %}
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
