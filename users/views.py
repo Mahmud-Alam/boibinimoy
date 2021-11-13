@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -6,42 +6,52 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
-def homePage(req):
-    return render(req, 'users/index.html')
+def homePage(request):
+    return render(request, 'users/index.html')
 
-def registrationPage(req):
+def registrationPage(request):
 
-    if req.method == 'POST':
-        fName = req.POST.get('fName')
-        lName = req.POST.get('lName')
-        email = req.POST.get('email')
-        username = req.POST.get('username')
-        password1 = req.POST.get('password1')
-        password2 = req.POST.get('password2')
+    if request.method == 'POST':
+        fName = request.POST.get('fName')
+        lName = request.POST.get('lName')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
 
         myUser = User.objects.create_user(username, email, password1)
         myUser.first_name = fName
         myUser.last_name = lName
         myUser.save()
 
-        messages.success(req, 'Congratulations '+fName+' '+lName+', Your account has been successfully created.')
-
+        full_name = request.user.first_name+' '+request.user.last_name
+        messages.success(request, 'Congratulations '+full_name+', Your account has been created successfully.')
         return redirect('login')
     
     context = {}
-    return render(req,'users/register.html',context)
+    return render(request,'users/register.html',context)
 
 
-def loginPage(req):
+def loginPage(request):
 
-    if req.method == 'POST':
-        username = req.POST.get('username')
-        password1 = req.POST.get('password1')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+
+        user = authenticate(request, username=username, password=password1)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'username or password is incorrect')
 
     context = {}
-    return render(req,'users/login.html',context)
+    return render(request,'users/login.html',context)
 
 
-def logoutPage(req):
-    logout(req)
+def logoutPage(request):
+    full_name = request.user.first_name+' '+request.user.last_name
+    logout(request)
+    messages.success(request, full_name+' Logout successfully!')
     return redirect('home')

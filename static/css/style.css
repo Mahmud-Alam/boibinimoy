@@ -1,15 +1,45 @@
+.light-white{
+    background-color: rgb(230, 230, 230);
+}
 .btn-darkred{
+    font-weight: bold;
+    color: white;
     background-color: darkred;
     border-radius: 1.5rem;
+    border: 2px solid darkred;
     padding: 6px 32px;
+}
+.btn-darkred:hover{
+    font-weight: bold;
+    color: darkred;
+    background-color: white;
+}
+.btn-white{
+    font-weight: bold;
+    color: darkred;
+    background: white;
+    border-radius: 1.5rem;
+    border: 2px solid white;
+    margin: 5% 0;
+    padding: 3%;
+    width: 50%;
+}
+.btn-white:hover{
+    font-weight: bold;
+    color: white;
+    background-color: darkred;
 }
 .nav-link{
     margin-right: 3rem;
 }
+.banner-text{
+    color: white;
+    margin-bottom: 20px;
+}
 .banner-div{
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-align: center;
-    height: 300px;
+    height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,7 +103,7 @@
 .btnRegister{
     float: right;
     margin-top: 10%;
-    border: none;
+    border: 2px solid darkred;
     border-radius: 1.5rem;
     padding: 3%;
     background: darkred;

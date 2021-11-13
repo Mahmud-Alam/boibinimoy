@@ -22,9 +22,7 @@
                 <h3>Welcome back</h3>
                 <p>to Boi-Binimoy!</p>
                 <p>Are you not a member of BoiBinimoy?<br>Please Register First.</p>
-                <a href="{% url 'register' %}">
-                    <input type="submit" name="" value="Register"/>
-                </a>
+                <a class="btn btn-white" href="{% url 'register' %}">Register</a>
             </div>
             <div class="col-md-9 register-right">
                 <div class="tab-content" id="myTabContent">
@@ -43,7 +41,10 @@
                                         <label for="">Password</label>
                                         <input type="password" id="password1" class="form-control" name="password1" placeholder="Enter Your Password" Required>
                                     </div>
-                                    <input type="submit" class="btnRegister"  value="Login"/>
+                                    {% for message in messages %}
+                                    <li id="messages">{{message}}</li>
+                                    {% endfor %}
+                                    <input type="submit" class="btnRegister btn-darkred"  value="Login"/>
                                 </div>
                                 <div class="col-md-3"></div>
                             </div>

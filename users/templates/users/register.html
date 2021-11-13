@@ -22,9 +22,7 @@
                 <h3>Welcome</h3>
                 <p>to Boi-Binimoy!</p>
                 <p>Are you already a member of BoiBinimoy?<br>Please Login.</p>
-                <a href="{% url 'login' %}">
-                    <input type="submit" name="" value="Login"/>
-                </a>
+                <a class="btn btn-white" href="{% url 'login' %}">Login</a>
             </div>
             <div class="col-md-9 register-right">
                 <div class="tab-content" id="myTabContent">
@@ -60,7 +58,7 @@
                                         <label for="">Confirm Password</label>
                                         <input type="password" id="password2" class="form-control" name="password2" placeholder="Confirm Your Password" Required>
                                     </div>
-                                    <input type="submit" class="btnRegister"  value="Register"/>
+                                    <input type="submit" class="btnRegister btn-darkred"  value="Register"/>
                                 </div>
                             </div>
                         </form>
