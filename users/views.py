@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.utils.safestring import mark_safe
+from django.core.mail import send_mail
 
+from boibinimoy import settings
 from .models import *
 from .forms import *
 
@@ -59,7 +61,15 @@ def registrationPage(request):
         myUser.save()
 
         full_name = fName+' '+lName
-        messages.success(request, mark_safe('&bull; Congratulations '+full_name+'. <br/>&bull; Your account has been created successfully.'))
+        messages.success(request, mark_safe('&bull; Congratulations "'+full_name+'". <br/>&bull; Your account has been created successfully. <br/>&bull; We have sent you a confirmation email. <br/>&bull; Please confirm your email in order to activate account.'))
+        
+        # Welcome Email #
+        subject = "Welcome to Boi-Binimoy!"
+        message = "Hello "+myUser.first_name+", \nWelcome to Boi-Binimoy. Thank you for visiting our website.\nWe have also sent you a confirmation email.\nPlease confirm your email address in order to activate your account.\n\nThank you, \nBoi-Binimoy Team\n"
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [myUser.email]
+        send_mail(subject,message,from_email,to_list,fail_silently=True)
+        
         return redirect('login')
     
     context = {}
