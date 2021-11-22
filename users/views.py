@@ -11,12 +11,22 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_text
 from . tokens import generate_token
 
+from django.forms import EmailField
+from django.core.exceptions import ValidationError
+
 from boibinimoy import settings
 from .models import *
 from .forms import *
 
 def homePage(request):
     return render(request, 'users/index.html')
+
+def isEmailAddressValid( email ):
+    try:
+        EmailField().clean(email)
+        return True
+    except ValidationError:
+        return False
 
 def registrationPage(request):
 
@@ -40,9 +50,13 @@ def registrationPage(request):
             messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric.'))
             return redirect('register')
 
-        # if User.objects.filter(email=email):
-        #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
-        #     return redirect('register')
+        if isEmailAddressValid(email) == False:
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try valid email.'))
+            return redirect('register')
+
+        if User.objects.filter(email=email):
+            messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
+            return redirect('register')
         
         if password1 != password2:
             messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
