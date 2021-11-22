@@ -85,7 +85,6 @@ def registrationPage(request):
         context = {'myUser':myUser}
         return render(request,'users/email_sent.html',context)
     
-    
     return render(request,'users/register.html')
 
 def accountActivate(request, uidb64, token):
