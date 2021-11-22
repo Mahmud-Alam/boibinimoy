@@ -1,0 +1,18 @@
+{% extends 'users/main.html' %}
+{% load static %}
+{% load bootstrap %}
+<link rel="stylesheet" href='{% static "css/style.css" %}'>
+{% block content %}
+<div class="container">
+    <div class="form-div">
+        <h1 class="text-center">Edit Profile</h1><br>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            {{ form|bootstrap }}
+        
+            <input class="btn btn--sub btn--lg  my-md btn-darkred" type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}

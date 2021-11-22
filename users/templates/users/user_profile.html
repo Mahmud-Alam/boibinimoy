@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% extends 'users/main.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href='{% static "css/style.css" %}'>
+    <title>Profile</title>
+</head>
+<body>
+    {% block content %}
+    <div class="container bootstrap snippets bootdey">
+        <div class="row">
+          <div class="profile-nav col-md-4">
+              <div class="panel">
+                  <div class="user-heading round">
+                      <div class="profile-pic-div">
+                        <a href='{% url "user-profile" %}'>
+                            <img src='{{customer.customerImageURL}}' alt="">
+                        </a>
+                      </div>
+                      <h1>{{customer.first_name}} {{customer.last_name}}</h1>
+                      <p>{{customer.email}}</p>
+                  </div>
+        
+                  <ul class="nav nav-pills">
+                    <a class="btn btn-darkred width-full" href="#">Profile</a>
+                    <a class="btn btn-darkred width-full" href="#">Recent Activity</a>
+                    <a class="btn btn-darkred width-full" href='{% url "edit-profile" %}'>Edit profile</a>
+                </ul>
+                <br><br>
+              </div>
+          </div>
+          <div class="profile-info col-md-8">
+              <div class="panel">
+                  <div class="panel-body bio-graph-info">
+                      <h1>Personal Info</h1>
+                      <div class="row">
+                          <div class="bio-row">
+                              <p><span>Username </span>: {{customer.username}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Address </span>: {{customer.address}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>First Name </span>: {{customer.first_name}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Birthday</span>: {{customer.birth_date}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Last Name </span>: {{customer.last_name}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Occupation </span>: {{customer.occupation}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Email </span>: {{customer.email}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Gender </span>: {{customer.gender}}</p>
+                          </div>
+                          <div class="bio-row">
+                              <p><span>Phone </span>: {{customer.phone}}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        </div>
+        {% endblock %}
+</body>
+</html>

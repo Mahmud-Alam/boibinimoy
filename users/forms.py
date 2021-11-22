@@ -1,10 +1,9 @@
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from django.contrib.auth.models import User
+from django.db import models
+from django.forms import ModelForm, fields
+from .models import *
 
-class CreateUserForm(UserCreationForm):
+class CustomerForm(ModelForm):
     class Meta:
-        model = User
-        # fields = '__all__'
-        fields = ['username','email','password1','password2']
-
+        model = Customer
+        fields = '__all__'
+        exclude = ['username','email']

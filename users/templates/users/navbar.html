@@ -11,15 +11,24 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
               </li>
+              {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href='{% url "user-profile" %}'>Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Posts</a>
+              </li>
+              {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="#">About us</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Contact</a>
               </li>
+              {% endif %}
               {% if request.user.is_authenticated %}
               <li class="nav-item">
-                <p class="nav-link active" >Hello, {{request.user.first_name}}</p>
+                <p class="nav-link active" style="color: darkred; font-weight: 700;">Hello, {{request.user.first_name}}</p>
               </li>
               <li class="nav-item">
                 <a class="btn btn-darkred" href="{% url 'logout' %}">Logout</a>
