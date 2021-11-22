@@ -1,5 +1,17 @@
+.height-200{
+    height: 200px;
+}
+.height-100{
+    height: 100px;
+}
 .light-white{
     background-color: rgb(230, 230, 230);
+}
+.bg-darkred{
+    background-color: darkred;
+}
+.bg-lightgreen{
+    background-color: lightgreen;
 }
 .btn-darkred{
     font-weight: bold;
@@ -12,6 +24,19 @@
 .btn-darkred:hover{
     font-weight: bold;
     color: darkred;
+    background-color: white;
+}
+.btn-lightgreen{
+    font-weight: bold;
+    color: white;
+    background-color: lightgreen;
+    border-radius: 1.5rem;
+    border: 2px solid lightgreen;
+    padding: 6px 32px;
+}
+.btn-lightgreen:hover{
+    font-weight: bold;
+    color: lightgreen;
     background-color: white;
 }
 .btn-white{
@@ -146,3 +171,19 @@
 }
 
 /* END Registration page CSS */
+
+.card-body{
+    padding: 2rem 1rem !important;
+}
+.border-lightgreen{
+    border: 4px solid lightgreen; 
+    border-radius: 10px;
+}
+.border-darkred{
+    border: 4px solid darkred; 
+    border-radius: 10px;
+}
+.span-name{
+    color: darkred;
+    font-weight: 800;
+}

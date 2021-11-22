@@ -40,9 +40,9 @@ def registrationPage(request):
             messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric.'))
             return redirect('register')
 
-        if User.objects.filter(email=email):
-            messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
-            return redirect('register')
+        # if User.objects.filter(email=email):
+        #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
+        #     return redirect('register')
         
         if password1 != password2:
             messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
@@ -69,31 +69,24 @@ def registrationPage(request):
         myUser.is_active = False
         myUser.save()
 
-        full_name = fName+' '+lName
-        messages.success(request, mark_safe('&bull; Congratulations "'+full_name+'". <br/>&bull; Your account has been created successfully. <br/>&bull; We have sent you a confirmation email. <br/>&bull; Please confirm your email in order to activate account.'))
-        
-        # Welcome Email #
-        subject1 = "Welcome to Boi-Binimoy!"
-        message1 = "Hello "+myUser.first_name+", \nWelcome to Boi-Binimoy. Thank you for visiting our website.\nWe have also sent you a confirmation email.\nPlease confirm your email address in order to activate your account.\n\nThank you, \nBoi-Binimoy Team\n"
+        # Email address confirmation email, and by this confirmation, user will active.
+        current_site = get_current_site(request)
+        subject = "Confirmation Email from Boi-Binimoy!"
         from_email = settings.EMAIL_HOST_USER
         to_list = [myUser.email]
-        send_mail(subject1,message1,from_email,to_list,fail_silently=True)
 
-        # Email adress confirmation email, and by this confirmation, user will active.
-        current_site = get_current_site(request)
-        subject2 = "Confirmation Email from Boi-Binimoy!"
-        
         email_dict = {'name':myUser.first_name,'domain':current_site,'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),'token':generate_token.make_token(myUser),}
-        message2 = render_to_string('users/email_confirmation.html',email_dict)
+        message = render_to_string('users/email_confirmation.html',email_dict)
 
-        emailObj = EmailMessage(subject2,message2,from_email,to_list)
+        emailObj = EmailMessage(subject,message,from_email,to_list)
         emailObj.fail_silently = True
         emailObj.send()
         
-        return redirect('login')
+        context = {'myUser':myUser}
+        return render(request,'users/email_sent.html',context)
     
-    context = {}
-    return render(request,'users/register.html',context)
+    
+    return render(request,'users/register.html')
 
 def accountActivate(request, uidb64, token):
     try:
@@ -102,13 +95,14 @@ def accountActivate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         myUser = None
 
+    context = {'myUser':myUser}
     if myUser is not None and generate_token.check_token(myUser, token):
         myUser.is_active = True
         myUser.save()
         login(request, myUser)
-        return redirect('home')
+        return render(request, 'users/activation_successful.html',context)
     else:
-        return render(request, 'users/activation_failed.html')
+        return render(request, 'users/activation_failed.html',context)
 
 
 def loginPage(request):
