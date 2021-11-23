@@ -168,11 +168,17 @@ def userProfile(request):
 def editProfile(request):
     if request.user.is_authenticated:
         customer = Customer.objects.get(username=request.user)
+        myUser = User.objects.get(username=request.user)
+        print('_______',myUser.first_name)
         form = CustomerForm(instance=customer)
         if request.method == 'POST':
             form = CustomerForm(request.POST, request.FILES, instance=customer)
             if form.is_valid():
                 form.save()
+                myUser.first_name = customer.first_name
+                myUser.last_name = customer.last_name
+                myUser.save()
+                print('_______',myUser.first_name)
                 return redirect('user-profile')
 
         context = {'myUser':request.user,'form':form}
