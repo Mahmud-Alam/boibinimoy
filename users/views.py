@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -85,6 +85,8 @@ def registrationPage(request):
         myUser.save()
 
         customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
+        group = Group.objects.get(name='customer')
+        myUser.groups.add(group)
 
         # Email address confirmation email, and by this confirmation, user will active.
         current_site = get_current_site(request)
