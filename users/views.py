@@ -10,7 +10,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_text
-from . tokens import generate_token
+from .tokens import generate_token
 
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
@@ -149,13 +149,13 @@ def logoutPage(request):
     messages.success(request, full_name+' Logout successfully!')
     return redirect('home')
 
-
+@login_required(login_url='login')
 def userProfile(request):
     customer = Customer.objects.get(username=request.user)
     context = {'customer':customer}
     return render(request,'users/user_profile.html',context)
     
-
+@login_required(login_url='login')
 def editProfile(request):
     customer = Customer.objects.get(username=request.user)
     myUser = User.objects.get(username=request.user)
