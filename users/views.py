@@ -18,6 +18,7 @@ from django.core.exceptions import ValidationError
 from boibinimoy import settings
 from .models import *
 from .forms import *
+from .decorators import *
 
 def homePage(request):
     return render(request, 'users/index.html')
@@ -29,6 +30,7 @@ def isEmailAddressValid( email ):
     except ValidationError:
         return False
 
+@unauthenticated_user
 def registrationPage(request):
     if request.method == 'POST':
         fName = request.POST.get('fName')
@@ -118,7 +120,7 @@ def accountActivate(request, uidb64, token):
     else:
         return render(request, 'users/activation_failed.html',context)
 
-
+@unauthenticated_user
 def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
