@@ -176,4 +176,4 @@ def editUserProfile(request):
             return redirect('user-profile')
 
     context = {'myUser':request.user,'form':form}
-    return render(request,'users/edit_profile.html',context)
+    return render(request,'users/edit_user_profile.html',context)
