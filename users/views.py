@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
 
 from django.core.mail import send_mail, EmailMessage
@@ -29,79 +30,75 @@ def isEmailAddressValid( email ):
         return False
 
 def registrationPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
-        if request.method == 'POST':
-            fName = request.POST.get('fName')
-            lName = request.POST.get('lName')
-            email = request.POST.get('email')
-            username = request.POST.get('username')
-            password1 = request.POST.get('password1')
-            password2 = request.POST.get('password2')
+    if request.method == 'POST':
+        fName = request.POST.get('fName')
+        lName = request.POST.get('lName')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
 
-            if User.objects.filter(username=username):
-                messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
-                return redirect('register')
+        if User.objects.filter(username=username):
+            messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
+            return redirect('register')
 
-            if len(username)>15:
-                messages.error(request, mark_safe('&bull; Username must be within 15 character.'))
-                return redirect('register')
-            
-            if not username.isalnum():
-                messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric.'))
-                return redirect('register')
+        if len(username)>15:
+            messages.error(request, mark_safe('&bull; Username must be within 15 character.'))
+            return redirect('register')
+        
+        if not username.isalnum():
+            messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric.'))
+            return redirect('register')
 
-            if isEmailAddressValid(email) == False:
-                messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try valid email.'))
-                return redirect('register')
+        if isEmailAddressValid(email) == False:
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try valid email.'))
+            return redirect('register')
 
-            # if User.objects.filter(email=email):
-            #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
-            #     return redirect('register')
-            
-            if password1 != password2:
-                messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
-                return redirect('register')
-            
-            if len(password1)<8:
-                messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try new password.'))
-                return redirect('register')
-            
-            if password1.isdigit():
-                messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try new password.'))
-                return redirect('register')
-            
-            if password1.isalpha():
-                messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try new password.'))
-                return redirect('register')
-            
+        # if User.objects.filter(email=email):
+        #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
+        #     return redirect('register')
+        
+        if password1 != password2:
+            messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
+            return redirect('register')
+        
+        if len(password1)<8:
+            messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try new password.'))
+            return redirect('register')
+        
+        if password1.isdigit():
+            messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try new password.'))
+            return redirect('register')
+        
+        if password1.isalpha():
+            messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try new password.'))
+            return redirect('register')
+        
+        myUser = User.objects.create_user(username, email, password1)
+        myUser.first_name = fName
+        myUser.last_name = lName
+        
+        # In default, when we create user, it will be user.is_active = True. So, now we will make in False and after click the confirmation email link, the user should be activated.
+        myUser.is_active = False
+        myUser.save()
 
-            myUser = User.objects.create_user(username, email, password1)
-            myUser.first_name = fName
-            myUser.last_name = lName
-            
-            # In default, when we create user, it will be user.is_active = True. So, now we will make in False and after click the confirmation email link, the user should be activated.
-            myUser.is_active = False
-            myUser.save()
+        customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
 
-            customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
+        # Email address confirmation email, and by this confirmation, user will active.
+        current_site = get_current_site(request)
+        subject = "Confirmation Email from Boi-Binimoy!"
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [myUser.email]
 
-            # Email address confirmation email, and by this confirmation, user will active.
-            current_site = get_current_site(request)
-            subject = "Confirmation Email from Boi-Binimoy!"
-            from_email = settings.EMAIL_HOST_USER
-            to_list = [myUser.email]
+        email_dict = {'name':myUser.first_name,'domain':current_site,'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),'token':generate_token.make_token(myUser),}
+        message = render_to_string('users/email_confirmation.html',email_dict)
 
-            email_dict = {'name':myUser.first_name,'domain':current_site,'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),'token':generate_token.make_token(myUser),}
-            message = render_to_string('users/email_confirmation.html',email_dict)
-
-            emailObj = EmailMessage(subject,message,from_email,to_list)
-            emailObj.fail_silently = True
-            emailObj.send()
-            
-            context = {'myUser':myUser}
-            return render(request,'users/email_sent.html',context)
+        emailObj = EmailMessage(subject,message,from_email,to_list)
+        emailObj.fail_silently = True
+        emailObj.send()
+        
+        context = {'myUser':myUser}
+        return render(request,'users/email_sent.html',context)
     
     return render(request,'users/register.html')
 
@@ -123,27 +120,24 @@ def accountActivate(request, uidb64, token):
 
 
 def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password1 = request.POST.get('password1')
-            userList = User.objects.filter(username=username)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        userList = User.objects.filter(username=username)
 
-            user = authenticate(request, username=username, password=password1)
+        user = authenticate(request, username=username, password=password1)
 
-            if user is not None:
-                login(request, user)
-                full_name = user.first_name+' '+user.last_name
-                messages.success(request, full_name+' Login successfully!')
-                return redirect('home')
-            elif not userList:
-                messages.error(request, mark_safe('&bull; Username is incorrect. Please try again.'))
-            elif userList[0].is_active == False:
-                messages.error(request, mark_safe('&bull; Account is not activated yet!<br/>&bull; Please check your confirmation email for activating your account.'))
-            else:
-                messages.error(request, mark_safe('&bull; Password is incorrect. Please try again.'))
+        if user is not None:
+            login(request, user)
+            full_name = user.first_name+' '+user.last_name
+            messages.success(request, full_name+' Login successfully!')
+            return redirect('home')
+        elif not userList:
+            messages.error(request, mark_safe('&bull; Username is incorrect. Please try again.'))
+        elif userList[0].is_active == False:
+            messages.error(request, mark_safe('&bull; Account is not activated yet!<br/>&bull; Please check your confirmation email for activating your account.'))
+        else:
+            messages.error(request, mark_safe('&bull; Password is incorrect. Please try again.'))
 
     context = {}
     return render(request,'users/login.html',context)
@@ -157,31 +151,25 @@ def logoutPage(request):
 
 
 def userProfile(request):
-    if request.user.is_authenticated:
-        customer = Customer.objects.get(username=request.user)
-        context = {'customer':customer}
-        return render(request,'users/user_profile.html',context)
-    else:
-        return redirect('login')
+    customer = Customer.objects.get(username=request.user)
+    context = {'customer':customer}
+    return render(request,'users/user_profile.html',context)
     
 
 def editProfile(request):
-    if request.user.is_authenticated:
-        customer = Customer.objects.get(username=request.user)
-        myUser = User.objects.get(username=request.user)
-        print('_______',myUser.first_name)
-        form = CustomerForm(instance=customer)
-        if request.method == 'POST':
-            form = CustomerForm(request.POST, request.FILES, instance=customer)
-            if form.is_valid():
-                form.save()
-                myUser.first_name = customer.first_name
-                myUser.last_name = customer.last_name
-                myUser.save()
-                print('_______',myUser.first_name)
-                return redirect('user-profile')
+    customer = Customer.objects.get(username=request.user)
+    myUser = User.objects.get(username=request.user)
+    print('_______',myUser.first_name)
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+            myUser.first_name = customer.first_name
+            myUser.last_name = customer.last_name
+            myUser.save()
+            print('_______',myUser.first_name)
+            return redirect('user-profile')
 
-        context = {'myUser':request.user,'form':form}
-        return render(request,'users/edit_profile.html',context)
-    else:
-        return redirect('login')
+    context = {'myUser':request.user,'form':form}
+    return render(request,'users/edit_profile.html',context)
