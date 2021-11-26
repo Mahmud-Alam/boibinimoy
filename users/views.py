@@ -152,13 +152,15 @@ def logoutPage(request):
     return redirect('home')
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def userProfile(request):
     customer = Customer.objects.get(username=request.user)
     context = {'customer':customer}
     return render(request,'users/user_profile.html',context)
     
 @login_required(login_url='login')
-def editProfile(request):
+@allowed_users(allowed_roles=['customer'])
+def editUserProfile(request):
     customer = Customer.objects.get(username=request.user)
     myUser = User.objects.get(username=request.user)
     print('_______',myUser.first_name)
