@@ -40,7 +40,11 @@ def registrationPage(request):
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
 
-        if User.objects.filter(username=username):
+        #allUsers = User.objects.all().values_list('username',flat=True)
+        allUsers = [i.upper() for i in User.objects.all().values_list('username',flat=True)]
+
+        #if User.objects.filter(username=username):
+        if username.upper() in allUsers:
             messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
             return redirect('register')
 
@@ -49,7 +53,11 @@ def registrationPage(request):
             return redirect('register')
         
         if not username.isalnum():
-            messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric.'))
+            messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric!<br/>&bull; Please try another username.'))
+            return redirect('register')
+        
+        if username.isdigit():
+            messages.error(request, mark_safe("&bull; Username can't be only Numeric!<br/>&bull; Please try another username."))
             return redirect('register')
 
         if isEmailAddressValid(email) == False:
