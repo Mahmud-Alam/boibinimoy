@@ -75,6 +75,9 @@
     flex-direction: column;
     justify-content: center;
 }
+a{
+    text-decoration: none;
+}
 
 
 
@@ -220,7 +223,7 @@ body{
 .user-heading.round a  {
     border-radius: 50%;
     -webkit-border-radius: 50%;
-    border: 10px solid rgba(255,255,255,0.3);
+    border: 10px solid #eee;
     display: inline-block;
 }
 .user-heading a img {
