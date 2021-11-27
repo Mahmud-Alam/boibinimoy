@@ -9,14 +9,14 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
               </li>
               {% if request.user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href='{% url "user-profile" %}'>Profile</a>
+                <a class="nav-link" href='{% url "user-profile" %}'><i class="fas fa-user"></i> Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Posts</a>
+                <a class="nav-link" href="#"><i class="fas fa-quote-right"></i> Posts</a>
               </li>
               {% else %}
               <li class="nav-item">
@@ -31,11 +31,11 @@
                 <p class="nav-link active" style="color: darkred; font-weight: 700;">Hello, {{request.user.first_name}}</p>
               </li>
               <li class="nav-item">
-                <a class="btn btn-darkred" href="{% url 'logout' %}">Logout</a>
+                <a class="btn btn-darkred" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="btn btn-darkred" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-darkred" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
               </li>
               {% endif %}
             </ul>
