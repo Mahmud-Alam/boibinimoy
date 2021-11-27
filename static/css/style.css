@@ -10,6 +10,9 @@
 .light-white{
     background-color: rgb(230, 230, 230);
 }
+.text-darkred{
+    color: darkred;
+}
 .bg-darkred{
     background-color: darkred;
 }
@@ -311,7 +314,7 @@ body{
       position: relative;
       margin-bottom: 27px;
       background-color: #ffffff;
-      border-radius: 3px;
+      border-radius: 10px;
     }
     .panel.panel-transparent {
       background: none;
@@ -371,6 +374,16 @@ body{
       position: relative;
       padding: 15px;
       border: 1px solid #e2e2e2;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+    .panel-post{
+        background-color:#f8f7f5 ;
+        border-top: 1px solid #e7ebee;
+    }
+    .panel-post ul li a {
+        color: #7a7a7a;
+        padding: 0 20px;
     }
     .panel-body + .panel-footer {
       border-top: 0;
@@ -676,6 +689,10 @@ body{
     .media-body {
       display: table-cell;
       vertical-align: top;
+    }
+    .media-body{
+        padding: 20px 40px;
+        width: 100%;
     }
     .media-middle {
       vertical-align: middle;

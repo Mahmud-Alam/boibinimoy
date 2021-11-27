@@ -27,61 +27,27 @@
             <p class="text-center">{{customer.email}}</p>
           </div>                      
           <div class="media-body va-m">
-            <h1 class="media-heading">{{customer.first_name}} {{customer.last_name}}</h1>
-            <p>{{customer.email}}</p>
-            <div class="media-links">
-              <ul class="list-inline list-unstyled">
-                <li>
-                  <a href="#" title="facebook link">
-                    <span class="fab fa-facebook-square fs35 text-primary"></span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" title="twitter link">
-                    <span class="fab fa-twitter-square fs35 text-info"></span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" title="google plus link">
-                    <span class="fab fa-google-plus-square fs35 text-danger"></span>
-                  </a>
-                </li>
-                <li class="hidden">
-                  <a href="#" title="behance link">
-                    <span class="fab fa-behance-square fs35 text-primary"></span>
-                  </a>
-                </li>
-                <li class="hidden">
-                  <a href="#" title="pinterest link">
-                    <span class="fab fa-pinterest-square fs35 text-danger"></span>
-                  </a>
-                </li>
-                <li class="hidden">
-                  <a href="#" title="linkedin link">
-                    <span class="fab fa-linkedin fs35 text-primary"></span>
-                  </a>
-                </li>
-                <li class="hidden">
-                  <a href="#" title="github link">
-                    <span class="fab fa-github-square fs35 text-dark"></span>
-                  </a>
-                </li>
-                <li class="">
-                  <a href="#" title="phone link">
-                    <span class="fa fa-phone-square fs35 text-system"></span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" title="email link">
-                    <span class="fa fa-envelope-square fs35 text-muted"></span>
-                  </a>
-                </li>
-                <li class="hidden">
-                  <a href="#" title="external link">
-                    <span class="fa fa-external-link-square fs35 text-muted"></span>
-                  </a>
-                </li>
-              </ul>
+            <div class="d-flex justify-content-between">
+                <h1>Personal Info</h1>
+                <div class="d-flex align-items-center">
+                    <a class="btn btn-darkred" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><span>Username </span>: {{customer.username}}</p>
+                    <p><span>First Name </span>: {{customer.first_name}}</p>
+                    <p><span>Last Name </span>: {{customer.last_name}}</p>
+                    <p><span>Email </span>: {{customer.email}}</p>
+                    <p><span>Phone </span>: {{customer.phone}}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><span>Address </span>: {{customer.address}}</p>
+                    <p><span>Occupation </span>: {{customer.occupation}}</p>
+                    <p><span>Gender </span>: {{customer.gender}}</p>
+                    <p><span>Birthday</span>: {{customer.birth_date}}</p>
+                </div>
             </div>
           </div>
         </div>
@@ -90,207 +56,162 @@
     <div class="container">
     <div class="row">
         <div class="col-md-4">
-          <div class="panel">
-            <div class="panel-heading">
-              <span class="panel-icon">
-                <i class="fa fa-star"></i>
-              </span>
-              <span class="panel-title">About</span>
+            <div class="panel">
+                <div class="panel-heading">
+                  <span class="panel-icon">
+                    <i class="fa fa-pencil-alt"></i>
+                  </span>
+                  <span class="panel-title">About Me</span>
+                </div>
+                <div class="panel-body pb5">
+    
+                  <h6>Experience</h6>
+    
+                  <h4>Facebook Internship</h4>
+                  <p class="text-muted"> University of Missouri, Columbia
+                    <br> Student Health Center, June 2010 - 2012
+                  </p>
+    
+                  <hr class="short br-lighter">
+    
+                  <h6>Education</h6>
+    
+                  <h4>Bachelor of Science, PhD</h4>
+                  <p class="text-muted"> University of Missouri, Columbia
+                    <br> Student Health Center, June 2010 through Aug 2011
+                  </p>
+    
+                  <hr class="short br-lighter">
+    
+                  <h6>Accomplishments</h6>
+    
+                  <h4>Successful Business</h4>
+                  <p class="text-muted pb10"> University of Missouri, Columbia
+                    <br> Student Health Center, June 2010 through Aug 2011
+                  </p>
+    
+                </div>
             </div>
-            <div class="panel-body pn">
-              <table class="table mbn tc-icon-1 tc-med-2 tc-bold-last">
-                <!-- <thead>
-                  <tr class="hidden">
-                    <th class="mw30">#</th>
-                    <th>First Name</th>
-                    <th>Revenue</th>
-                  </tr>
-                </thead> -->
-                <tbody>
-                    <tr>
-                        <td>
-                            <a href="#" title="linkedin link">
-                                <span class="fab fa-linkedin fs35 text-primary"></span>
-                            </a>
-                        </td>
-                        <td>linkedin</td>
+          
+            <div class="panel">
+                <div class="panel-heading">
+                <span class="panel-icon">
+                    <i class="fa fa-trophy"></i>
+                </span>
+                <span class="panel-title"> My Skills</span>
+                </div>
+                <div class="panel-body pb5">
+                <span class="label label-warning mr5 mb10 ib lh15">Default</span>
+                <span class="label label-primary mr5 mb10 ib lh15">Primary</span>
+                <span class="label label-info mr5 mb10 ib lh15">Success</span>
+                <span class="label label-success mr5 mb10 ib lh15">Info</span>
+                <span class="label label-alert mr5 mb10 ib lh15">Warning</span>
+                <span class="label label-system mr5 mb10 ib lh15">Danger</span>
+                <span class="label label-info mr5 mb10 ib lh15">Success</span>
+                <span class="label label-success mr5 mb10 ib lh15">Ui Design</span>
+                <span class="label label-primary mr5 mb10 ib lh15">Primary</span>
+
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                  <span class="panel-icon">
+                    <i class="fa fa-star"></i>
+                  </span>
+                  <span class="panel-title">Social Media Handles</span>
+                </div>
+                <div class="panel-body pn">
+                  <table class="table mbn tc-icon-1 tc-med-2 tc-bold-last">
+                    <!-- <thead>
+                      <tr class="hidden">
+                        <th class="mw30">#</th>
+                        <th>First Name</th>
+                        <th>Revenue</th>
                       </tr>
-                      <tr>
-                        <td>
-                            <a href="#" title="github link">
-                                <span class="fab fa-github-square fs35 text-dark"></span>
-                              </a>
-                        </td>
-                        <td>github</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#" title="facebook link">
-                                <span class="fab fa-facebook-square fs35 text-primary"></span>
-                            </a>
-                        </td>
-                        <td>facebook</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#" title="twitter link">
-                                <span class="fab fa-twitter-square fs35 text-info"></span>
-                            </a>
-                        </td>
-                        <td>twitter</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                        </td>
-                        <td></td>
-                    </tr>
-                </tbody>
-              </table>
+                    </thead> -->
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="#" title="linkedin link">
+                                    <span class="fab fa-linkedin fs35 text-primary"></span>
+                                </a>
+                            </td>
+                            <td>linkedin</td>
+                          </tr>
+                          <tr>
+                            <td>
+                                <a href="#" title="github link">
+                                    <span class="fab fa-github-square fs35 text-dark"></span>
+                                  </a>
+                            </td>
+                            <td>github</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#" title="facebook link">
+                                    <span class="fab fa-facebook-square fs35 text-primary"></span>
+                                </a>
+                            </td>
+                            <td>facebook</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#" title="twitter link">
+                                    <span class="fab fa-twitter-square fs35 text-info"></span>
+                                </a>
+                            </td>
+                            <td>twitter</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <a href="#" title="twitter link">
+                                    <span class="fab fa-instagram-square fs35 text-danger"></span>
+                                </a>
+                            </td>
+                            <td>instagram</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
             </div>
-          </div>
-          <div class="panel">
-            <div class="panel-heading">
-              <span class="panel-icon">
-                <i class="fa fa-trophy"></i>
-              </span>
-              <span class="panel-title"> My Skills</span>
-            </div>
-            <div class="panel-body pb5">
-              <span class="label label-warning mr5 mb10 ib lh15">Default</span>
-              <span class="label label-primary mr5 mb10 ib lh15">Primary</span>
-              <span class="label label-info mr5 mb10 ib lh15">Success</span>
-              <span class="label label-success mr5 mb10 ib lh15">Info</span>
-              <span class="label label-alert mr5 mb10 ib lh15">Warning</span>
-              <span class="label label-system mr5 mb10 ib lh15">Danger</span>
-              <span class="label label-info mr5 mb10 ib lh15">Success</span>
-              <span class="label label-success mr5 mb10 ib lh15">Ui Design</span>
-              <span class="label label-primary mr5 mb10 ib lh15">Primary</span>
-
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-heading">
-              <span class="panel-icon">
-                <i class="fa fa-pencil"></i>
-              </span>
-              <span class="panel-title">About Me</span>
-            </div>
-            <div class="panel-body pb5">
-
-              <h6>Experience</h6>
-
-              <h4>Facebook Internship</h4>
-              <p class="text-muted"> University of Missouri, Columbia
-                <br> Student Health Center, June 2010 - 2012
-              </p>
-
-              <hr class="short br-lighter">
-
-              <h6>Education</h6>
-
-              <h4>Bachelor of Science, PhD</h4>
-              <p class="text-muted"> University of Missouri, Columbia
-                <br> Student Health Center, June 2010 through Aug 2011
-              </p>
-
-              <hr class="short br-lighter">
-
-              <h6>Accomplishments</h6>
-
-              <h4>Successful Business</h4>
-              <p class="text-muted pb10"> University of Missouri, Columbia
-                <br> Student Health Center, June 2010 through Aug 2011
-              </p>
-
-            </div>
-          </div>
         </div>
         <div class="col-md-8">
+
+            <div class="panel">
+                <form>
+                    <textarea placeholder="Post your books for sell or exchange." rows="2" class="form-control input-lg p-text-area"></textarea>
+                </form>
+                <footer class="panel-footer panel-post d-flex justify-content-between">
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href="#"><i class="fa fa-map-marker-alt"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-camera"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class=" fa fa-film"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-microphone"></i></a>
+                        </li>
+                    </ul>
+                    <button class="btn btn-darkred"><i class="far fa-paper-plane"></i> Post</button>
+                </footer>
+            </div>
 
           <div class="tab-block">
             <ul class="nav nav-tabs">
               <li class="active">
                 <a href="#tab1" data-toggle="tab">Activity</a>
               </li>
-              <li>
-                <a href="#tab1" data-toggle="tab">Social</a>
-              </li>
-              <li>
-                <a href="#tab1" data-toggle="tab">Media</a>
-              </li>
             </ul>
-            <div class="tab-content p30" style="height: 730px;">
+            <div class="tab-content p30" style="height: 1000px; margin-bottom: 40px;">
               <div id="tab1" class="tab-pane active">
-                <div class="media">
-                  <a class="pull-left" href="#"> <img class="media-object mn thumbnail mw50" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..."> </a>
-                  <div class="media-body">
-                    <h5 class="media-heading mb20">Simon Rivers Posted
-                      <small> - 3 hours ago</small>
-                    </h5>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="mw140 mr25 mb20">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar8.png" class="mw140 mr25 mb20"> 
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="mw140 mb20">
-                    <div class="media-links">
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-thumbs-o-up text-primary mr5"></span> Like </span>
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-share text-primary mr5"></span> Share </span>
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-floppy-o text-primary mr5"></span> Save </span>
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-comment text-primary mr5"></span> Comment </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="media mt25">
-                  <a class="pull-left" href="#"> <img class="media-object mn thumbnail thumbnail-sm rounded mw40" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="..."> </a>
-                  <div class="media-body mb5">
-                    <h5 class="media-heading mbn">Simon Rivers Posted
-                      <small> - 3 hours ago</small>
-                    </h5>
-                    <p> Omg so freaking sweet dude.</p>
-                    <div class="media pb10">
-                      <a class="pull-left" href="#"> <img class="media-object mn thumbnail thumbnail-sm rounded mw40" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..."> </a>
-                      <div class="media-body mb5">
-                        <h5 class="media-heading mbn">Jessica Wong
-                          <small> - 3 hours ago</small>
-                        </h5>
-                        <p>Omgosh I'm in love</p>
-                      </div>
-                    </div>
-                    <div class="media mtn">
-                      <a class="pull-left" href="#"> <img class="media-object mn thumbnail thumbnail-sm rounded mw40" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="..."> </a>
-                      <div class="media-body mb5">
-                        <h5 class="media-heading mbn">Jessica Wong
-                          <small> - 3 hours ago</small>
-                        </h5>
-                        <p>Omgosh I'm in love</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="media mt25">
-                  <a class="pull-left" href="#"> <img class="media-object thumbnail mw50" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="..."> </a>
-                  <div class="media-body">
-                    <h5 class="media-heading mb20">Simon Rivers Posted
-                      <small> - 3 hours ago</small>
-                    </h5>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="mw140 mr25 mb20">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="mw140 mr25 mb20"> 
-                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="mw140 mb20">
-                    <div class="media-links">
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-thumbs-o-up text-primary mr5"></span> Like </span>
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-share text-primary mr5"></span> Share </span>
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-floppy-o text-primary mr5"></span> Save </span>
-                      <span class="text-light fs12 mr10">
-                        <span class="fa fa-comment text-primary mr5"></span> Comment </span>
-                    </div>
-                  </div>
-                </div>
+                
+                
               </div>
               <div id="tab2" class="tab-pane"></div>
               <div id="tab3" class="tab-pane"></div>
