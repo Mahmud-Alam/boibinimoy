@@ -29,7 +29,7 @@ class Customer(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.first_name
+        return self.username.username
 
     @property
     def customerImageURL(self):
