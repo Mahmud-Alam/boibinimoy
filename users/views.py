@@ -84,17 +84,19 @@ def registrationPage(request):
             messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try new password.'))
             return redirect('register')
         
-        myUser = User.objects.create_user(username, email, password1)
-        myUser.first_name = fName
-        myUser.last_name = lName
+        myUser = User.objects.create_user(username, email, password1, first_name=fName, last_name=lName)
+        # myUser.first_name = fName
+        # myUser.last_name = lName
         
         # In default, when we create user, it will be user.is_active = True. So, now we will make in False and after click the confirmation email link, the user should be activated.
         myUser.is_active = False
         myUser.save()
 
-        customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
-        group = Group.objects.get(name='customer')
-        myUser.groups.add(group)
+        # MOVE THESE CODES TO THE signals.py FILE
+        # customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
+        # group = Group.objects.get(name='customer')
+        # myUser.groups.add(group)
+        
 
         # Email address confirmation email, and by this confirmation, user will active.
         current_site = get_current_site(request)
@@ -173,7 +175,7 @@ def userProfile(request):
 def editUserProfile(request):
     customer = Customer.objects.get(username=request.user)
     myUser = User.objects.get(username=request.user)
-    print('_______',myUser.first_name)
+
     form = CustomerForm(instance=customer)
     if request.method == 'POST':
         form = CustomerForm(request.POST, request.FILES, instance=customer)
@@ -182,7 +184,6 @@ def editUserProfile(request):
             myUser.first_name = customer.first_name
             myUser.last_name = customer.last_name
             myUser.save()
-            print('_______',myUser.first_name)
             return redirect('user-profile')
 
     context = {'myUser':request.user,'form':form}
