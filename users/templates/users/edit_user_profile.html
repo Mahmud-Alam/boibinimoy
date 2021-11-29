@@ -6,6 +6,9 @@
 <div class="container">
     <div class="form-div">
         <h1 class="text-center">Edit Profile</h1><br>
+        <a class="btn btn-darkred width-full" href='{% url "change-username" %}'><i class="fas fa-edit"></i> Change Username</a><br><br>
+        <a class="btn btn-darkred width-full" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Change Email</a><br><br>
+        <a class="btn btn-darkred width-full" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Change Password</a><br><br>
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
         

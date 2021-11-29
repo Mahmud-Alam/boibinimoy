@@ -12,6 +12,7 @@
 }
 .text-darkred{
     color: darkred;
+    font-weight: 900;
 }
 .bg-darkred{
     background-color: darkred;
@@ -85,9 +86,21 @@ a{
 .form-group {
     margin-bottom: 1rem;
 }
+.label-text{
+  color: #555;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
 .register{
     background: darkred;
     padding: 3%;
+}
+.register-oval{
+  background: #f8f9fa;
+  border-top-left-radius: 10% 50%;
+  border-top-right-radius: 10% 50%;
+  border-bottom-left-radius: 10% 50%;
+  border-bottom-right-radius: 10% 50%;
 }
 .register-left{
     text-align: center;

@@ -188,3 +188,8 @@ def editUserProfile(request):
 
     context = {'myUser':request.user,'form':form}
     return render(request,'users/edit_user_profile.html',context)
+
+
+def changeUsername(request):
+    context = {}
+    return render(request,'users/change_username.html',context)
