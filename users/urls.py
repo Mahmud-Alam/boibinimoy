@@ -10,4 +10,5 @@ urlpatterns = [
     path('profile/', views.userProfile, name='user-profile'),
     path('edit-profile/', views.editUserProfile, name='edit-user-profile'),
     path('change-username/', views.changeUsername, name='change-username'),
+    path('change-username-confirm/<uidb64>/<token>/', views.changeUsernameConfirm, name='change-username-confirm'),
 ]

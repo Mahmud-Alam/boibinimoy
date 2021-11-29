@@ -41,10 +41,10 @@ def registrationPage(request):
         password2 = request.POST.get('password2')
 
         #allUsers = User.objects.all().values_list('username',flat=True)
-        allUsers = [i.upper() for i in User.objects.all().values_list('username',flat=True)]
+        allUsers = [i.lower() for i in User.objects.all().values_list('username',flat=True)]
 
         #if User.objects.filter(username=username):
-        if username.upper() in allUsers:
+        if username.lower() in allUsers:
             messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
             return redirect('register')
 
@@ -104,14 +104,21 @@ def registrationPage(request):
         from_email = settings.EMAIL_HOST_USER
         to_list = [myUser.email]
 
-        email_dict = {'name':myUser.first_name,'domain':current_site,'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),'token':generate_token.make_token(myUser),}
+        email_dict = {
+            'name':myUser.first_name,
+            'domain':current_site,
+            'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),
+            'token':generate_token.make_token(myUser),
+            'link':'account-activate',
+            'text1':'Please confirm your email by clicking on the following link.',
+            }
         message = render_to_string('users/email_confirmation.html',email_dict)
 
         emailObj = EmailMessage(subject,message,from_email,to_list)
         emailObj.fail_silently = True
         emailObj.send()
         
-        context = {'myUser':myUser}
+        context = {'myUser':myUser,'title':'Confirmation Email Sent!','text1':'confirmation email sent','text2':'activating your account'}
         return render(request,'users/email_sent.html',context)
     
     return render(request,'users/register.html')
@@ -123,7 +130,13 @@ def accountActivate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         myUser = None
 
-    context = {'myUser':myUser}
+    context = {
+        'myUser':myUser,
+        'successTitle':'Account Activated Successfully!',
+        'successText1':'Your account has been activated successfully!',
+        'failedTitle':'Account Activation Failed!',
+        'failedText1':'your account activation is failed.',
+        }
     if myUser is not None and generate_token.check_token(myUser, token):
         myUser.is_active = True
         myUser.save()
@@ -189,7 +202,83 @@ def editUserProfile(request):
     context = {'myUser':request.user,'form':form}
     return render(request,'users/edit_user_profile.html',context)
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def changeUsername(request):
-    context = {}
-    return render(request,'users/change_username.html',context)
+    myUser = User.objects.get(username=request.user)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+
+        allUsers = [i.lower() for i in User.objects.all().values_list('username',flat=True)]
+
+        #if User.objects.filter(username=username):
+        if username.lower() == myUser.username.lower():
+            messages.error(request, mark_safe('&bull; "'+username+'" is your current username!<br/>&bull; Please try another username.'))
+            return redirect('change-username')
+        
+        if username.lower() in allUsers:
+            messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
+            return redirect('change-username')
+
+        if len(username)>15:
+            messages.error(request, mark_safe('&bull; Username must be within 15 character.'))
+            return redirect('change-username')
+        
+        if not username.isalnum():
+            messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric!<br/>&bull; Please try another username.'))
+            return redirect('change-username')
+        
+        if username.isdigit():
+            messages.error(request, mark_safe("&bull; Username can't be only Numeric!<br/>&bull; Please try another username."))
+            return redirect('change-username')
+
+        myUser.username = username
+        myUser.is_active = False
+        myUser.save()
+
+        current_site = get_current_site(request)
+        subject = "Change Username Request!"
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [myUser.email]
+
+        email_dict = {
+            'name':myUser.first_name,
+            'domain':current_site,
+            'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),
+            'token':generate_token.make_token(myUser),
+            'link':'change-username-confirm',
+            'text1':'Change username request has been placed. Please click on the following link for changing your username.',
+            }
+        message = render_to_string('users/email_confirmation.html',email_dict)
+
+        emailObj = EmailMessage(subject,message,from_email,to_list)
+        emailObj.fail_silently = True
+        emailObj.send()
+        
+        context = {'myUser':myUser,'title':'Change Username Request Sent!','text1':'change username request sent','text2':'changing your username'}
+        return render(request,'users/email_sent.html',context)
+
+    return render(request,'users/change_username.html')
+
+def changeUsernameConfirm(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        myUser = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        myUser = None
+
+    context = {
+        'myUser':myUser,
+        'successTitle':'Changed Username Successfully!',
+        'successText1':'Your username has been changed successfully!',
+        'failedTitle':'Username Change Request Failed!',
+        'failedText1':'your username change request is failed.',
+        }
+    if myUser is not None and generate_token.check_token(myUser, token):
+        myUser.is_active = True
+        myUser.save()
+        login(request, myUser)
+        return render(request, 'users/activation_successful.html',context)
+    else:
+        return render(request, 'users/activation_failed.html',context)
+        

@@ -2,8 +2,19 @@
 
 Hello {{name}}, 
 
-Please confirm your email by clicking on the following link.
+{{text1}}
 
+{% if link == 'account-activate' %}
 Confirmation Link - http://{{domain}}{% url 'account-activate' uidb64=uid token=token %}
+
+{% elif link == 'change-username-confirm' %}
+Confirmation Link - http://{{domain}}{% url 'change-username-confirm' uidb64=uid token=token %}
+
+{% endif %}
+
+If this wasn't you, please avoid this email.
+
+Thank you,
+Boi-Binimoy Team.
 
 {% endautoescape %}

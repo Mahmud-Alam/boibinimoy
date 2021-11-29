@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href='{% static "css/style.css" %}'>
-    <title>Account Activated Successfully!</title>
+    <title>{{successTitle}}</title>
 </head>
 <body>
     <div class="container">
@@ -18,7 +18,7 @@
             </div>
             <div class="card-body"><br>
               <h5 class="card-title">Congratulations <span class="span-name">{{myUser.first_name}} {{myUser.last_name}}</span>!</h5>
-              <p class="card-text">Your account has been activated successfully!</p>
+              <p class="card-text">{{successText1}}</p>
               <a href="{% url 'home' %}" class="btn btn-lightgreen">Enter your account</a><br><br>
             </div>
           </div>
