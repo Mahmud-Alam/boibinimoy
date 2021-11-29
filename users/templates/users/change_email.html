@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'users/main.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>Change Email Address</title>
+</head>
+<body>
+    {% block content %}
+    <div class="register">
+        <div class="row">
+            <div class="d-flex justify-content-center">
+            <div class="col-md-9 register-oval">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <h3 class="register-heading">Change Email Address</h3>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="row register-form">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="label-text" for="">New Email Address<span class="text-darkred">*</span></label>
+                                        <input type="text" id="email" class="form-control" name="email" placeholder="Enter Your New Email Address" Required>
+                                    </div>
+                                    {% for message in messages %}
+                                    <strong style="color: darkred;" id="messages">{{message}}</strong>
+                                    {% endfor %}
+                                    <input type="submit" class="btnRegister btn-darkred"  value="Change Email"/>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

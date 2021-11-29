@@ -281,4 +281,72 @@ def changeUsernameConfirm(request, uidb64, token):
         return render(request, 'users/activation_successful.html',context)
     else:
         return render(request, 'users/activation_failed.html',context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def changeEmail(request):
+    myUser = User.objects.get(username=request.user)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        if isEmailAddressValid(email) == False:
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email address!<br/>&bull; Please try valid email address.'))
+            return redirect('register')
+
+        # if User.objects.filter(email=email):
+        #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
+        #     return redirect('register')
+
+
+        current_site = get_current_site(request)
+        subject = "Change Email Address Request!"
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [email]
+
+        email_dict = {
+            'name':myUser.first_name,
+            'email':email,
+            'domain':current_site,
+            'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),
+            'token':generate_token.make_token(myUser),
+            'link':'change-email-confirm',
+            'text1':'Change email address request has been placed. Please click on the following link for changing your email address.',
+            }
+        message = render_to_string('users/email_confirmation.html',email_dict)
+
+        emailObj = EmailMessage(subject,message,from_email,to_list)
+        emailObj.fail_silently = True
+        emailObj.send()
         
+        context = {'myUser':myUser,'title':'Change Email Address Request Sent!','text1':'change email address request sent','text2':'changing your email address'}
+        return render(request,'users/email_sent.html',context)
+
+    return render(request,'users/change_email.html')
+
+def changeEmailConfirm(request, uidb64, token, email):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        myUser = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        myUser = None
+
+    context = {
+        'myUser':myUser,
+        'successTitle':'Changed Email Address Successfully!',
+        'successText1':'Your email address has been changed successfully!',
+        'failedTitle':'Email Address Change Request Failed!',
+        'failedText1':'your email address change request is failed.',
+        }
+    if myUser is not None and generate_token.check_token(myUser, token):
+        myUser.email = email
+        myUser.save()
+
+        customer = Customer.objects.get(username=myUser)
+        customer.email = myUser.email
+        customer.save()
+
+        login(request, myUser)
+        return render(request, 'users/activation_successful.html',context)
+    else:
+        return render(request, 'users/activation_failed.html',context)
