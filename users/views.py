@@ -232,9 +232,6 @@ def changeUsername(request):
             messages.error(request, mark_safe("&bull; Username can't be only Numeric!<br/>&bull; Please try another username."))
             return redirect('change-username')
 
-        myUser.username = username
-        myUser.is_active = False
-        myUser.save()
 
         current_site = get_current_site(request)
         subject = "Change Username Request!"
@@ -243,6 +240,7 @@ def changeUsername(request):
 
         email_dict = {
             'name':myUser.first_name,
+            'username':username,
             'domain':current_site,
             'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),
             'token':generate_token.make_token(myUser),
@@ -260,7 +258,7 @@ def changeUsername(request):
 
     return render(request,'users/change_username.html')
 
-def changeUsernameConfirm(request, uidb64, token):
+def changeUsernameConfirm(request, uidb64, token, username):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         myUser = User.objects.get(pk=uid)
@@ -275,9 +273,8 @@ def changeUsernameConfirm(request, uidb64, token):
         'failedText1':'your username change request is failed.',
         }
     if myUser is not None and generate_token.check_token(myUser, token):
-        myUser.is_active = True
+        myUser.username = username
         myUser.save()
-        login(request, myUser)
         return render(request, 'users/activation_successful.html',context)
     else:
         return render(request, 'users/activation_failed.html',context)
@@ -345,8 +342,6 @@ def changeEmailConfirm(request, uidb64, token, email):
         customer = Customer.objects.get(username=myUser)
         customer.email = myUser.email
         customer.save()
-
-        login(request, myUser)
         return render(request, 'users/activation_successful.html',context)
     else:
         return render(request, 'users/activation_failed.html',context)
