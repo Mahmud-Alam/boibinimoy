@@ -17,39 +17,46 @@
     <!-- Begin .page-heading -->
     <div class="page-heading">
         <div class="media clearfix">
-          <div class="media-left pr30">
-            <div class="user-heading round">
-                <a href='{% url "user-profile" %}'>
-                <img class="media-object mw150" src='{{customer.customerImageURL}}' alt="...">
-                </a>
-            </div>
-            <h1 class="media-heading text-center">{{customer.first_name}} {{customer.last_name}}</h1>
-            <p class="text-center">{{customer.email}}</p>
-          </div>                      
-          <div class="media-body va-m">
-            <div class="d-flex justify-content-between">
-                <h1>Personal Info</h1>
-                <div class="d-flex align-items-center">
-                    <a class="btn btn-darkred" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
+            <div class="media-left pr30">
+                <div class="user-heading round">
+                    <a href='{% url "user-profile" %}'>
+                    <img class="media-object mw150" src='{{customer.customerImageURL}}' alt="...">
+                    </a>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><span>Username </span>: {{customer.username}}</p>
-                    <p><span>First Name </span>: {{customer.first_name}}</p>
-                    <p><span>Last Name </span>: {{customer.last_name}}</p>
-                    <p><span>Email </span>: {{customer.email}}</p>
-                    <p><span>Phone </span>: {{customer.phone}}</p>
+                <h1 class="media-heading text-center">{{customer.first_name}} {{customer.last_name}}</h1>
+                <p class="text-center">{{customer.email}}</p>
+            </div>                      
+            <div class="media-body va-m">
+                <div class="d-flex justify-content-between">
+                    <h1>Personal Info</h1>
+                    <div class="d-flex align-items-center">
+                        <a class="btn btn-darkred" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <p><span>Address </span>: {{customer.address}}</p>
-                    <p><span>Occupation </span>: {{customer.occupation}}</p>
-                    <p><span>Gender </span>: {{customer.gender}}</p>
-                    <p><span>Birthday</span>: {{customer.birth_date}}</p>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><span>Username </span>: {{customer.username}}</p>
+                        <p><span>First Name </span>: {{customer.first_name}}</p>
+                        <p><span>Last Name </span>: {{customer.last_name}}</p>
+                        <p><span>Email </span>: {{customer.email}}</p>
+                        <p><span>Phone </span>: {{customer.phone}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><span>Address </span>: {{customer.address}}</p>
+                        <p><span>Occupation </span>: {{customer.occupation}}</p>
+                        <p><span>Gender </span>: {{customer.gender}}</p>
+                        <p><span>Birthday</span>: {{customer.birth_date}}</p>
+                    </div>
                 </div>
+                <br><br>
+                {% for message in messages %}
+                <div class="alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
             </div>
-          </div>
         </div>
     </div>
 

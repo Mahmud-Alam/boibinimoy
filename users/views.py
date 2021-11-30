@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
@@ -345,3 +346,45 @@ def changeEmailConfirm(request, uidb64, token, email):
         return render(request, 'users/activation_successful.html',context)
     else:
         return render(request, 'users/activation_failed.html',context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def changePassword(request):
+    myUser = User.objects.get(username=request.user)
+    if request.method == 'POST':
+        oldpassword = request.POST.get('oldpassword')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        user = authenticate(request, username=request.user, password=oldpassword)
+
+        if user is not None:
+            if len(password1)<8:
+                messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try new password.'))
+                return redirect('change-password')
+            if password1.isdigit():
+                messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try new password.'))
+                return redirect('change-password')
+            if password1.isalpha():
+                messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try new password.'))
+                return redirect('change-password')
+            if password1 != password2:
+                messages.error(request, mark_safe('&bull; New Password did not match!<br/>&bull; Please try again.'))
+                return redirect('change-password')
+        else:
+            messages.error(request, mark_safe('&bull; Old Password is incorrect. Please try again.'))
+            return redirect('change-password')
+        
+        # myUser.set_password(make_password(password1))
+        myUser.set_password(password1)
+        myUser.save()
+
+        # userLogin = authenticate(request, username=request.user, password=password1)
+        login(request, myUser)
+        messages.success(request,'Congratulations "'+user.username+'"! Your password changed successfully!')
+        return redirect('user-profile')
+
+    context = {}
+    return render(request,'users/change_password.html',context)
+
