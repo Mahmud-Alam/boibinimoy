@@ -28,7 +28,7 @@
               {% endif %}
               {% if request.user.is_authenticated %}
               <li class="nav-item">
-                <p class="nav-link active" style="color: darkred; font-weight: 700;">Hello, {{request.user.first_name}}</p>
+                <p class="nav-link active" style="color: darkred; font-weight: 700;">Hello, {{request.user.username}}</p>
               </li>
               <li class="nav-item">
                 <a class="btn btn-darkred" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
