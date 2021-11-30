@@ -1,0 +1,80 @@
+{% extends "users/main.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="">
+    <div class="row">
+        <div class="mt-4 d-flex justify-content-center">
+
+
+                <div class="card-header text-center">
+                    <h3 class="text-black">{{ task }} Book</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.media }}
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Book Name</small>
+                                {{ form.name|add_class:"form-control" }}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Book Author(s)</small>
+                                {{ form.author|add_class:"form-control" }}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Book Category</small>
+                                {{ form.category|add_class:"form-control" }}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Book Image</small>
+                                {{ form.image|add_class:"form-control" }}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Book Edition</small>
+                                {{ form.edition|add_class:"form-control" }}
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Book Description</small>
+                                {{ form.description|add_class:"form-control" }}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                <small>Price</small>
+                                {{ form.price|add_class:"form-control" }}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg btn-block">{{ task }} Book</button>
+
+                    </form>
+        
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -16,7 +16,7 @@
                 <a class="nav-link" href='{% url "user-profile" %}'><i class="fas fa-user"></i> Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-quote-right"></i> Posts</a>
+                <a class="nav-link" href="{% url 'books_home' %}"><i class="fas fa-quote-right"></i> Posts</a>
               </li>
               {% else %}
               <li class="nav-item">

@@ -115,6 +115,9 @@ def registrationPage(request):
             }
         message = render_to_string('users/email_confirmation.html',email_dict)
 
+        # msg_plain = loader.render_to_string('email-templates/order-confirmation.txt', context) # The plain text version of the email
+        # msg_html = loader.render_to_string('email-templates/order-confirmation.html', context) # The html version of the email
+
         emailObj = EmailMessage(subject,message,from_email,to_list)
         emailObj.fail_silently = True
         emailObj.send()

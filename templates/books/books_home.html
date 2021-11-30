@@ -1,0 +1,93 @@
+{% extends "users/main.html" %} {% load static %} {% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row">
+        {% for book in books %}
+        <div class="col-lg-12 col-md-12 mb-5">
+          <div class="blog-item">
+            <div class="blog-thumb">
+              <a href="#">
+                <img
+                  src="{{ book.bookImageURL }}"
+                  alt="{{ book.name }}"
+                  class="img-fluid"
+                />
+              </a>
+            </div>
+
+            <div class="blog-item-content">
+              <div class="blog-item-meta mb-3 mt-4">
+                <a href="#" class="text-color-2 text-capitalize mr-3">
+                  <i class="icofont-book-mark mr-2"></i> {{ book.category.category }}
+                </a>
+
+                <span class="text-black text-capitalize mr-3">
+                  <i class="icofont-calendar mr-1"></i> {{ book.created|date:"d N Y" }}
+                </span>
+
+                <a href="#" class="text-capitalize mr-3">
+                  <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
+                </a>
+              </div>
+
+              <h2 class="mt-3 mb-3">
+                <a href="#"> {{ book.name }} </a>
+              </h2>
+
+              <p class="mb-4">{{ book.description|truncatechars:250 }}</p>
+
+              <a href="{% url 'book_details' book.slug %}" class="btn btn-primary btn-icon btn-round-full">
+                Read More <i class="icofont-simple-right ml-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+
+      <a href="{% url 'post_book' %}" class="btn btn-primary btn-round-full m-3"
+        ><i class="fa fa-plus"></i>
+        <span> Post a New Book</span>
+      </a>
+
+      <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
+        <div class="sidebar-widget latest-post mb-3">
+          <h5>Latest Books</h5>
+          {% for book in latest_books %}
+          <div class="py-2">
+            <span class="text-sm text-muted" >
+                {{ book.created|date:"d N Y" }}
+            </span>
+            <h6 class="my-2">
+              <a href="#">
+                {{ book.name }}
+              </a>
+            </h6>
+          </div>
+          {% endfor %}
+        </div>
+
+        <hr />
+
+        <div class="sidebar-widget category mb-3">
+          <h5 class="mb-4">Categories</h5>
+
+          <ul class="list-unstyled">
+            {% for cat in categories %}
+            <li class="align-items-center">
+              <a href="#">{{ cat.category }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
