@@ -1,0 +1,37 @@
+.book-img{
+    width: 400px;
+    height: 225px;
+}
+.book-post-bg{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+.book-side-bg{
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #e2e2e2;
+}
+.book-search-bg{
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #e2e2e2;
+    padding: 0;
+}
+.book-search-form{
+    padding: 20px;
+}
+.book-search-heading{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: transparent;
+    border-right: transparent;
+    border-top: transparent;
+    padding: 20px;
+    height: 80px;
+}
+.book-form{
+    background-color: rgb(230, 230, 230);
+    margin: 0px 0px 60px 0;
+    padding: 40px 60px;    
+}

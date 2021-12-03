@@ -19,7 +19,7 @@
         <div class="media clearfix">
             <div class="media-left pr30">
                 <div class="user-heading round">
-                    <a href='{% url "user-profile" %}'>
+                    <a href='{% url "user-profile" customer.username %}'>
                     <img class="media-object mw150" src='{{customer.customerImageURL}}' alt="...">
                     </a>
                 </div>
@@ -29,9 +29,11 @@
             <div class="media-body va-m">
                 <div class="d-flex justify-content-between">
                     <h1>Personal Info</h1>
+                    {% if flag == True %}
                     <div class="d-flex align-items-center">
                         <a class="btn btn-darkred" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
                     </div>
+                    {% endif %}
                 </div>
                 <br>
                 <div class="row">
@@ -177,6 +179,7 @@
         </div>
         <div class="col-md-8">
 
+            {% if flag == True %}
             <div class="panel">
                 <form>
                     <textarea placeholder="Post your books for sell or exchange." rows="2" class="form-control input-lg p-text-area"></textarea>
@@ -196,24 +199,70 @@
                             <a href="#"><i class="fa fa-microphone"></i></a>
                         </li>
                     </ul>
-                    <button class="btn btn-darkred"><i class="far fa-paper-plane"></i> Post</button>
+                    <a href="{% url 'create-post' %}" class="btn btn-darkred"><i class="far fa-paper-plane"></i> Post New Book</a>
                 </footer>
             </div>
+            {% endif %}
 
           <div class="tab-block">
+            {% if flag == True %}
             <ul class="nav nav-tabs">
               <li class="active">
-                <a href="#tab1" data-toggle="tab">Recent Posts</a>
+                <a href="" data-toggle="tab">Recent Posts</a>
               </li>
             </ul>
-            <div class="tab-content p30" style="height: 400px; margin-bottom: 40px;">
-              <div id="tab1" class="tab-pane active">
-                
-                
+            {% else %}
+            <ul class="nav nav-tabs mt-3">
+              <li class="active">
+                <a href="" data-toggle="tab">{{customer.username}}'s Recent Posts</a>
+              </li>
+            </ul>
+            {% endif %}
+            <div class="tab-content p30 mb-5" >
+
+              {% for book in books %}
+              <div class="card mb-5">
+                  <img src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center">
+                      <h2 class="">
+                          <a class="text-darkred" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
+                        </h2>
+                        <h6 class="px-3 text-color-2 text-darkred"> by {{book.author}}</h6>
+                  </div>
+                  <div class="blog-item-meta mb-3">
+                    <span class="text-black text-capitalize me-3">
+                      <i class="fas fa-book mr-2"></i> {{ book.edition }} Edition
+                    </span>
+                    <span class="text-capitalize me-3">
+                      <i class="fas fa-bookmark mr-2"></i> {{ book.category.category }} Category
+                    </span>
+                    <span class="text-black text-capitalize me-3">
+                      <i class="far fa-calendar-alt mr-2"></i> {{ book.created|date:"d N Y" }}
+                    </span>
+      
+                    <a href="{% url 'user-profile' book.creator.username %}" class="text-darkred text-capitalize mr-3">
+                      <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
+                    </a>
+                  </div>
+                  <p class="card-text">{{ book.description|truncatechars:250 }}</p>
+                  
+                  <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
+                  
+                  <div class="d-flex justify-content-between">
+                    <a href="{% url 'books-details' book.slug %}" class="btn btn-darkred btn-icon">
+                      See Details <i class="fas fa-angle-double-right"></i>
+                    </a>
+                    {% if flag == True %}
+                    <a href="{% url 'update-post' book.id %}" class="btn btn-darkred btn-icon">
+                      <i class="fas fa-edit"></i> Update Post
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
               </div>
-              <div id="tab2" class="tab-pane"></div>
-              <div id="tab3" class="tab-pane"></div>
-              <div id="tab4" class="tab-pane"></div>
+              {% endfor %}
+
             </div>
           </div>
         </div>

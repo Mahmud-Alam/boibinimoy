@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_text
 from .tokens import generate_token
+from datetime import datetime, timedelta, timezone
 
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
@@ -182,9 +183,18 @@ def logoutPage(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
-def userProfile(request):
-    customer = Customer.objects.get(username=request.user)
-    context = {'customer':customer}
+def userProfile(request, username):
+    main_user = User.objects.get(username=username)
+    if request.user.username == username:
+        customer = Customer.objects.get(username=request.user)
+        flag=True
+    else:
+        customer = Customer.objects.get(username=main_user)
+        flag=False
+    
+    books = customer.book_set.all()
+    
+    context = {'customer':customer,'books':books,'flag':flag}
     return render(request,'users/user_profile.html',context)
     
 @login_required(login_url='login')

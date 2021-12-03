@@ -1,46 +1,73 @@
-{% extends "users/main.html" %} {% load static %} {% block content %}
+{% extends "users/main.html" %} 
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
 
 <div class="container">
+  <br><br>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
       <div class="row">
+        <div class="book-search-bg mb-4">
+          <div class="panel-heading book-search-heading">
+            <h2 class="font-weight-700">Search Your Books</h2>
+          </div>
+          <div class="book-search-form">
+            <form action="" method="get">
+              <!-- {{bookFilter.form.as_p }} -->
+              <div class="row form-group">
+                  <div class="col-md-9 mb-3">
+                      <h6 class="text-muted mb-3">Book Name</h6>
+                      {{ bookFilter.form.name|add_class:"form-control" }}
+                  </div>
+                  <div class="col-md-3 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-darkred"><i class="fas fa-search"></i> Search</button>
+                  </div>
+              </div>
+            </form>
+          </div>
+        </div>
         {% for book in books %}
-        <div class="col-lg-12 col-md-12 mb-5">
-          <div class="blog-item">
+        <div class="col-lg-12 col-md-12 mb-4 book-post-bg">
+          <div class="blog-item d-flex">
             <div class="blog-thumb">
-              <a href="#">
-                <img
-                  src="{{ book.bookImageURL }}"
-                  alt="{{ book.name }}"
-                  class="img-fluid"
-                />
+              <a href="{% url 'books-details' book.slug %}">
+                <img src="{{ book.bookImageURL }}" alt="{{ book.name }}" class="img-thumbnail book-img"/>
               </a>
             </div>
 
-            <div class="blog-item-content">
-              <div class="blog-item-meta mb-3 mt-4">
-                <a href="#" class="text-color-2 text-capitalize mr-3">
-                  <i class="icofont-book-mark mr-2"></i> {{ book.category.category }}
-                </a>
+            <div class="blog-item-content mx-4">
+              <div>
+                  <div class="d-flex align-items-center">
+                    <h2 class="">
+                        <a class="text-darkred" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
+                      </h2>
+                      <h6 class="px-3 text-color-2 text-darkred"> by {{book.author}}</h6>
+                </div>
+                <div class="blog-item-meta mb-3">
+                  <span class="text-black text-capitalize me-3">
+                    <i class="fas fa-book mr-2"></i> {{ book.edition }} Edition
+                  </span>
 
-                <span class="text-black text-capitalize mr-3">
-                  <i class="icofont-calendar mr-1"></i> {{ book.created|date:"d N Y" }}
-                </span>
+                  <span class="text-capitalize me-3">
+                    <i class="fas fa-bookmark mr-2"></i> {{ book.category.category }} Category
+                  </span>
+    
+                  <a href="{% url 'user-profile' book.creator.username %}" class="text-darkred text-capitalize mr-3">
+                    <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
+                  </a>
+                </div>
+  
+                <p class="mb-4">{{ book.description|truncatechars:250 }}</p>
 
-                <a href="#" class="text-capitalize mr-3">
-                  <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
-                </a>
+                <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
               </div>
 
-              <h2 class="mt-3 mb-3">
-                <a href="#"> {{ book.name }} </a>
-              </h2>
-
-              <p class="mb-4">{{ book.description|truncatechars:250 }}</p>
-
-              <a href="{% url 'book_details' book.slug %}" class="btn btn-primary btn-icon btn-round-full">
-                Read More <i class="icofont-simple-right ml-2"></i>
-              </a>
+              <div class="mt-3">
+                <a href="{% url 'books-details' book.slug %}" class="btn btn-darkred btn-icon">
+                  See Details <i class="fas fa-angle-double-right"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -48,44 +75,49 @@
       </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
+      <div class="book-side-bg ms-3 mb-4">
+        <!-- <div class="d-flex justify-content-center">
+          <a href="{% url 'create-post' %}" class="btn btn-darkred my-4"
+            ><i class="fa fa-plus"></i>
+            <span> Post a New Book</span>
+          </a>
+        </div> -->
 
-      <a href="{% url 'post_book' %}" class="btn btn-primary btn-round-full m-3"
-        ><i class="fa fa-plus"></i>
-        <span> Post a New Book</span>
-      </a>
-
-      <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
-        <div class="sidebar-widget latest-post mb-3">
-          <h5>Latest Books</h5>
-          {% for book in latest_books %}
-          <div class="py-2">
-            <span class="text-sm text-muted" >
+        <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
+          <div class="panel-heading book-search-heading">
+            <h3 class="text-center text-muted font-weight-700">Latest Books</h3>
+          </div>
+          <div class="sidebar-widget latest-post mb-3 px-4 py-2">
+            {% for book in latest_books %}
+            <div class="py-2">
+              <h6 class="my-2">
+                <a class="text-darkred font-weight-700" href="{% url 'books-details' book.slug %}">
+                  {{ book.name }}
+                </a>
+              </h6>
+              <span class="text-sm text-muted" >
                 {{ book.created|date:"d N Y" }}
             </span>
-            <h6 class="my-2">
-              <a href="#">
-                {{ book.name }}
-              </a>
-            </h6>
-          </div>
-          {% endfor %}
-        </div>
-
-        <hr />
-
-        <div class="sidebar-widget category mb-3">
-          <h5 class="mb-4">Categories</h5>
-
-          <ul class="list-unstyled">
-            {% for cat in categories %}
-            <li class="align-items-center">
-              <a href="#">{{ cat.category }}</a>
-            </li>
+            </div>
             {% endfor %}
-          </ul>
+          </div>
         </div>
       </div>
+      
+      <div class="book-search-bg mb-4 ms-3">
+        <div class="panel-heading book-search-heading">
+          <h2 class="text-center font-weight-700">Categories</h2>
+        </div>
+        <ul class="list-unstyled mb-3 px-4 py-2 my-2">
+          {% for cat in categories %}
+          <li class="align-items-center mt-3">
+            <a class="text-darkred font-weight-700" href="#">{{ cat.category }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
     </div>
   </div>
 </div>

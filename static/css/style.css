@@ -12,7 +12,15 @@
 }
 .text-darkred{
     color: darkred;
-    font-weight: 900;
+}
+.font-weight-900{
+  font-weight: 900;
+}
+.font-weight-700{
+  font-weight: 700;
+}
+.bg-white{
+  background-color: white;
 }
 .bg-darkred{
     background-color: darkred;
@@ -741,6 +749,9 @@ body{
       min-height: 125px;
       padding: 16px 12px;
       border: 1px solid #e2e2e2;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
       background-color: #FFF;
     }
     /*===============================================
@@ -753,19 +764,22 @@ body{
     /* nav tab item */
     .tab-block .nav-tabs > li {
       float: left;
-      margin-bottom: -1px;
+      /* margin-bottom: -1px; */
     }
     /* nav tab link */
     .tab-block .nav-tabs > li > a {
       z-index: 9;
       position: relative;
       color: #AAA;
-      font-size: 14px;
-      font-weight: 400;
+      font-size: 16px;
+      font-weight: 700;
       padding: 14px 20px;
-      margin-right: -1px;
+      /* margin-right: -1px; */
       border-color: #e2e2e2;
-      border-radius: 0;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      border-left: 1px solid #e2e2e2;
+      border-top: 1px solid #e2e2e2;
       background: #fafafa;
     }
     .tab-block .nav-tabs > li:first-child > a {
@@ -796,7 +810,7 @@ body{
     /* nav tab item */
     .tabs-left > li {
       float: none;
-      margin: 0 -1px -1px 0;
+      /* margin: 0 -1px -1px 0; */
     }
     /* nav tab item link */
     .tabs-left > li > a {
