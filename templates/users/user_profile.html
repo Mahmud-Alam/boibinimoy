@@ -220,6 +220,7 @@
             {% endif %}
             <div class="tab-content p30 mb-5" >
 
+              {% if books %}
               {% for book in books %}
               <div class="card mb-5">
                   <img src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
@@ -262,6 +263,14 @@
                 </div>
               </div>
               {% endfor %}
+
+              {% else %}
+              {% if flag == True %}
+              <p>You haven't post any book yet. Please post your unused books here for selling or exchanging. Thank you.</p>
+              {% else %}
+              <p>{{customer.first_name}} {{customer.last_name}} hasn't post any book yet.</p>
+              {% endif %}
+              {% endif %}
 
             </div>
           </div>

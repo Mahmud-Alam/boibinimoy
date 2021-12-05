@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.contrib import messages
 from django.utils.text import slugify
 
 from .filters import *
@@ -33,6 +33,8 @@ def create_post(request):
             slug_str = "%s %s" % (obj.name, obj.id)
             obj.slug = slugify(slug_str)
             obj.save()
+            full_name = request.user.first_name+' '+request.user.last_name
+            messages.success(request,'Congratulations "'+full_name+'"! Your have created a post!')
             return redirect('user-profile', username = request.user)
         else:
             print("Error: Form Invalid")
@@ -66,6 +68,8 @@ def update_post(request,pk):
             slug_str = "%s %s" % (obj.name, obj.id)
             obj.slug = slugify(slug_str)
             obj.save()
+            full_name = request.user.first_name+' '+request.user.last_name
+            messages.success(request, full_name+', your post updated successfully!')
             return redirect('user-profile', username = request.user)
         else:
             print("Error: Form Invalid")
@@ -97,3 +101,17 @@ def books_details(request, slug):
     print('_______________',customer,flag)
     context = {'book': book,'flag':flag}
     return render(request, "books/books_details.html", context)
+
+def delete_post(request,pk):
+    book = Book.objects.get(id=pk)
+    title = "Delete Post"
+    text1 = "delete post"
+
+    if request.method == 'POST':
+        book.delete()
+        full_name = request.user.first_name+' '+request.user.last_name
+        messages.success(request, full_name+', your post deleted!')
+        return redirect('user-profile', username = request.user)
+
+    context = {'book':book,'title':title,'text1':text1}
+    return render(request,"books/delete_book_post.html",context)

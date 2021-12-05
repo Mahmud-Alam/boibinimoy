@@ -211,7 +211,9 @@ def editUserProfile(request):
             myUser.first_name = customer.first_name
             myUser.last_name = customer.last_name
             myUser.save()
-            return redirect('user-profile')
+            full_name = request.user.first_name+' '+request.user.last_name
+            messages.success(request, full_name+', profile updated successfully!')
+            return redirect('user-profile', username = request.user)
 
     context = {'myUser':request.user,'form':form}
     return render(request,'users/edit_user_profile.html',context)
@@ -396,7 +398,7 @@ def changePassword(request):
         # userLogin = authenticate(request, username=request.user, password=password1)
         login(request, myUser)
         messages.success(request,'Congratulations "'+user.username+'"! Your password changed successfully!')
-        return redirect('user-profile')
+        return redirect('user-profile', username = request.user)
 
     context = {}
     return render(request,'users/change_password.html',context)
