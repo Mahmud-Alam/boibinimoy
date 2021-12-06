@@ -3,10 +3,11 @@ from users.models import Customer
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    description = models.TextField(null = True, blank=True)
 
     def __str__(self) -> str:
-        return self.category
+        return self.name
 
 
 class Book(models.Model):
@@ -43,8 +44,8 @@ class Book(models.Model):
     edition = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(default='default.jpg', null=True, blank=True)
     slug = models.CharField(max_length=255, null=True, blank=True)
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
-    description = models.CharField(max_length=200, null=True, blank=True)
+    category = models.ManyToManyField(Category, blank=True)
+    description = models.TextField(null = True, blank=True)
     exchange = models.CharField(max_length=200,choices=EXCHANGE, null=True, blank=True)
     price = models.FloatField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)

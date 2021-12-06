@@ -225,23 +225,29 @@
               <div class="card mb-5">
                   <img src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
                   <div class="card-body">
-                    <div class="d-flex align-items-center">
+                    <div class="mb-3">
                       <h2 class="">
                           <a class="text-darkred" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
                         </h2>
-                        <h6 class="px-3 text-color-2 text-darkred"> by {{book.author}}</h6>
+                        <h6 class="text-darkred"> by {{book.author}}</h6>
                   </div>
-                  <div class="blog-item-meta mb-3">
+                  <div class="blog-item-meta mb-2">
                     <span class="text-black text-capitalize me-3">
                       <i class="fas fa-book mr-2"></i> {{ book.edition }} Edition
                     </span>
-                    <span class="text-capitalize me-3">
+                    <!-- <span class="text-capitalize me-3">
                       <i class="fas fa-bookmark mr-2"></i> {{ book.category.category }} Category
-                    </span>
+                    </span> -->
+                    {% for cat in book.category.all %}
+                        <span class="text-capitalize me-3">
+                          &bull; {{ cat.name }}
+                        </span>
+                    {%endfor%}
+                  </div>
+                  <div class="mb-3">
                     <span class="text-black text-capitalize me-3">
                       <i class="far fa-calendar-alt mr-2"></i> {{ book.created|date:"d N Y" }}
                     </span>
-      
                     <a href="{% url 'user-profile' book.creator.username %}" class="text-darkred text-capitalize mr-3">
                       <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
                     </a>
