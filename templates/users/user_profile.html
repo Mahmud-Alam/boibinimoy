@@ -253,6 +253,19 @@
                     </a>
                   </div>
                   <p class="card-text">{{ book.description|truncatechars:250 }}</p>
+
+                  <div class="d-flex align-items-center">
+                    {% if book.exchange == 'Yes' %}
+                    <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.exchange}}</span></p>
+                    {% else %}
+                    <p class="font-weight-700">Exchange: <span>{{book.exchange}}</span></p>
+                    {% endif%}
+                    {% if book.price != None %}
+                    <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.price}}</span></p>
+                    {% else %}
+                    <p class="font-weight-700 ms-3">Price: <span>{{book.price}}</span></p>
+                    {% endif%}
+                  </div>
                   
                   <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
                   

@@ -8,7 +8,7 @@ from .forms import *
 
 def books_home(request):
     books = Book.objects.all()
-    latest_books = Book.objects.all()[:3]
+    latest_books = Book.objects.all()[:5]
     categories = Category.objects.all()
 
     bookFilter = BookFilter(request.GET, queryset=books)
