@@ -5,6 +5,7 @@ from users.models import Customer
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null = True, blank=True)
+    slug = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name

@@ -112,16 +112,20 @@ def registrationPage(request):
             'uid':urlsafe_base64_encode(force_bytes(myUser.pk)),
             'token':generate_token.make_token(myUser),
             'link':'account-activate',
-            'text1':'Please confirm your email by clicking on the following link.',
+            'text1':"We're excited to have you get started. First, you need to confirm your account. Just press the button below.",
             }
-        message = render_to_string('users/email_confirmation.html',email_dict)
+        # message = render_to_string('users/email_confirmation.html',email_dict)
 
         # msg_plain = loader.render_to_string('email-templates/order-confirmation.txt', context) # The plain text version of the email
         # msg_html = loader.render_to_string('email-templates/order-confirmation.html', context) # The html version of the email
 
-        emailObj = EmailMessage(subject,message,from_email,to_list)
-        emailObj.fail_silently = True
-        emailObj.send()
+        # emailObj = EmailMessage(subject,message,from_email,to_list)
+        # emailObj.fail_silently = True
+        # emailObj.send()
+
+        message_txt = render_to_string('users/email_confirmation.txt',email_dict)
+        message_html = render_to_string('users/email_confirmation.html',email_dict)
+        send_mail(subject, message_txt, from_email, to_list, fail_silently=True, html_message=message_html)
         
         context = {'myUser':myUser,'title':'Confirmation Email Sent!','text1':'confirmation email sent','text2':'activating your account'}
         return render(request,'users/email_sent.html',context)
@@ -263,11 +267,15 @@ def changeUsername(request):
             'link':'change-username-confirm',
             'text1':'Change username request has been placed. Please click on the following link for changing your username.',
             }
-        message = render_to_string('users/email_confirmation.html',email_dict)
+        
+        message_txt = render_to_string('users/email_confirmation.txt',email_dict)
+        message_html = render_to_string('users/email_confirmation.html',email_dict)
+        send_mail(subject, message_txt, from_email, to_list, fail_silently=True, html_message=message_html)
 
-        emailObj = EmailMessage(subject,message,from_email,to_list)
-        emailObj.fail_silently = True
-        emailObj.send()
+        # emailObj = EmailMessage(subject,message_txt,from_email,to_list,html_message=message_html)
+        # emailObj.fail_silently = True
+        # emailObj.send()
+    
         
         context = {'myUser':myUser,'title':'Change Username Request Sent!','text1':'change username request sent','text2':'changing your username'}
         return render(request,'users/email_sent.html',context)
@@ -326,11 +334,15 @@ def changeEmail(request):
             'link':'change-email-confirm',
             'text1':'Change email address request has been placed. Please click on the following link for changing your email address.',
             }
-        message = render_to_string('users/email_confirmation.html',email_dict)
+        # message = render_to_string('users/email_confirmation.html',email_dict)
 
-        emailObj = EmailMessage(subject,message,from_email,to_list)
-        emailObj.fail_silently = True
-        emailObj.send()
+        # emailObj = EmailMessage(subject,message,from_email,to_list)
+        # emailObj.fail_silently = True
+        # emailObj.send()
+
+        message_txt = render_to_string('users/email_confirmation.txt',email_dict)
+        message_html = render_to_string('users/email_confirmation.html',email_dict)
+        send_mail(subject, message_txt, from_email, to_list, fail_silently=True, html_message=message_html)
         
         context = {'myUser':myUser,'title':'Change Email Address Request Sent!','text1':'change email address request sent','text2':'changing your email address'}
         return render(request,'users/email_sent.html',context)

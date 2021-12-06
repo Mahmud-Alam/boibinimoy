@@ -6,7 +6,7 @@
 <div class="container">
   <br><br>
   <div class="row">
-    <div class="col-lg-9">
+    <div class="col-lg-8">
       <div class="row">
         <div class="book-search-bg mb-4">
           <div class="panel-heading book-search-heading">
@@ -42,7 +42,7 @@
                     <h2 class="">
                         <a class="text-darkred" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
                       </h2>
-                      <h6 class="text-darkred"> by {{book.author}}</h6>
+                      <h6 class="text-darkred"> by {{book.author}} (Author)</h6>
                 </div>
                 <div class="blog-item-meta mb-2">
                   <span class="text-black text-capitalize me-3">
@@ -96,7 +96,7 @@
       </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <div class="book-side-bg ms-3 mb-4">
         <!-- <div class="d-flex justify-content-center">
           <a href="{% url 'create-post' %}" class="btn btn-darkred my-4"
@@ -107,10 +107,10 @@
 
         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
           <div class="panel-heading book-search-heading">
-            <h3 class="text-center text-muted font-weight-700">Latest Books</h3>
+            <h3 class="text-center text-muted font-weight-700">{{category}}</h3>
           </div>
           <div class="sidebar-widget latest-post mb-3 px-4 py-2">
-            {% for book in latest_books %}
+            <!-- {% for book in latest_books %}
             <div class="py-2">
               <h6 class="my-2">
                 <a class="text-darkred font-weight-700" href="{% url 'books-details' book.slug %}">
@@ -121,19 +121,20 @@
                 {{ book.created|date:"d N Y" }}
             </span>
             </div>
-            {% endfor %}
+            {% endfor %} -->
+            {{category.description}}
           </div>
         </div>
       </div>
       
       <div class="book-search-bg mb-4 ms-3">
         <div class="panel-heading book-search-heading">
-          <h2 class="text-center font-weight-700">Categories</h2>
+          <h2 class="text-center font-weight-700">All Category</h2>
         </div>
         <ul class="list-unstyled mb-3 px-4 py-2 my-2">
           {% for cat in categories %}
           <li class="align-items-center mt-3">
-            <a class="text-darkred font-weight-700" href="#">{{ cat.name }}</a>
+            <a class="text-darkred font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}</a>
           </li>
           {% endfor %}
         </ul>

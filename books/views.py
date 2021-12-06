@@ -91,14 +91,14 @@ def update_post(request,pk):
 @login_required
 def books_details(request, slug):
     book = Book.objects.get(slug=slug)
-    
     customer = Customer.objects.get(username=book.creator.username)
+    
     if request.user == customer.username:
         flag=True
     else:
         flag=False
 
-    print('_______________',customer,flag)
+    
     context = {'book': book,'flag':flag}
     return render(request, "books/books_details.html", context)
 
@@ -115,3 +115,18 @@ def delete_post(request,pk):
 
     context = {'book':book,'title':title,'text1':text1}
     return render(request,"books/delete_book_post.html",context)
+
+
+def books_category(request,slug):
+    category = Category.objects.get(slug=slug)
+    books = Book.objects.filter(category=category)
+    all_categories = Category.objects.all()
+
+    bookFilter = BookFilter(request.GET, queryset=books)
+    books = bookFilter.qs
+
+    context = {'books': books,'category':category,'categories':all_categories,'bookFilter':bookFilter}
+    return render(request, "books/books_category.html", context)
+
+
+
