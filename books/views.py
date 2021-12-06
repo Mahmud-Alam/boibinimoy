@@ -5,7 +5,10 @@ from django.utils.text import slugify
 
 from .filters import *
 from .forms import *
+from users.decorators import *
 
+
+@login_required(login_url='login')
 def books_home(request):
     books = Book.objects.all()
     latest_books = Book.objects.all()[:5]
@@ -18,7 +21,8 @@ def books_home(request):
     return render(request, "books/books_home.html", context)
 
 
-@login_required
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def create_post(request):
     task = "Post New"
     form = BookForm()
@@ -53,6 +57,8 @@ def create_post(request):
     return render(request, 'books/create_book_post.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def update_post(request,pk):
     task = "Update"
     book = Book.objects.get(id=pk)
@@ -88,7 +94,7 @@ def update_post(request,pk):
     return render(request, 'books/create_book_post.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def books_details(request, slug):
     book = Book.objects.get(slug=slug)
     customer = Customer.objects.get(username=book.creator.username)
@@ -102,6 +108,9 @@ def books_details(request, slug):
     context = {'book': book,'flag':flag}
     return render(request, "books/books_details.html", context)
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def delete_post(request,pk):
     book = Book.objects.get(id=pk)
     title = "Delete Post"
@@ -117,6 +126,7 @@ def delete_post(request,pk):
     return render(request,"books/delete_book_post.html",context)
 
 
+@login_required(login_url='login')
 def books_category(request,slug):
     category = Category.objects.get(slug=slug)
     books = Book.objects.filter(category=category)
