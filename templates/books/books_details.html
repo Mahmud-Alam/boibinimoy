@@ -35,16 +35,16 @@
             </div>
             <p class="card-text">{{ book.description | linebreaksbr }}</p>
 
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-end">
               {% if book.exchange == 'Yes' %}
               <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.exchange}}</span></p>
               {% else %}
-              <p class="font-weight-700">Exchange: <span>{{book.exchange}}</span></p>
+              <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;">{{book.exchange}}</span></p>
               {% endif%}
               {% if book.price != None %}
-              <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.price}}</span></p>
+              <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-darkred" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.price}}</span></p>
               {% else %}
-              <p class="font-weight-700 ms-3">Price: <span>{{book.price}}</span></p>
+              <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;">{{book.price}}</span></p>
               {% endif%}
             </div>
             
