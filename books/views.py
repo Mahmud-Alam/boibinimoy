@@ -136,11 +136,13 @@ def books_category(request,slug):
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
 
+    category_dict =  zip(categories,cat_book_count)
+
     bookFilter = BookFilter(request.GET, queryset=books)
     books = bookFilter.qs
     books_count = books.count()
 
-    context = {'books': books,'category':category,'categories':categories,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'cat_book_count':cat_book_count}
+    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count}
     return render(request, "books/books_category.html", context)
 
 
