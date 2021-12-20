@@ -196,7 +196,7 @@ def userProfile(request, username):
         customer = Customer.objects.get(username=main_user)
         flag=False
     
-    books = customer.book_set.all()
+    books = customer.book_set.order_by('-created')
     
     context = {'customer':customer,'books':books,'flag':flag}
     return render(request,'users/user_profile.html',context)
