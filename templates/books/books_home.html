@@ -140,9 +140,9 @@
           <h2 class="text-center font-weight-700">All Category({{category_count}})</h2>
         </div>
         <ul class="list-unstyled mb-3 px-4 py-2 my-2">
-          {% for cat in categories %}
+          {% for cat,count in category_dict %}
           <li class="align-items-center mt-3">
-            <a class="text-darkred font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}</a>
+            <a class="text-darkred font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}({{count}})</a>
           </li>
           {% endfor %}
         </ul>

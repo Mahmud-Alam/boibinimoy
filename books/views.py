@@ -12,14 +12,18 @@ from users.decorators import *
 def books_home(request):
     books = Book.objects.order_by('-created')
     latest_books = Book.objects.order_by('-created')[:5]
-    categories = Category.objects.all()
+    categories = Category.objects.order_by('name')
     category_count = categories.count()
+    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+
 
     bookFilter = BookFilter(request.GET, queryset=books)
     books = bookFilter.qs
     books_count = books.count()
 
-    context = {'books':books,'latest_books':latest_books,'categories':categories,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count}
+    category_dict =  zip(categories,cat_book_count)
+
+    context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'category_dict':category_dict}
     return render(request, "books/books_home.html", context)
 
 
@@ -132,7 +136,7 @@ def delete_post(request,pk):
 def books_category(request,slug):
     category = Category.objects.get(slug=slug)
     books = Book.objects.filter(category=category).order_by('-created')
-    categories = Category.objects.all()
+    categories = Category.objects.order_by('name')
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
 
