@@ -10,7 +10,7 @@
       <div class="row">
         <div class="book-search-bg mb-4">
           <div class="panel-heading book-search-heading">
-            <h2 class="font-weight-700">Search Your Books</h2>
+            <h2 class="font-weight-700">Search Your Books: {{books_count}} Books</h2>
           </div>
           <div class="book-search-form">
             <form action="" method="get">
@@ -129,12 +129,12 @@
       
       <div class="book-search-bg mb-4 ms-3">
         <div class="panel-heading book-search-heading">
-          <h2 class="text-center font-weight-700">All Category</h2>
+          <h2 class="text-center font-weight-700">All Category({{category_count}})</h2>
         </div>
         <ul class="list-unstyled mb-3 px-4 py-2 my-2">
-          {% for cat in categories %}
+          {% for cat,count in zip(categories,cat_book_count) %}
           <li class="align-items-center mt-3">
-            <a class="text-darkred font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}</a>
+            <a class="text-darkred font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}({{count}})</a>
           </li>
           {% endfor %}
         </ul>

@@ -10,14 +10,16 @@ from users.decorators import *
 
 @login_required(login_url='login')
 def books_home(request):
-    books = Book.objects.all()
-    latest_books = Book.objects.all()[:5]
+    books = Book.objects.order_by('-created')
+    latest_books = Book.objects.order_by('-created')[:5]
     categories = Category.objects.all()
+    category_count = categories.count()
 
     bookFilter = BookFilter(request.GET, queryset=books)
     books = bookFilter.qs
+    books_count = books.count()
 
-    context = {'books':books,'latest_books':latest_books,'categories':categories,'bookFilter':bookFilter}
+    context = {'books':books,'latest_books':latest_books,'categories':categories,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count}
     return render(request, "books/books_home.html", context)
 
 
@@ -129,13 +131,16 @@ def delete_post(request,pk):
 @login_required(login_url='login')
 def books_category(request,slug):
     category = Category.objects.get(slug=slug)
-    books = Book.objects.filter(category=category)
-    all_categories = Category.objects.all()
+    books = Book.objects.filter(category=category).order_by('-created')
+    categories = Category.objects.all()
+    category_count = categories.count()
+    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
 
     bookFilter = BookFilter(request.GET, queryset=books)
     books = bookFilter.qs
+    books_count = books.count()
 
-    context = {'books': books,'category':category,'categories':all_categories,'bookFilter':bookFilter}
+    context = {'books': books,'category':category,'categories':categories,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'cat_book_count':cat_book_count}
     return render(request, "books/books_category.html", context)
 
 
