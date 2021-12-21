@@ -7,3 +7,10 @@ class CustomerForm(ModelForm):
         model = Customer
         fields = '__all__'
         exclude = ['username','email']
+
+
+class ManagerForm(ModelForm):
+    class Meta:
+        model = Manager
+        fields = '__all__'
+        exclude = ['username','email']

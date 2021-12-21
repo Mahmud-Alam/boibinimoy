@@ -1,3 +1,4 @@
+from decimal import Context
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_text
+
+from books.models import Book
 from .tokens import generate_token
 from datetime import datetime, timedelta, timezone
 
@@ -22,6 +25,7 @@ from .models import *
 from .forms import *
 from .decorators import *
 
+@admin_only
 def homePage(request):
     return render(request, 'users/index.html')
 
@@ -415,3 +419,26 @@ def changePassword(request):
     context = {}
     return render(request,'users/change_password.html',context)
 
+
+@login_required(login_url='login')
+def adminPanel(request, username):
+    admin = User.objects.get(username=username)
+    customer = Customer.objects.all()
+    customer_count = customer.count()
+    book = Book.objects.all()
+    book_count = book.count()
+
+    total_admin = User.objects.filter(groups__name='admin')
+    admin_count = total_admin.count()
+    total_manager = User.objects.filter(groups__name='manager')
+    manager_count = total_manager.count()
+    
+    context = {'admin':admin,'customer':customer,'customer_count':customer_count,'book':book,'book_count':book_count,
+                'total_admin':total_admin,'admin_count':admin_count,'total_manager':total_manager,'manager_count':manager_count}
+    return render(request,'users/admin_panel.html',context)
+
+
+def addManager(request):
+
+    context = {}
+    return render(request,'users/add_manager.html',context)

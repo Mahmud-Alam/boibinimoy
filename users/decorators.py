@@ -34,9 +34,12 @@ def admin_only(view_func):
             group = request.user.groups.all()[0].name
         
         if group == 'customer':
-            return redirect('user-profile')
+            return redirect('user-profile',username = request.user)
         
         if group == 'admin':
+            return redirect('admin-panel',username = request.user)
+
+        else:
             return view_func(request, *args, **kwargs)
 
     return wrapper_func

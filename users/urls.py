@@ -16,6 +16,9 @@ urlpatterns = [
     path('change-email-confirm/<uidb64>/<token>/<email>/', views.changeEmailConfirm, name='change-email-confirm'),
     path('change-password/', views.changePassword, name='change-password'),
 
+    path('admin-panel/<str:username>/', views.adminPanel, name='admin-panel'),
+    path('add-manager/', views.addManager, name='add-manager'),
+
     # for email password reset with django template
     # path('reset-password/',auth_views.PasswordResetView.as_view(), name='password_reset'),
     # path('reset-password-sent/',auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
