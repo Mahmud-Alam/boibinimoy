@@ -67,7 +67,7 @@ def registrationPage(request):
             return redirect('register')
 
         if isEmailAddressValid(email) == False:
-            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try valid email.'))
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try a valid email.'))
             return redirect('register')
 
         # if User.objects.filter(email=email):
@@ -79,15 +79,15 @@ def registrationPage(request):
             return redirect('register')
         
         if len(password1)<8:
-            messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try new password.'))
+            messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try a new password.'))
             return redirect('register')
         
         if password1.isdigit():
-            messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try new password.'))
+            messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try a new password.'))
             return redirect('register')
         
         if password1.isalpha():
-            messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try new password.'))
+            messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try a new password.'))
             return redirect('register')
         
         myUser = User.objects.create_user(username, email, password1, first_name=fName, last_name=lName)
@@ -99,10 +99,11 @@ def registrationPage(request):
         myUser.save()
 
         # MOVE THESE CODES TO THE signals.py FILE
-        # customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
-        # group = Group.objects.get(name='customer')
-        # myUser.groups.add(group)
-        
+        customer = Customer.objects.create(username=myUser, first_name=fName, last_name=lName,email=email)
+        group = Group.objects.get(name='customer')
+        myUser.groups.add(group)
+        myUser.save()
+
 
         # Email address confirmation email, and by this confirmation, user will active.
         current_site = get_current_site(request)
@@ -316,7 +317,7 @@ def changeEmail(request):
         email = request.POST.get('email')
 
         if isEmailAddressValid(email) == False:
-            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email address!<br/>&bull; Please try valid email address.'))
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email address!<br/>&bull; Please try a valid email address.'))
             return redirect('register')
 
         # if User.objects.filter(email=email):
@@ -392,13 +393,13 @@ def changePassword(request):
 
         if user is not None:
             if len(password1)<8:
-                messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try new password.'))
+                messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try a new password.'))
                 return redirect('change-password')
             if password1.isdigit():
-                messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try new password.'))
+                messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try a new password.'))
                 return redirect('change-password')
             if password1.isalpha():
-                messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try new password.'))
+                messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try a new password.'))
                 return redirect('change-password')
             if password1 != password2:
                 messages.error(request, mark_safe('&bull; New Password did not match!<br/>&bull; Please try again.'))
@@ -439,6 +440,66 @@ def adminPanel(request, username):
 
 
 def addManager(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        #allUsers = User.objects.all().values_list('username',flat=True)
+        allUsers = [i.lower() for i in User.objects.all().values_list('username',flat=True)]
+
+        #if User.objects.filter(username=username):
+        if username.lower() in allUsers:
+            messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
+            return redirect('add-manager')
+
+        if len(username)>15:
+            messages.error(request, mark_safe('&bull; Username must be within 15 character.'))
+            return redirect('add-manager')
+        
+        if not username.isalnum():
+            messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric!<br/>&bull; Please try another username.'))
+            return redirect('add-manager')
+        
+        if username.isdigit():
+            messages.error(request, mark_safe("&bull; Username can't be only Numeric!<br/>&bull; Please try another username."))
+            return redirect('add-manager')
+
+        if isEmailAddressValid(email) == False:
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try a valid email.'))
+            return redirect('add-manager')
+
+        # if User.objects.filter(email=email):
+        #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
+        #     return redirect('add-manager')
+        
+        if password1 != password2:
+            messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
+            return redirect('add-manager')
+        
+        if len(password1)<8:
+            messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try a new password.'))
+            return redirect('add-manager')
+        
+        if password1.isdigit():
+            messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try a new password.'))
+            return redirect('add-manager')
+        
+        if password1.isalpha():
+            messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try a new password.'))
+            return redirect('register')
+        
+        newManager = User.objects.create_user(username, email, password1)
+        newManager.save()
+
+        manager = Manager.objects.create(username=newManager, email=email)
+        group = Group.objects.get(name='manager')
+        newManager.groups.add(group)
+        newManager.save()
+        messages.success(request,'New Manager "'+username+'" Added Successfully!')
+        return redirect('admin-panel', username = request.user)
 
     context = {}
     return render(request,'users/add_manager.html',context)
