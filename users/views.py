@@ -506,5 +506,16 @@ def addManager(request):
 
 
 def manageUsers(request):
-    context = {}
+    total_customer = Customer.objects.all()
+    total_admin = User.objects.filter(groups__name='admin')
+    total_manager = User.objects.filter(groups__name='manager')
+
+    context = {'total_admin':total_admin,'total_manager':total_manager}
     return render(request,'admin/manage_users.html',context)
+
+
+def manageCustomers(request):
+    total_customer = Customer.objects.all()
+
+    context = {'total_customer':total_customer}
+    return render(request,'admin/manage_customers.html',context)
