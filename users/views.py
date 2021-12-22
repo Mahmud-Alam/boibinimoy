@@ -436,7 +436,7 @@ def adminPanel(request, username):
     
     context = {'admin':admin,'customer':customer,'customer_count':customer_count,'book':book,'book_count':book_count,
                 'total_admin':total_admin,'admin_count':admin_count,'total_manager':total_manager,'manager_count':manager_count}
-    return render(request,'users/admin_panel.html',context)
+    return render(request,'admin/admin_panel.html',context)
 
 
 def addManager(request):
@@ -502,4 +502,9 @@ def addManager(request):
         return redirect('admin-panel', username = request.user)
 
     context = {}
-    return render(request,'users/add_manager.html',context)
+    return render(request,'admin/add_manager.html',context)
+
+
+def manageUsers(request):
+    context = {}
+    return render(request,'admin/manage_users.html',context)

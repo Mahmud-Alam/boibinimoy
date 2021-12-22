@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('admin-panel/<str:username>/', views.adminPanel, name='admin-panel'),
     path('add-manager/', views.addManager, name='add-manager'),
+    path('manage-users/', views.manageUsers, name='manage-users'),
 
     # for email password reset with django template
     # path('reset-password/',auth_views.PasswordResetView.as_view(), name='password_reset'),
