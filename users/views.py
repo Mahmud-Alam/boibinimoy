@@ -422,6 +422,7 @@ def changePassword(request):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def adminPanel(request, username):
     admin = User.objects.get(username=username)
     customer = Customer.objects.all()
@@ -439,8 +440,9 @@ def adminPanel(request, username):
     return render(request,'admin/admin_panel.html',context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def addManager(request):
-
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -505,6 +507,8 @@ def addManager(request):
     return render(request,'admin/add_manager.html',context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def manageUsers(request):
     total_customer = Customer.objects.all()
     total_admin = User.objects.filter(groups__name='admin')
@@ -514,8 +518,63 @@ def manageUsers(request):
     return render(request,'admin/manage_users.html',context)
 
 
+
+##################################
+# Manager User
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def managerProfile(request, username):
+    manager = Manager.objects.get(username=request.user)
+    
+    context = {'manager':manager}
+    return render(request,'manager/manager_profile.html',context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def editManagerProfile(request):
+    manager = Manager.objects.get(username=request.user)
+    myUser = User.objects.get(username=request.user)
+
+    form = ManagerForm(instance=manager)
+    if request.method == 'POST':
+        form = ManagerForm(request.POST, request.FILES, instance=manager)
+        if form.is_valid():
+            form.save()
+            myUser.first_name = manager.first_name
+            myUser.last_name = manager.last_name
+            myUser.save()
+            full_name = manager.first_name+' '+manager.last_name
+            messages.success(request, full_name+' Profile updated successfully!')
+            return redirect('manager-profile', username = request.user)
+
+    context = {'manager':manager,'myUser':myUser,'form':form}
+    return render(request,'manager/edit_manager_profile.html',context)
+
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def managerDashboard(request, username):
+    manager = Manager.objects.get(username=request.user)
+    # manager = User.objects.get(username=username)
+    total_admin = User.objects.filter(groups__name='admin')
+    total_manager = User.objects.filter(groups__name='manager')
+    total_customer = Customer.objects.all()
+    total_book = Book.objects.all()
+    
+    context = {'manager':manager,'total_admin':total_admin,'total_manager':total_manager,'total_customer':total_customer,'total_book':total_book}
+    return render(request,'manager/manager_dashboard.html',context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def manageCustomers(request):
+    manager = Manager.objects.get(username=request.user)
     total_customer = Customer.objects.all()
 
-    context = {'total_customer':total_customer}
-    return render(request,'admin/manage_customers.html',context)
+    context = {'total_customer':total_customer,'manager':manager}
+    return render(request,'manager/manage_customers.html',context)

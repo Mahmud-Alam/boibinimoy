@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% extends 'admin/main_admin_template.html' %}
+{% extends 'manager/main_manager_template.html' %}
 {% load static %}
 <html lang="en">
 <head>
@@ -19,7 +19,7 @@
         {% endfor %}
 
         <div class="card m-4">
-            <div class="card-header bg-info fw-bold text-white">
+            <div class="card-header fw-bold text-white" style="background-color: #0d4363;">
                 Customer List({{total_customer.count}})
             </div>
             <div class="card-body d-flex justify-content-around">
@@ -34,7 +34,6 @@
                             <th scope="col">Phone</th>
                             <th scope="col">Posts</th>
                             <th scope="col"></th>
-                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,8 +46,11 @@
                             <td>{{customer.email}}</td>
                             <td>{{customer.phone}}</td>
                             <td>{{customer.book_set.all.count}}</td>
+                            {% if customer.username.is_active == False %}
                             <td><a href="" class="btn btn-primary">Reactive</a></td>
+                            {% else %}
                             <td><a href="" class="btn btn-danger">Delete</a></td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>

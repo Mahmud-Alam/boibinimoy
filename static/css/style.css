@@ -41,6 +41,21 @@
     color: darkred;
     background-color: white;
 }
+
+.btn-blue{
+  font-weight: bold;
+  color: white;
+  background-color: #0D6EFD;
+  border-radius: 1.5rem;
+  border: 2px solid #0D6EFD;
+  padding: 6px 32px;
+}
+.btn-blue:hover{
+  font-weight: bold;
+  color: #0D6EFD;
+  background-color: white;
+}
+
 .btn-lightgreen{
     font-weight: bold;
     color: white;
