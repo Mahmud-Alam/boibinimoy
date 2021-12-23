@@ -25,6 +25,9 @@ urlpatterns = [
     path('edit-manager-profile/', views.editManagerProfile, name='edit-manager-profile'),
     path('manage-customers/', views.manageCustomers, name='manage-customers'),
 
+    path('delete-user/<str:username>/', views.deleteUser, name='delete-user'),
+
+
     # for email password reset with django template
     # path('reset-password/',auth_views.PasswordResetView.as_view(), name='password_reset'),
     # path('reset-password-sent/',auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

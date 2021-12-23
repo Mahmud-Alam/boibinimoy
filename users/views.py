@@ -578,3 +578,18 @@ def manageCustomers(request):
 
     context = {'total_customer':total_customer,'manager':manager}
     return render(request,'manager/manage_customers.html',context)
+
+
+def deleteUser(request, username):
+    myUser = User.objects.get(username=username)
+
+    if request.method == 'POST':
+        myUser.is_active = False
+        myUser.save()
+        
+        messages.success(request, '"'+username+'" user is deleted successfully!')
+        return redirect('manage-customers')
+
+    context = {'myUser':myUser}
+    return render(request,"admin/delete_user.html",context)
+
