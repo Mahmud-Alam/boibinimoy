@@ -47,7 +47,7 @@
                             <td>{{customer.phone}}</td>
                             <td>{{customer.book_set.all.count}}</td>
                             {% if customer.username.is_active == False %}
-                            <td><a href="" class="btn btn-primary">Reactive</a></td>
+                            <td><a href="{% url 'reactive-user' customer.username %}" class="btn btn-primary">Reactive</a></td>
                             {% else %}
                             <td><a href="{% url 'delete-user' customer.username %}" class="btn btn-danger">Delete</a></td>
                             {% endif %}

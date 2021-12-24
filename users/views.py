@@ -591,5 +591,19 @@ def deleteUser(request, username):
         return redirect('manage-customers')
 
     context = {'myUser':myUser}
-    return render(request,"admin/delete_user.html",context)
+    return render(request,"temp/delete_user.html",context)
+
+
+def reactiveUser(request, username):
+    myUser = User.objects.get(username=username)
+
+    if request.method == 'POST':
+        myUser.is_active = True
+        myUser.save()
+        
+        messages.success(request, '"'+username+'" user is reactivated successfully!')
+        return redirect('manage-customers')
+
+    context = {'myUser':myUser}
+    return render(request,"temp/reactive_user.html",context)
 
