@@ -1,4 +1,7 @@
 {% load static %}
+<!-- <script src="{% static 'js/active-class.js' %}"></script> -->
+
+
 <div class="d-flex flex-column flex-shrink-0 text-white" style="width: 280px; min-height: 650px;
 height:100%; padding: 1em 1em 1em 2em; background-color: #082a3d;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
@@ -8,36 +11,36 @@ height:100%; padding: 1em 1em 1em 2em; background-color: #082a3d;">
         <span class="fs-5">Manager Dashboard</span>
     </a>
     <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="{% url 'manager-dashboard' request.user.username %}" class="nav-link active" aria-current="page">
+    <ul id="sidemenu" class="nav nav-pills flex-column mb-auto">
+        <!-- <li class="nav-item"> -->
+            <a href="{% url 'manager-dashboard' request.user.username %}" class="nav-link text-white {% block nav_item_dashboard %}{% endblock nav_item_dashboard %}" aria-current="page">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-speedometer2 me-2" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
                     <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
                 </svg>
             Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'manager-profile' request.user.username %}" class="nav-link text-white mt-2">
+        </a>
+        <!-- </li> -->
+        <!-- <li> -->
+            <a href="{% url 'manager-profile' request.user.username %}" class="nav-link text-white mt-2 {% block nav_item_profile %}{% endblock nav_item_profile %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                 </svg>
-            Profile
+                Profile
             </a>
-        </li>
+        <!-- </li> -->
 
-        <li>
-            <a href="{% url 'manage-administrators' %}" class="nav-link text-white mt-2" style="margin: 0;">
+        <!-- <li> -->
+            <a href="{% url 'manage-administrators' %}" class="nav-link text-white mt-2 {% block nav_item_al %}{% endblock nav_item_al %}" style="margin: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul me-2" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                   </svg>
             Administrators List
             </a>
-        </li>
-        <li>
-            <a href="{% url 'manage-customers' %}" class="nav-link text-white mt-2" style="margin: 0;">
+            <!-- </li> -->
+        <!-- <li> -->
+            <a href="{% url 'manage-customers' %}" class="nav-link text-white mt-2 {% block nav_item_mc %}{% endblock nav_item_mc %}" style="margin: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill me-2" viewBox="0 0 16 16">
                     <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                     <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
@@ -45,7 +48,7 @@ height:100%; padding: 1em 1em 1em 2em; background-color: #082a3d;">
                   </svg>
             Manage Customers
             </a>
-        </li>
+        <!-- </li> -->
     </ul>
 
 <!-- 
@@ -63,6 +66,15 @@ height:100%; padding: 1em 1em 1em 2em; background-color: #082a3d;">
             <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
- -->
-    
+-->
+
 </div>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script type="text/javascript">
+    $(document).on('click', 'ul a', function(){
+        $(this).addClass('active').siblings().removeClass('active')
+    })
+</script>
+ -->
+ <script src="{% static 'js/active-class.js' %}"></script>

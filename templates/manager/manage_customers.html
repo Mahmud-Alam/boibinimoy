@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends 'manager/main_manager_template.html' %}
+{% block nav_item_mc %}active{% endblock nav_item_mc %}
 {% load static %}
 <html lang="en">
 <head>
@@ -38,6 +39,18 @@
                     </thead>
                     <tbody>
                         {% for customer in total_customer %}
+                        {% if customer.username.is_active == False %}
+                        <tr class="bg-secondary">
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{customer.username}}</td>
+                            <td>{{customer.first_name}}</td>
+                            <td>{{customer.last_name}}</td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.phone}}</td>
+                            <td>{{customer.book_set.all.count}}</td>
+                            <td><a href="{% url 'reactive-user' customer.username %}" class="btn btn-primary">Reactive</a></td>
+                        </tr>
+                        {% else %}
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{customer.username}}</td>
@@ -46,12 +59,9 @@
                             <td>{{customer.email}}</td>
                             <td>{{customer.phone}}</td>
                             <td>{{customer.book_set.all.count}}</td>
-                            {% if customer.username.is_active == False %}
-                            <td><a href="{% url 'reactive-user' customer.username %}" class="btn btn-primary">Reactive</a></td>
-                            {% else %}
                             <td><a href="{% url 'delete-user' customer.username %}" class="btn btn-danger">Delete</a></td>
-                            {% endif %}
                         </tr>
+                        {% endif %}
                         {% endfor %}
                     </tbody>
                   </table>
