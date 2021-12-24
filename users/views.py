@@ -25,7 +25,7 @@ from .models import *
 from .forms import *
 from .decorators import *
 
-@admin_only
+@visitors_only
 def homePage(request):
     return render(request, 'users/index.html')
 
@@ -508,14 +508,20 @@ def addManager(request):
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-def manageUsers(request):
-    total_customer = Customer.objects.all()
+@allowed_users(allowed_roles=['admin','manager'])
+def manageAdministrators(request):
     total_admin = User.objects.filter(groups__name='admin')
     total_manager = User.objects.filter(groups__name='manager')
+    user = User.objects.get(username=request.user)
+    user_group = user.groups.all()[0].name
 
-    context = {'total_admin':total_admin,'total_manager':total_manager}
-    return render(request,'admin/manage_users.html',context)
+    if user_group == 'admin':
+        context = {'total_admin':total_admin,'total_manager':total_manager}
+        return render(request,'admin/admin_manage_administrators.html',context)
+    elif user_group == 'manager':
+        manager = Manager.objects.get(username=request.user)
+        context = {'total_admin':total_admin,'total_manager':total_manager,'manager':manager}
+        return render(request,'manager/manager_manage_administrators.html',context)
 
 
 

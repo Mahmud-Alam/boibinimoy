@@ -27,7 +27,7 @@ def allowed_users(allowed_roles=[]):
     return decorator
 
 
-def admin_only(view_func):
+def visitors_only(view_func):
     def wrapper_func(request, *args, **kwargs):
         group = None
         if request.user.groups.exists():

@@ -18,7 +18,7 @@ urlpatterns = [
 
     path('admin-panel/<str:username>/', views.adminPanel, name='admin-panel'),
     path('add-manager/', views.addManager, name='add-manager'),
-    path('manage-users/', views.manageUsers, name='manage-users'),
+    path('manage-administrators/', views.manageAdministrators, name='manage-administrators'),
 
     path('manager-dashboard/<str:username>/', views.managerDashboard, name='manager-dashboard'),
     path('manager-profile/<str:username>/', views.managerProfile, name='manager-profile'),
