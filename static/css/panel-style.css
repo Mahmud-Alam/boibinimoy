@@ -1,3 +1,18 @@
+.bg-admin-sidebar{
+    background-color: #083d3d;
+}
+.bg-admin-card{
+    background-color: #0a4d4d;
+}
+.bg-admin-navbar{
+    background-color: #0c5a5a;
+}
+.bg-admin-primary{
+    background-color: #20d8aa;
+}
+
+
+
 .bg-manager-sidebar{
     background-color: #082a3d;
 }
@@ -21,13 +36,30 @@
     border: 2px solid #0D6EFD;
     padding: 6px 32px;
   }
-  .btn-blue:hover{
+.btn-blue:hover{
     font-weight: bold;
     color: #0D6EFD;
     background-color: white;
   }
+
+.btn-green{
+    font-weight: bold;
+    color: white;
+    background-color: #20d8aa;
+    border-radius: 1.5rem;
+    border: 2px solid #0bcea4;
+    padding: 6px 32px;
+  }
+.btn-green:hover{
+    font-weight: bold;
+    color: #0dfdc9;
+    background-color: white;
+  }
+
   
 .span-blue{
     color: #0D6EFD;
     font-weight: 800;
 }
+
+

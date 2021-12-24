@@ -1,0 +1,30 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-admin-navbar">
+    <div class="container-fluid" style="margin: 0 50px 0 35px;">
+      <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt=""></a>
+      <div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <div class="dropdown">
+                    <a href="/" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src='{{manager.managerImageURL}}' alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>{{request.user}}</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow bg-admin-card" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">New Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'admin-panel' request.user.username %}">Admin Panel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'manager-profile' request.user.username %}">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+      </div>
+    </div>
+  </nav>

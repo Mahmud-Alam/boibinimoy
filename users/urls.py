@@ -17,7 +17,8 @@ urlpatterns = [
     path('change-password/', views.changePassword, name='change-password'),
 
     path('admin-panel/<str:username>/', views.adminPanel, name='admin-panel'),
-    path('add-manager/', views.addManager, name='add-manager'),
+    path('create-admin/', views.createAdmin, name='create-admin'),
+    path('create-manager/', views.createManager, name='create-manager'),
     path('manage-administrators/', views.manageAdministrators, name='manage-administrators'),
 
     path('manager-dashboard/<str:username>/', views.managerDashboard, name='manager-dashboard'),

@@ -442,7 +442,7 @@ def adminPanel(request, username):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def addManager(request):
+def createAdmin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -455,43 +455,111 @@ def addManager(request):
         #if User.objects.filter(username=username):
         if username.lower() in allUsers:
             messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
 
         if len(username)>15:
             messages.error(request, mark_safe('&bull; Username must be within 15 character.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
         
         if not username.isalnum():
             messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric!<br/>&bull; Please try another username.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
         
         if username.isdigit():
             messages.error(request, mark_safe("&bull; Username can't be only Numeric!<br/>&bull; Please try another username."))
-            return redirect('add-manager')
+            return redirect('create-admin')
 
         if isEmailAddressValid(email) == False:
             messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try a valid email.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
 
         # if User.objects.filter(email=email):
         #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
-        #     return redirect('add-manager')
+        #     return redirect('create-admin')
         
         if password1 != password2:
             messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
         
         if len(password1)<8:
             messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try a new password.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
         
         if password1.isdigit():
             messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try a new password.'))
-            return redirect('add-manager')
+            return redirect('create-admin')
         
         if password1.isalpha():
             messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try a new password.'))
-            return redirect('register')
+            return redirect('create-admin')
+        
+        newAdmin = User.objects.create_user(username, email, password1)
+        newAdmin.save()
+
+        admin = Admin.objects.create(username=newAdmin, email=email)
+        group = Group.objects.get(name='admin')
+        newAdmin.groups.add(group)
+        newAdmin.save()
+        messages.success(request,'New Admin "'+username+'" Added Successfully!')
+        return redirect('admin-panel', username = request.user)
+
+    context = {}
+    return render(request,'admin/create_admin.html',context)
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def createManager(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        #allUsers = User.objects.all().values_list('username',flat=True)
+        allUsers = [i.lower() for i in User.objects.all().values_list('username',flat=True)]
+
+        #if User.objects.filter(username=username):
+        if username.lower() in allUsers:
+            messages.error(request, mark_safe('&bull; "'+username+'" username already exists!<br/>&bull; Please try another username.'))
+            return redirect('create-manager')
+
+        if len(username)>15:
+            messages.error(request, mark_safe('&bull; Username must be within 15 character.'))
+            return redirect('create-manager')
+        
+        if not username.isalnum():
+            messages.error(request, mark_safe('&bull; Username must be Alpha-Numeric!<br/>&bull; Please try another username.'))
+            return redirect('create-manager')
+        
+        if username.isdigit():
+            messages.error(request, mark_safe("&bull; Username can't be only Numeric!<br/>&bull; Please try another username."))
+            return redirect('create-manager')
+
+        if isEmailAddressValid(email) == False:
+            messages.error(request, mark_safe('&bull; "'+email+'" is invalid email!<br/>&bull; Please try a valid email.'))
+            return redirect('create-manager')
+
+        # if User.objects.filter(email=email):
+        #     messages.error(request, mark_safe('&bull; "'+email+'" email already register!'))
+        #     return redirect('create-manager')
+        
+        if password1 != password2:
+            messages.error(request, mark_safe('&bull; Password did not match!<br/>&bull; Please try again.'))
+            return redirect('create-manager')
+        
+        if len(password1)<8:
+            messages.error(request, mark_safe('&bull; Password length must be 8 charecter!<br/>&bull; Please try a new password.'))
+            return redirect('create-manager')
+        
+        if password1.isdigit():
+            messages.error(request, mark_safe('&bull; Password should not be only numeric charecters!<br/>&bull; Please try a new password.'))
+            return redirect('create-manager')
+        
+        if password1.isalpha():
+            messages.error(request, mark_safe('&bull; Password should not be only letters!<br/>&bull; Please try a new password.'))
+            return redirect('create-manager')
         
         newManager = User.objects.create_user(username, email, password1)
         newManager.save()
@@ -504,7 +572,8 @@ def addManager(request):
         return redirect('admin-panel', username = request.user)
 
     context = {}
-    return render(request,'admin/add_manager.html',context)
+    return render(request,'admin/create_manager.html',context)
+
 
 
 @login_required(login_url='login')
