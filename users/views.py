@@ -421,10 +421,55 @@ def changePassword(request):
     return render(request,'users/change_password.html',context)
 
 
+
+
+##################################
+# Admin User
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def adminProfile(request, username):
+    admin = Admin.objects.get(username=request.user)
+    
+    context = {'admin':admin,'flag':True}
+    return render(request,'admin/admin_profile.html',context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def editAdminProfile(request):
+    admin = Admin.objects.get(username=request.user)
+    myUser = User.objects.get(username=request.user)
+
+    form = AdminForm(instance=admin)
+    if request.method == 'POST':
+        form = AdminForm(request.POST, request.FILES, instance=admin)
+        if form.is_valid():
+            form.save()
+            myUser.first_name = admin.first_name
+            myUser.last_name = admin.last_name
+            myUser.save()
+            full_name = admin.first_name+' '+admin.last_name
+            messages.success(request, full_name+' Profile updated successfully!')
+            return redirect('admin-profile', username = request.user)
+
+    context = {'admin':admin,'myUser':myUser,'form':form,'flag':True}
+    return render(request,'admin/edit_admin_profile.html',context)
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def adminPanel(request, username):
-    admin = User.objects.get(username=username)
+    adminModelList = [i.username.username for i in Admin.objects.all()]
+    user = User.objects.get(username=request.user)
+    if user.username in adminModelList:
+        flag = True
+        admin = Admin.objects.get(username=request.user)
+    else:
+        flag = False
+        admin = user
     customer = Customer.objects.all()
     customer_count = customer.count()
     book = Book.objects.all()
@@ -435,7 +480,7 @@ def adminPanel(request, username):
     total_manager = User.objects.filter(groups__name='manager')
     manager_count = total_manager.count()
     
-    context = {'admin':admin,'customer':customer,'customer_count':customer_count,'book':book,'book_count':book_count,
+    context = {'admin':admin,'flag':flag,'customer':customer,'customer_count':customer_count,'book':book,'book_count':book_count,
                 'total_admin':total_admin,'admin_count':admin_count,'total_manager':total_manager,'manager_count':manager_count}
     return render(request,'admin/admin_panel.html',context)
 
@@ -443,6 +488,15 @@ def adminPanel(request, username):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def createAdmin(request):
+    adminModelList = [i.username.username for i in Admin.objects.all()]
+    user = User.objects.get(username=request.user)
+    if user.username in adminModelList:
+        flag = True
+        admin = Admin.objects.get(username=request.user)
+    else:
+        flag = False
+        admin = user
+
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -503,7 +557,7 @@ def createAdmin(request):
         messages.success(request,'New Admin "'+username+'" Added Successfully!')
         return redirect('admin-panel', username = request.user)
 
-    context = {}
+    context = {'admin':admin,'flag':flag}
     return render(request,'admin/create_admin.html',context)
 
 
@@ -511,6 +565,15 @@ def createAdmin(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def createManager(request):
+    adminModelList = [i.username.username for i in Admin.objects.all()]
+    user = User.objects.get(username=request.user)
+    if user.username in adminModelList:
+        flag = True
+        admin = Admin.objects.get(username=request.user)
+    else:
+        flag = False
+        admin = user
+
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -571,7 +634,7 @@ def createManager(request):
         messages.success(request,'New Manager "'+username+'" Added Successfully!')
         return redirect('admin-panel', username = request.user)
 
-    context = {}
+    context = {'admin':admin,'flag':flag}
     return render(request,'admin/create_manager.html',context)
 
 
@@ -585,7 +648,14 @@ def manageAdministrators(request):
     user_group = user.groups.all()[0].name
 
     if user_group == 'admin':
-        context = {'total_admin':total_admin,'total_manager':total_manager}
+        adminModelList = [i.username.username for i in Admin.objects.all()]
+        if user.username in adminModelList:
+            flag = True
+            admin = Admin.objects.get(username=request.user)
+        else:
+            flag = False
+            admin = user
+        context = {'total_admin':total_admin,'total_manager':total_manager,'admin':admin,'flag':flag}
         return render(request,'admin/admin_manage_administrators.html',context)
     elif user_group == 'manager':
         manager = Manager.objects.get(username=request.user)
@@ -657,13 +727,18 @@ def manageCustomers(request):
 
 def deleteUser(request, username):
     myUser = User.objects.get(username=username)
+    group = myUser.groups.all()[0].name
 
     if request.method == 'POST':
         myUser.is_active = False
         myUser.save()
         
-        messages.success(request, '"'+username+'" user is deleted successfully!')
-        return redirect('manage-customers')
+        if group == 'customer':
+            messages.success(request, '"'+username+'" '+group+' is deleted successfully!')
+            return redirect('manage-customers')
+        else:
+            messages.success(request, '"'+username+'" '+group+' is deleted successfully!')
+            return redirect('manage-administrators')
 
     context = {'myUser':myUser}
     return render(request,"temp/delete_user.html",context)
@@ -671,13 +746,18 @@ def deleteUser(request, username):
 
 def reactiveUser(request, username):
     myUser = User.objects.get(username=username)
+    group = myUser.groups.all()[0].name
 
     if request.method == 'POST':
         myUser.is_active = True
         myUser.save()
         
-        messages.success(request, '"'+username+'" user is reactivated successfully!')
-        return redirect('manage-customers')
+        if group == 'customer':
+            messages.success(request, '"'+username+'" '+group+' is reactivated successfully!')
+            return redirect('manage-customers')
+        else:
+            messages.success(request, '"'+username+'" '+group+' is reactivated successfully!')
+            return redirect('manage-administrators')
 
     context = {'myUser':myUser}
     return render(request,"temp/reactive_user.html",context)

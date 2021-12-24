@@ -41,7 +41,9 @@
     color: #0D6EFD;
     background-color: white;
   }
-
+.text-darkgreen{
+    color: #0a4d4d;
+}
 .btn-green{
     font-weight: bold;
     color: white;
@@ -53,6 +55,20 @@
 .btn-green:hover{
     font-weight: bold;
     color: #0dfdc9;
+    background-color: white;
+  }
+
+.btn-darkgreen{
+    font-weight: bold;
+    color: white;
+    background-color: #0a4d4d;
+    border-radius: 1.5rem;
+    border: 2px solid #0a4d4d;
+    padding: 6px 32px;
+  }
+.btn-darkgreen:hover{
+    font-weight: bold;
+    color: #0a4d4d;
     background-color: white;
   }
 

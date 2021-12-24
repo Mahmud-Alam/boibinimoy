@@ -19,26 +19,26 @@
         <div class="register-right m-4 p-4">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <h3 class="text-center">Create New Admin</h3><br>
+                    <h3 class="text-center text-darkgreen">Create New Admin</h3><br>
                     <form action="" method="POST">
                         {% csrf_token %}
                         <div class="row register-form">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="">Username</label>
+                                    <label class="text-darkgreen" for="">Username</label>
                                     <input type="text" id="username" class="form-control" name="username" placeholder="Create a Username" Required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Email</label>
+                                    <label class="text-darkgreen" for="">Email</label>
                                     <input type="email" id="email" class="form-control" name="email" placeholder="Enter Your Email Address" Required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Password</label>
+                                    <label class="text-darkgreen" for="">Password</label>
                                     <input type="password" id="password1" class="form-control" name="password1" placeholder="Create a Password" Required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Confirm Password</label>
+                                    <label class="text-darkgreen" for="">Confirm Password</label>
                                     <input type="password" id="password2" class="form-control" name="password2" placeholder="Confirm Your Password" Required>
                                 </div>
                                 
@@ -46,7 +46,7 @@
                                 <strong style="color: darkred;" id="messages">{{message}}</strong>
                                 {% endfor %}
 
-                                <input type="submit" class="btnRegister btn-green"  value="Register"/>
+                                <input type="submit" class="btnRegister btn-darkgreen"  value="Register"/>
                             </div>
                             <div class="col-md-4"></div>
                         </div>

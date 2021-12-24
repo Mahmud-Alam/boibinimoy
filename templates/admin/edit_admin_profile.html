@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends 'admin/main_admin_template.html' %}
+{% load static %}
+{% load bootstrap %}
+
+<link rel="stylesheet" href='{% static "css/style.css" %}'>
+{% block context %}       
+<div class="container">
+    <div class="form-div">
+        <h1 class="text-center text-darkgreen">Edit Admin Profile</h1><br>
+        <a class="btn btn-darkgreen width-full" href='{% url "change-password" %}'><i class="fas fa-edit"></i> Change Password</a><br><br>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            {{ form|bootstrap }}
+        
+            <input class="btn btn--sub btn--lg  my-md btn-darkgreen" type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

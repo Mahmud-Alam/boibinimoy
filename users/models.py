@@ -96,7 +96,7 @@ class Admin(models.Model):
         return self.username.username
 
     @property
-    def managerImageURL(self):
+    def adminImageURL(self):
         try:
             img = self.profile_pic.url
         except:
