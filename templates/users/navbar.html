@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
+<nav class="navbar navbar-expand-lg navbar-dark bg-navbar">
     <div class="container">
       <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt=""></a>
       <div>
@@ -48,10 +48,10 @@
               {% endif %}
               {% if request.user.groups.all.0.name == 'admin' %}
               <li class="nav-item">
-                <p class="nav-link active" style="color: darkred; font-weight: 700;">Hello, {{request.user.username}}</p>
+                <p class="nav-link active" style="color: #0D6EFD; font-weight: 700;">Hello, {{request.user.username}}</p>
               </li>
               <li class="nav-item">
-                <a class="btn btn-darkred" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a class="btn btn-blue" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
               </li>
               {% elif request.user.groups.all.0.name == 'manager' %}
               <li class="nav-item">
@@ -62,14 +62,14 @@
               </li>
               {% elif request.user.groups.all.0.name == 'customer' %}
               <li class="nav-item">
-                <p class="nav-link active" style="color: darkred; font-weight: 700;">Hello, {{request.user.username}}</p>
+                <p class="nav-link active" style="color: #0D6EFD; font-weight: 700;">Hello, {{request.user.username}}</p>
               </li>
               <li class="nav-item">
-                <a class="btn btn-darkred" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a class="btn btn-blue" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="btn btn-darkred" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a class="btn btn-blue" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
               </li>
               {% endif %}
             </ul>

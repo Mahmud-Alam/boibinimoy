@@ -28,13 +28,13 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="label-text" for="">New Username<span class="text-darkred">*</span></label>
+                                        <label class="label-text" for="">New Username<span class="text-blue">*</span></label>
                                         <input type="text" id="username" class="form-control" name="username" placeholder="Enter Your New Username" Required>
                                     </div>
                                     {% for message in messages %}
-                                    <strong style="color: darkred;" id="messages">{{message}}</strong>
+                                    <strong class="text-darkred" id="messages">{{message}}</strong>
                                     {% endfor %}
-                                    <input type="submit" class="btnRegister btn-darkred"  value="Change Username"/>
+                                    <input type="submit" class="btnRegister btn-blue"  value="Change Username"/>
                                 </div>
                                 <div class="col-md-3"></div>
                             </div>

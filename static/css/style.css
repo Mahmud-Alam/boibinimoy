@@ -13,6 +13,9 @@
 .text-darkred{
     color: darkred;
 }
+.text-blue{
+    color: #0D6EFD;
+}
 .font-weight-900{
   font-weight: 900;
 }
@@ -25,9 +28,25 @@
 .bg-darkred{
     background-color: darkred;
 }
+.bg-darkblue{
+    background-color: #082a3d;
+}
 .bg-lightgreen{
     background-color: lightgreen;
 }
+.bg-navbar{
+  background-color: #0d4363;
+}
+.bg-lightblue{
+  background-color: #1774aa;
+}
+.bg-copyright{
+  background-color: #082a3d;
+}
+.bg-footer{
+  background-color: #0d4363;
+}
+
 .btn-darkred{
     font-weight: bold;
     color: white;
@@ -71,7 +90,7 @@
 }
 .btn-white{
     font-weight: bold;
-    color: darkred;
+    color: #0D6EFD;
     background: white;
     border-radius: 1.5rem;
     border: 2px solid white;
@@ -82,7 +101,7 @@
 .btn-white:hover{
     font-weight: bold;
     color: white;
-    background-color: darkred;
+    background-color: #0D6EFD;
 }
 .nav-link{
     margin-right: 3rem;
@@ -115,7 +134,7 @@ a{
   padding-bottom: 10px;
 }
 .register{
-    background: darkred;
+    background: #0b3953;
     padding: 3%;
 }
 .register-oval{
@@ -173,10 +192,10 @@ a{
 .btnRegister{
     float: right;
     margin-top: 10%;
-    border: 2px solid darkred;
+    border: 2px solid #0D6EFD;
     border-radius: 1.5rem;
     padding: 3%;
-    background: darkred;
+    background: #0D6EFD;
     color: #fff;
     font-weight: 600;
     width: 50%;
@@ -185,7 +204,7 @@ a{
 .register .nav-tabs{
     margin-top: 3%;
     border: none;
-    background: #0062cc;
+    background: #0D6EFD;
     border-radius: 1.5rem;
     width: 28%;
     float: right;
@@ -203,8 +222,8 @@ a{
 }
 .register .nav-tabs .nav-link.active{
     width: 100px;
-    color: #0062cc;
-    border: 2px solid #0062cc;
+    color: #0D6EFD;
+    border: 2px solid #0D6EFD;
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
 }

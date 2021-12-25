@@ -28,13 +28,13 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="label-text" for="">New Email Address<span class="text-darkred">*</span></label>
+                                        <label class="label-text" for="">New Email Address<span class="text-blue">*</span></label>
                                         <input type="text" id="email" class="form-control" name="email" placeholder="Enter Your New Email Address" Required>
                                     </div>
                                     {% for message in messages %}
-                                    <strong style="color: darkred;" id="messages">{{message}}</strong>
+                                    <strong class="text-darkred" id="messages">{{message}}</strong>
                                     {% endfor %}
-                                    <input type="submit" class="btnRegister btn-darkred"  value="Change Email"/>
+                                    <input type="submit" class="btnRegister btn-blue"  value="Change Email"/>
                                 </div>
                                 <div class="col-md-3"></div>
                             </div>

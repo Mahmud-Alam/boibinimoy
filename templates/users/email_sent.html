@@ -12,14 +12,14 @@
 <body>
     <div class="container">
         <br><br><br><br>
-        <div class="card text-center border-darkred">
-            <div class="card-header bg-darkred d-flex align-items-center justify-content-center height-200">
+        <div class="card text-center">
+            <div class="card-header bg-blue d-flex align-items-center justify-content-center height-200">
                 <img class="height-100" src='{% static "images/check-circle-regular-white.png" %}' alt="">
             </div>
             <div class="card-body"><br>
               <h5 class="card-title">{{title}}</h5>
               <p class="card-text"><span class="span-name">{{myUser.first_name}} {{myUser.last_name}}</span>, a {{text1}} to your email - <span class="span-name">"{{myUser.email}}"</span>. Please check your email and click the link for {{text2}}. Thank you!</p>
-              <a href="{% url 'home' %}" class="btn btn-darkred">Go to Home page</a><br><br>
+              <a href="{% url 'home' %}" class="btn btn-blue">Go to Home page</a><br><br>
             </div>
           </div>
     </div>

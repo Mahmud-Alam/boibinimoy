@@ -31,7 +31,7 @@
                     <h1>Personal Info</h1>
                     {% if flag == True %}
                     <div class="d-flex align-items-center">
-                        <a class="btn btn-darkred" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
+                        <a class="btn btn-blue" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
                     </div>
                     {% endif %}
                 </div>
@@ -199,7 +199,7 @@
                             <a href="#"><i class="fa fa-microphone"></i></a>
                         </li>
                     </ul>
-                    <a href="{% url 'create-post' %}" class="btn btn-darkred"><i class="far fa-paper-plane"></i> Post New Book</a>
+                    <a href="{% url 'create-post' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Book</a>
                 </footer>
             </div>
             {% endif %}
@@ -227,9 +227,9 @@
                   <div class="card-body">
                     <div class="mb-3">
                       <h2 class="">
-                          <a class="text-darkred" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
+                          <a class="text-blue" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
                         </h2>
-                        <h6 class="text-darkred"> by {{book.author}} (Author)</h6>
+                        <h6 class="text-blue"> by {{book.author}} (Author)</h6>
                   </div>
                   <div class="blog-item-meta mb-2">
                     <span class="text-black text-capitalize me-3">
@@ -248,7 +248,7 @@
                     <span class="text-black text-capitalize me-3">
                       <i class="far fa-calendar-alt mr-2"></i> {{ book.created|date:"d N Y" }}
                     </span>
-                    <a href="{% url 'user-profile' book.creator.username %}" class="text-darkred text-capitalize mr-3">
+                    <a href="{% url 'user-profile' book.creator.username %}" class="text-blue text-capitalize mr-3">
                       <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
                     </a>
                   </div>
@@ -256,12 +256,12 @@
 
                   <div class="d-flex align-items-end">
                     {% if book.exchange == 'Yes' %}
-                    <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.exchange}}</span></p>
+                    <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-blue">{{book.exchange}}</span></p>
                     {% else %}
                     <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;">{{book.exchange}}</span></p>
                     {% endif%}
                     {% if book.price != None %}
-                    <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-darkred" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.price}}</span></p>
+                    <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-blue" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-blue">{{book.price}}</span></p>
                     {% else %}
                     <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;">{{book.price}}</span></p>
                     {% endif%}
@@ -270,11 +270,11 @@
                   <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
                   
                   <div class="d-flex justify-content-between">
-                    <a href="{% url 'books-details' book.slug %}" class="btn btn-darkred btn-icon">
+                    <a href="{% url 'books-details' book.slug %}" class="btn btn-blue btn-icon">
                       See Details <i class="fas fa-angle-double-right"></i>
                     </a>
                     {% if flag == True %}
-                    <a href="{% url 'update-post' book.id %}" class="btn btn-darkred btn-icon">
+                    <a href="{% url 'update-post' book.id %}" class="btn btn-blue btn-icon">
                       <i class="fas fa-edit"></i> Update Post
                     </a>
                     {% endif %}
