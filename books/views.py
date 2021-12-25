@@ -10,6 +10,7 @@ from users.decorators import *
 
 @login_required(login_url='login')
 def books_home(request):
+    customer = Customer.objects.get(username=request.user)
     books = Book.objects.order_by('-created')
     latest_books = Book.objects.order_by('-created')[:5]
     categories = Category.objects.order_by('name')
@@ -23,13 +24,14 @@ def books_home(request):
 
     category_dict =  zip(categories,cat_book_count)
 
-    context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'category_dict':category_dict}
+    context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'category_dict':category_dict,'customer':customer}
     return render(request, "books/books_home.html", context)
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
 def create_post(request):
+    customer = Customer.objects.get(username=request.user)
     task = "Post New"
     form = BookForm()
 
@@ -52,12 +54,14 @@ def create_post(request):
             context = {
                 'task': task,
                 'form': form,
+                'customer':customer,
             }
             return render(request, 'books/create_book_post.html', context)
 
     context = {
         'task': task,
         'form': form,
+        'customer':customer,
     }
 
     return render(request, 'books/create_book_post.html', context)
@@ -66,6 +70,7 @@ def create_post(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
 def update_post(request,pk):
+    customer = Customer.objects.get(username=request.user)
     task = "Update"
     book = Book.objects.get(id=pk)
     form = BookForm(instance=book)
@@ -89,12 +94,14 @@ def update_post(request,pk):
             context = {
                 'task': task,
                 'form': form,
+                'customer':customer,
             }
             return render(request, 'books/create_book_post.html', context)
 
     context = {
         'task': task,
         'form': form,
+        'customer':customer,
     }
 
     return render(request, 'books/create_book_post.html', context)
@@ -102,16 +109,17 @@ def update_post(request,pk):
 
 @login_required(login_url='login')
 def books_details(request, slug):
+    customer = Customer.objects.get(username=request.user)
     book = Book.objects.get(slug=slug)
-    customer = Customer.objects.get(username=book.creator.username)
+    customerInfo = Customer.objects.get(username=book.creator.username)
     
-    if request.user == customer.username:
+    if request.user == customerInfo.username:
         flag=True
     else:
         flag=False
 
-    
-    context = {'book': book,'flag':flag}
+
+    context = {'book': book,'flag':flag,'customer':customer}
     return render(request, "books/books_details.html", context)
 
 
@@ -134,6 +142,7 @@ def delete_post(request,pk):
 
 @login_required(login_url='login')
 def books_category(request,slug):
+    customer = Customer.objects.get(username=request.user)
     category = Category.objects.get(slug=slug)
     books = Book.objects.filter(category=category).order_by('-created')
     categories = Category.objects.order_by('name')
@@ -146,7 +155,7 @@ def books_category(request,slug):
     books = bookFilter.qs
     books_count = books.count()
 
-    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count}
+    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'customer':customer}
     return render(request, "books/books_category.html", context)
 
 

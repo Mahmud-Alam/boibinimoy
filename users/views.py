@@ -194,16 +194,17 @@ def logoutPage(request):
 @allowed_users(allowed_roles=['customer'])
 def userProfile(request, username):
     main_user = User.objects.get(username=username)
+    customer = Customer.objects.get(username=request.user)
     if request.user.username == username:
-        customer = Customer.objects.get(username=request.user)
+        customerInfo = Customer.objects.get(username=request.user)
         flag=True
     else:
-        customer = Customer.objects.get(username=main_user)
+        customerInfo = Customer.objects.get(username=main_user)
         flag=False
     
-    books = customer.book_set.order_by('-created')
+    books = customerInfo.book_set.order_by('-created')
     
-    context = {'customer':customer,'books':books,'flag':flag}
+    context = {'customer':customer,'customerInfo':customerInfo,'books':books,'flag':flag}
     return render(request,'users/user_profile.html',context)
     
 @login_required(login_url='login')
@@ -224,13 +225,14 @@ def editUserProfile(request):
             messages.success(request, full_name+', profile updated successfully!')
             return redirect('user-profile', username = request.user)
 
-    context = {'myUser':request.user,'form':form}
+    context = {'myUser':request.user,'form':form,'customer':customer}
     return render(request,'users/edit_user_profile.html',context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
 def changeUsername(request):
     myUser = User.objects.get(username=request.user)
+    customer = Customer.objects.get(username=request.user)
     if request.method == 'POST':
         username = request.POST.get('username')
 
@@ -285,7 +287,7 @@ def changeUsername(request):
         context = {'myUser':myUser,'title':'Change Username Request Sent!','text1':'change username request sent','text2':'changing your username'}
         return render(request,'users/email_sent.html',context)
 
-    return render(request,'users/change_username.html')
+    return render(request,'users/change_username.html',{'customer':customer})
 
 def changeUsernameConfirm(request, uidb64, token, username):
     try:
@@ -313,6 +315,7 @@ def changeUsernameConfirm(request, uidb64, token, username):
 @allowed_users(allowed_roles=['customer'])
 def changeEmail(request):
     myUser = User.objects.get(username=request.user)
+    customer = Customer.objects.get(username=request.user)
     if request.method == 'POST':
         email = request.POST.get('email')
 
@@ -352,7 +355,7 @@ def changeEmail(request):
         context = {'myUser':myUser,'title':'Change Email Address Request Sent!','text1':'change email address request sent','text2':'changing your email address'}
         return render(request,'users/email_sent.html',context)
 
-    return render(request,'users/change_email.html')
+    return render(request,'users/change_email.html',{'customer':customer})
 
 def changeEmailConfirm(request, uidb64, token, email):
     try:
@@ -384,6 +387,7 @@ def changeEmailConfirm(request, uidb64, token, email):
 @allowed_users(allowed_roles=['customer'])
 def changePassword(request):
     myUser = User.objects.get(username=request.user)
+    customer = Customer.objects.get(username=request.user)
     if request.method == 'POST':
         oldpassword = request.POST.get('oldpassword')
         password1 = request.POST.get('password1')
@@ -417,7 +421,7 @@ def changePassword(request):
         messages.success(request,'Congratulations "'+user.username+'"! Your password changed successfully!')
         return redirect('user-profile', username = request.user)
 
-    context = {}
+    context = {'customer':customer}
     return render(request,'users/change_password.html',context)
 
 
