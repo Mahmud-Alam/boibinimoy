@@ -7,13 +7,13 @@
 {% block content %}
 <div class="container">
     <div class="form-div">
-        <h1 class="text-center">{{task}} Book</h1><br>
+        <h1 class="text-center text-blue">{{task}} Book</h1><br>
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             
             {{ form|bootstrap }}
             
-            <input class="btn btn--sub btn--lg  my-md btn-darkred" type="submit" value="Submit" />
+            <input class="btn btn--sub btn--lg  my-md btn-blue" type="submit" value="Submit" />
         </form>
     </div>
 </div>

@@ -21,7 +21,7 @@
                       {{ bookFilter.form.name|add_class:"form-control" }}
                   </div>
                   <div class="col-md-3 mb-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-darkred"><i class="fas fa-search"></i> Search</button>
+                    <button type="submit" class="btn btn-blue"><i class="fas fa-search"></i> Search</button>
                   </div>
               </div>
             </form>
@@ -49,9 +49,9 @@
               <div>
                   <div class="mb-3">
                     <h2 class="">
-                        <a class="text-darkred" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
+                        <a class="text-blue" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
                       </h2>
-                      <h6 class="text-darkred"> by {{book.author}} (Author)</h6>
+                      <h6 class="text-blue"> by {{book.author}} (Author)</h6>
                 </div>
                 <div class="blog-item-meta mb-2">
                   <span class="text-black text-capitalize me-3">
@@ -70,7 +70,7 @@
                   <span class="text-black text-capitalize me-3">
                     <i class="far fa-calendar-alt mr-2"></i> {{ book.created|date:"d N Y" }}
                   </span>
-                  <a href="{% url 'user-profile' book.creator.username %}" class="text-darkred text-capitalize mr-3">
+                  <a href="{% url 'user-profile' book.creator.username %}" class="text-blue text-capitalize mr-3">
                     <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
                   </a>
                 </div>
@@ -79,12 +79,12 @@
 
                 <div class="d-flex align-items-end">
                   {% if book.exchange == 'Yes' %}
-                  <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.exchange}}</span></p>
+                  <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-blue">{{book.exchange}}</span></p>
                   {% else %}
                   <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;">{{book.exchange}}</span></p>
                   {% endif%}
                   {% if book.price != None %}
-                  <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-darkred" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-darkred">{{book.price}}</span></p>
+                  <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-blue" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-blue">{{book.price}}</span></p>
                   {% else %}
                   <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;">{{book.price}}</span></p>
                   {% endif%}
@@ -94,7 +94,7 @@
               </div>
 
               <div class="mt-3">
-                <a href="{% url 'books-details' book.slug %}" class="btn btn-darkred btn-icon">
+                <a href="{% url 'books-details' book.slug %}" class="btn btn-blue btn-icon">
                   See Details <i class="fas fa-angle-double-right"></i>
                 </a>
               </div>
@@ -108,7 +108,7 @@
     <div class="col-lg-4">
       <div class="book-side-bg ms-3 mb-4">
         <!-- <div class="d-flex justify-content-center">
-          <a href="{% url 'create-post' %}" class="btn btn-darkred my-4"
+          <a href="{% url 'create-post' %}" class="btn btn-blue my-4"
             ><i class="fa fa-plus"></i>
             <span> Post a New Book</span>
           </a>
@@ -122,7 +122,7 @@
             {% for book in latest_books %}
             <div class="py-2">
               <h6 class="my-2">
-                <a class="text-darkred font-weight-700" href="{% url 'books-details' book.slug %}">
+                <a class="text-blue font-weight-700" href="{% url 'books-details' book.slug %}">
                   {{ book.name }}
                 </a>
               </h6>
@@ -142,7 +142,7 @@
         <ul class="list-unstyled mb-3 px-4 py-2 my-2">
           {% for cat,count in category_dict %}
           <li class="align-items-center mt-3">
-            <a class="text-darkred font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}({{count}})</a>
+            <a class="text-blue font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}({{count}})</a>
           </li>
           {% endfor %}
         </ul>
