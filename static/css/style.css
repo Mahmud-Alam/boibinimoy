@@ -16,6 +16,9 @@
 .text-blue{
     color: #0D6EFD;
 }
+.text-gray{
+  color: rgb(170, 170, 170);
+}
 .font-weight-900{
   font-weight: 900;
 }

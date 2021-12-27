@@ -12,8 +12,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_text
+from django.utils.text import slugify
 
-from books.models import Book
 from .tokens import generate_token
 from datetime import datetime, timedelta, timezone
 
@@ -24,6 +24,9 @@ from boibinimoy import settings
 from .models import *
 from .forms import *
 from .decorators import *
+
+from books.models import *
+from books.forms import *
 
 @visitors_only
 def homePage(request):
@@ -191,10 +194,15 @@ def logoutPage(request):
     return redirect('home')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['customer'])
+@allowed_users(allowed_roles=['customer','manager'])
 def userProfile(request, username):
     main_user = User.objects.get(username=username)
-    customer = Customer.objects.get(username=request.user)
+    customer = manager = 0
+    if request.user.groups.all()[0].name == 'manager':
+        manager  = Manager.objects.get(username=request.user)
+    elif request.user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+        
     if request.user.username == username:
         customerInfo = Customer.objects.get(username=request.user)
         flag=True
@@ -204,9 +212,10 @@ def userProfile(request, username):
     
     books = customerInfo.book_set.order_by('-created')
     
-    context = {'customer':customer,'customerInfo':customerInfo,'books':books,'flag':flag}
+    context = {'customer':customer,'manager':manager,'customerInfo':customerInfo,'books':books,'flag':flag}
     return render(request,'users/user_profile.html',context)
     
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
 def editUserProfile(request):
@@ -668,8 +677,10 @@ def manageAdministrators(request):
 
 
 
+
 ##################################
 # Manager User
+##################################
 
 
 @login_required(login_url='login')
@@ -709,13 +720,22 @@ def editManagerProfile(request):
 @allowed_users(allowed_roles=['manager'])
 def managerDashboard(request, username):
     manager = Manager.objects.get(username=request.user)
-    # manager = User.objects.get(username=username)
     total_admin = User.objects.filter(groups__name='admin')
     total_manager = User.objects.filter(groups__name='manager')
     total_customer = Customer.objects.all()
     total_book = Book.objects.all()
+
+    total_category = Category.objects.order_by('name')
+    cat_book_count = [Book.objects.filter(category=cat).count() for cat in total_category]
+    latest_books = Book.objects.order_by('-created')[:5]
+
+    # Zip sorted
+    # sorted(zipped, key = lambda t: t[1])
+    category_dict =  zip(total_category,cat_book_count)
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
     
-    context = {'manager':manager,'total_admin':total_admin,'total_manager':total_manager,'total_customer':total_customer,'total_book':total_book}
+    context = {'manager':manager,'total_admin':total_admin,'total_manager':total_manager,'total_customer':total_customer,
+                'total_book':total_book,'total_category':total_category,'category_dict':category_dict,'latest_books':latest_books}
     return render(request,'manager/manager_dashboard.html',context)
 
 
@@ -725,7 +745,11 @@ def manageCustomers(request):
     manager = Manager.objects.get(username=request.user)
     total_customer = Customer.objects.all()
 
-    context = {'total_customer':total_customer,'manager':manager}
+    customer_book_count = [cus.book_set.all().count() for cus in total_customer]
+    customer_dict = zip(total_customer,customer_book_count)
+    customer_dict = sorted(customer_dict, key = lambda t: t[1], reverse=True)
+
+    context = {'total_customer':total_customer,'manager':manager,'customer_dict':customer_dict}
     return render(request,'manager/manage_customers.html',context)
 
 
@@ -744,8 +768,8 @@ def deleteUser(request, username):
             messages.success(request, '"'+username+'" '+group+' is deleted successfully!')
             return redirect('manage-administrators')
 
-    context = {'myUser':myUser}
-    return render(request,"temp/delete_user.html",context)
+    context = {'object':myUser}
+    return render(request,"temp/delete_object.html",context)
 
 
 def reactiveUser(request, username):
@@ -764,5 +788,93 @@ def reactiveUser(request, username):
             return redirect('manage-administrators')
 
     context = {'myUser':myUser}
-    return render(request,"temp/reactive_user.html",context)
+    return render(request,"temp/reactive_object.html",context)
 
+
+def bookList(request):
+    manager = Manager.objects.get(username=request.user)
+    book_list = Book.objects.order_by('-created')
+
+    context = {'manager':manager,'book_list':book_list}
+    return render(request, "manager/book_list.html", context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def categoryList(request):
+    manager = Manager.objects.get(username=request.user)
+    total_category = Category.objects.order_by('name')
+    cat_book_count = [Book.objects.filter(category=cat).count() for cat in total_category]
+
+    # Zip sorted
+    # sorted(zipped, key = lambda t: t[1])
+    category_dict =  zip(total_category,cat_book_count)
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
+
+
+    context = {'total_category':total_category,'category_dict':category_dict,'manager':manager}
+    return render(request, "manager/category_list.html", context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def createCategory(request):
+    manager = Manager.objects.get(username=request.user)
+    task = "Create"
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        
+        allCategories = [i.lower() for i in Category.objects.all().values_list('name',flat=True)]
+
+        if name.lower() in allCategories:
+            messages.error(request, mark_safe('&bull; "'+name+'" category name already exists!'))
+            return redirect('create-category')
+
+        newCategory = Category.objects.create(name=name, description=description)
+        newCategory.save()
+        slug_str = "%s" % (newCategory.name)
+        newCategory.slug = slugify(slug_str)
+        newCategory.save()
+        messages.success(request,'New Category "'+name+'" Created Successfully!')
+        return redirect('category-list')
+
+    context = {
+                'task': task,
+                'manager':manager,
+            }
+    return render(request, 'manager/create_category.html', context)
+
+
+def updateCategory(request,slug):
+    task = "Update"
+    manager  = Manager.objects.get(username=request.user)
+    category = Category.objects.get(slug=slug)
+
+    form = CategoryForm(instance=category)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Category "'+category.name+'" Updated Successfully!')
+            return redirect('category-list')
+
+    context = {
+                'task': task,
+                'form':form,
+                'manager':manager,
+            }
+    return render(request, 'manager/update_category.html', context)
+
+
+def deleteCategory(request,slug):
+    category = Category.objects.get(slug=slug)
+    name = category.name
+    if request.method == 'POST':
+        category.delete()
+        messages.success(request,'Category "'+name+'" Deleted Successfully!')
+        return redirect('category-list')
+    
+    context = {'object':category}
+    return render(request, 'temp/delete_object.html', context)

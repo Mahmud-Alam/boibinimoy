@@ -27,6 +27,11 @@ urlpatterns = [
     path('manager-profile/<str:username>/', views.managerProfile, name='manager-profile'),
     path('edit-manager-profile/', views.editManagerProfile, name='edit-manager-profile'),
     path('manage-customers/', views.manageCustomers, name='manage-customers'),
+    path('create-category/', views.createCategory, name='create-category'),
+    path('update-category/<str:slug>/', views.updateCategory, name='update-category'),
+    path('delete-category/<str:slug>/', views.deleteCategory, name='delete-category'),
+    path('category-list/', views.categoryList, name='category-list'),
+    path('book-list/', views.bookList, name='book-list'),
 
     path('delete-user/<str:username>/', views.deleteUser, name='delete-user'),
     path('reactive-user/<str:username>/', views.reactiveUser, name='reactive-user'),

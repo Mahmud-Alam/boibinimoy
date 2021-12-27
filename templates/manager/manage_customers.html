@@ -20,7 +20,7 @@
         {% endfor %}
 
         <div class="card m-4">
-            <div class="card-header fw-bold text-white" style="background-color: #0d4363;">
+            <div class="card-header fw-bold text-white bg-manager-card">
                 Customer List({{total_customer.count}})
             </div>
             <div class="card-body d-flex justify-content-around">
@@ -38,27 +38,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for customer in total_customer %}
+                        {% for customer,book in customer_dict %}
                         {% if customer.username.is_active == False %}
                         <tr class="bg-secondary">
                             <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{customer.username}}</td>
-                            <td>{{customer.first_name}}</td>
-                            <td>{{customer.last_name}}</td>
-                            <td>{{customer.email}}</td>
-                            <td>{{customer.phone}}</td>
-                            <td>{{customer.book_set.all.count}}</td>
+                            <td><a class="text-gray" href="{% url 'user-profile' customer.username %}">{{customer.username}}</a></td>
+                            <td><a class="text-gray" href="{% url 'user-profile' customer.username %}">{{customer.first_name}}</a></td>
+                            <td><a class="text-gray" href="{% url 'user-profile' customer.username %}">{{customer.last_name}}</a></td>
+                            <td><a class="text-gray" href="{% url 'user-profile' customer.username %}">{{customer.email}}</a></td>
+                            <td><a class="text-gray" href="{% url 'user-profile' customer.username %}">{{customer.phone}}</a></td>
+                            <td><a class="text-gray" href="{% url 'user-profile' customer.username %}">{{book}}</a></td>
                             <td><a href="{% url 'reactive-user' customer.username %}" class="btn btn-primary">Reactive</a></td>
                         </tr>
                         {% else %}
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{customer.username}}</td>
-                            <td>{{customer.first_name}}</td>
-                            <td>{{customer.last_name}}</td>
-                            <td>{{customer.email}}</td>
-                            <td>{{customer.phone}}</td>
-                            <td>{{customer.book_set.all.count}}</td>
+                            <td><a class="text-black" href="{% url 'user-profile' customer.username %}">{{customer.username}}</a></td>
+                            <td><a class="text-black" href="{% url 'user-profile' customer.username %}">{{customer.first_name}}</a></td>
+                            <td><a class="text-black" href="{% url 'user-profile' customer.username %}">{{customer.last_name}}</a></td>
+                            <td><a class="text-black" href="{% url 'user-profile' customer.username %}">{{customer.email}}</a></td>
+                            <td><a class="text-black" href="{% url 'user-profile' customer.username %}">{{customer.phone}}</a></td>
+                            <td><a class="text-black" href="{% url 'user-profile' customer.username %}">{{book}}</a></td>
                             <td><a href="{% url 'delete-user' customer.username %}" class="btn btn-danger">Delete</a></td>
                         </tr>
                         {% endif %}

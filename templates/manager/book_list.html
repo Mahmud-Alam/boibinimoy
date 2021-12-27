@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% extends 'manager/main_manager_template.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+</head>
+<body>
+    {% block context %}       
+    <div class="container">
+        {% for message in messages %}
+        <div class="mt-3 alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <div class="card m-4">
+            <div class="card-header fw-bold text-white bg-manager-card">
+                Book List({{book_list.count}})
+            </div>
+            <div>
+            {% for book in book_list %}
+            <div class="col-lg-12 col-md-12 p-4 book-post-bg">
+            <div class="blog-item d-flex">
+                <div class="blog-thumb" style="height: 300px; width: 300px;">
+                <a href="{% url 'books-details' book.slug %}">
+                    <img src="{{ book.bookImageURL }}" alt="{{ book.name }}" class="img-thumbnail book-img"/>
+                </a>
+                </div>
+
+                <div class="blog-item-content mx-4">
+                <div>
+                    <div class="mb-3">
+                        <h2 class="">
+                            <a class="text-violet" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
+                        </h2>
+                        <h6 class="text-violet"> by {{book.author}} (Author)</h6>
+                    </div>
+                    <div class="blog-item-meta mb-2">
+                    <span class="text-black text-capitalize me-3">
+                        <i class="fas fa-book mr-2"></i> {{ book.edition }} Edition
+                    </span>
+                    <!-- <span class="text-capitalize me-3">
+                        <i class="fas fa-bookmark mr-2"></i> {{ book.category.category }} Category
+                    </span> -->
+                    {% for cat in book.category.all %}
+                        <span class="text-capitalize me-3">
+                            &bull; {{ cat.name }}
+                        </span>
+                    {%endfor%}
+                    </div>
+                    <div class="mb-3">
+                    <span class="text-black text-capitalize me-3">
+                        <i class="far fa-calendar-alt mr-2"></i> {{ book.created|date:"d N Y" }}
+                    </span>
+                    <a href="{% url 'user-profile' book.creator.username %}" class="text-violet text-capitalize mr-3">
+                        <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
+                    </a>
+                    </div>
+    
+                    <p class="mb-3">{{ book.description|truncatechars:250 }}</p>
+
+                    <div class="d-flex align-items-end">
+                    {% if book.exchange == 'Yes' %}
+                    <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-violet">{{book.exchange}}</span></p>
+                    {% else %}
+                    <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;">{{book.exchange}}</span></p>
+                    {% endif%}
+                    {% if book.price != None %}
+                    <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-violet" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-violet">{{book.price}}</span></p>
+                    {% else %}
+                    <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;">{{book.price}}</span></p>
+                    {% endif%}
+                    </div>
+
+                    <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
+                </div>
+
+                <div class="mt-3">
+                    <a href="{% url 'books-details' book.slug %}" class="btn btn-violet btn-icon">
+                    See Details <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div><hr>
+        {% endfor %}
+        </div>
+    </div>
+
+            
+
+    </div>
+    {% endblock %}
+</body>
+</html>

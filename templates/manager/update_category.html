@@ -1,0 +1,20 @@
+{% extends "manager/main_manager_template.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load bootstrap %}
+<link rel="stylesheet" href='{% static "css/panel-style.css" %}'>
+
+{% block context %}
+<div class="container">
+    <div class="form-div">
+        <h1 class="text-center text-violet">{{task}} Book</h1><br>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {{ form|bootstrap }}
+            
+            <input class="btn btn--sub btn--lg  my-md btn-violet" type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}

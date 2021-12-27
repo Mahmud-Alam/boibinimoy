@@ -16,6 +16,10 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'books-home' %}"><i class="fas fa-quote-right"></i> Posts</a>
               </li>
+              {% elif request.user.groups.all.0.name == 'manager' %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'manager-dashboard' request.user.username %}"><i class="fas fa-tachometer-alt"></i> Manager Dashboard</a>
+              </li>
 
               {% else %}
               <li class="nav-item">
@@ -36,10 +40,26 @@
                         <img src='{{customer.customerImageURL}}' alt="" width="32" height="32" class="rounded-circle me-2">
                         <strong>{{customer.username}}</strong>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                    <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
                         <li><a class="dropdown-item" href="{% url 'create-post' %}">Create Post</a></li>
                         <li><a class="dropdown-item" href="{% url 'books-home' %}">All Posts</a></li>
                         <li><a class="dropdown-item" href="{% url 'user-profile' request.user.username %}">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+              </li>
+              {% elif request.user.groups.all.0.name == 'manager' %}
+              <li class="nav-item">
+                <div class="dropdown">
+                    <a href="/" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src='{{manager.managerImageURL}}' alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>{{manager.username}}</strong>
+                    </a>
+                    <ul class="bg-manager-sidebar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">New Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'manager-dashboard' request.user.username %}">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="{% url 'manager-profile' request.user.username %}">Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     </ul>

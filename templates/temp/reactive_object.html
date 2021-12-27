@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href='{% static "css/style.css" %}'>
+    <link rel="stylesheet" href='{% static "css/panel-style.css" %}'>
+    <title>Delete User</title>
+</head>
+<body>
+    <div class="container">
+        <br><br><br><br>
+        <div style="margin: 0 200px;" class="card text-center border-blue">
+            <div class="card-header bg-primary d-flex align-items-center justify-content-center height-200">
+                <img class="height-100" src='{% static "images/check-circle-regular-white.png" %}' alt="">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Reactive "{{object}}"?</h5>
+                <p class="card-text">Are you sure you want to reactive <span class="span-blue">"{{object}}"</span>?</p>
+                <br>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-evenly">
+                        <a href="{% url 'manage-customers' %}" class="btn btn-blue">Cancel</a>
+                        <input type="submit" class="btn btn-blue" value="Reactive">
+                    </div>
+                </form>
+            </div>
+          </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

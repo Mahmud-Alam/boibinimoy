@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from .filters import *
 from .forms import *
 from users.decorators import *
+from users.models import *
 
 
 @login_required(login_url='login')
@@ -109,7 +110,14 @@ def update_post(request,pk):
 
 @login_required(login_url='login')
 def books_details(request, slug):
-    customer = Customer.objects.get(username=request.user)
+    # customer = Customer.objects.get(username=request.user)
+    # main_user = User.objects.get(username=username)
+    customer = manager = 0
+    if request.user.groups.all()[0].name == 'manager':
+        manager  = Manager.objects.get(username=request.user)
+    elif request.user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+
     book = Book.objects.get(slug=slug)
     customerInfo = Customer.objects.get(username=book.creator.username)
     
@@ -119,7 +127,7 @@ def books_details(request, slug):
         flag=False
 
 
-    context = {'book': book,'flag':flag,'customer':customer}
+    context = {'book': book,'flag':flag,'customer':customer,'manager':manager}
     return render(request, "books/books_details.html", context)
 
 
@@ -140,9 +148,15 @@ def delete_post(request,pk):
     return render(request,"books/delete_book_post.html",context)
 
 
+@allowed_users(allowed_roles=['customer','manager'])
 @login_required(login_url='login')
 def books_category(request,slug):
-    customer = Customer.objects.get(username=request.user)
+    customer = manager = 0
+    if request.user.groups.all()[0].name == 'manager':
+        manager  = Manager.objects.get(username=request.user)
+    elif request.user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+    
     category = Category.objects.get(slug=slug)
     books = Book.objects.filter(category=category).order_by('-created')
     categories = Category.objects.order_by('name')
@@ -155,7 +169,7 @@ def books_category(request,slug):
     books = bookFilter.qs
     books_count = books.count()
 
-    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'customer':customer}
+    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'customer':customer,'manager':manager}
     return render(request, "books/books_category.html", context)
 
 

@@ -14,18 +14,27 @@
 
 
 .bg-manager-sidebar{
-    background-color: #082a3d;
+    background-color: #18083d;
 }
 .bg-manager-card{
-    background-color: #0b3953;
+    background-color: #210a55;
 }
 .bg-manager-navbar{
-    background-color: #0d4363;
+    background-color: #250c61;
 }
 .bg-manager-primary{
-    background-color: #0d6efd;
+    background-color: #750dfd;
 }
 
+.text-darkviolet{
+    color: #210a55;
+}
+.text-violet{
+  color: #750dfd;
+}
+.text-gray{
+  color: rgb(180, 180, 180);
+}
 /* Button section */
 
 .btn-blue{
@@ -41,6 +50,20 @@
     color: #0D6EFD;
     background-color: white;
   }
+.btn-violet{
+    font-weight: bold;
+    color: white;
+    background-color: #750dfd;
+    border-radius: 1.5rem;
+    border: 2px solid #750dfd;
+    padding: 6px 32px;
+  }
+.btn-violet:hover{
+    font-weight: bold;
+    color: #750dfd;
+    background-color: white;
+  }
+
 .text-darkgreen{
     color: #0a4d4d;
 }

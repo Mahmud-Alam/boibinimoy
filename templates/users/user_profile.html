@@ -15,7 +15,8 @@
 
 <section id="content" class="container">
     <!-- Begin .page-heading -->
-    <div class="page-heading">
+    {% if customerInfo.username.is_active == False %}
+    <div class="page-heading bg-secondary">
         <div class="media clearfix">
             <div class="media-left pr30">
                 <div class="user-heading round">
@@ -61,6 +62,55 @@
             </div>
         </div>
     </div>
+
+    {% else %}
+    <div class="page-heading">
+      <div class="media clearfix">
+          <div class="media-left pr30">
+              <div class="user-heading round">
+                  <a href='{% url "user-profile" customerInfo.username %}'>
+                  <img class="media-object mw150" src='{{customerInfo.customerImageURL}}' alt="...">
+                  </a>
+              </div>
+              <h1 class="media-heading text-center">{{customerInfo.first_name}} {{customerInfo.last_name}}</h1>
+              <p class="text-center">{{customerInfo.email}}</p>
+          </div>                      
+          <div class="media-body va-m">
+              <div class="d-flex justify-content-between">
+                  <h1>Personal Info</h1>
+                  {% if flag == True %}
+                  <div class="d-flex align-items-center">
+                      <a class="btn btn-blue" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
+                  </div>
+                  {% endif %}
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-md-6">
+                      <p><span>Username </span>: {{customerInfo.username}}</p>
+                      <p><span>First Name </span>: {{customerInfo.first_name}}</p>
+                      <p><span>Last Name </span>: {{customerInfo.last_name}}</p>
+                      <p><span>Email </span>: {{customerInfo.email}}</p>
+                      <p><span>Phone </span>: {{customerInfo.phone}}</p>
+                  </div>
+                  <div class="col-md-6">
+                      <p><span>Address </span>: {{customerInfo.address}}</p>
+                      <p><span>Occupation </span>: {{customerInfo.occupation}}</p>
+                      <p><span>Gender </span>: {{customerInfo.gender}}</p>
+                      <p><span>Birthday</span>: {{customerInfo.birth_date}}</p>
+                  </div>
+              </div>
+              <br><br>
+              {% for message in messages %}
+              <div class="alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+                  {{message}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+    </div>
+    {% endif %}
 
     <div class="container">
     <div class="row">
