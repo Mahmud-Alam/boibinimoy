@@ -10,6 +10,7 @@ from users.models import *
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def books_home(request):
     customer = Customer.objects.get(username=request.user)
     books = Book.objects.order_by('-created')
@@ -109,6 +110,7 @@ def update_post(request,pk):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['customer','manager'])
 def books_details(request, slug):
     # customer = Customer.objects.get(username=request.user)
     # main_user = User.objects.get(username=username)

@@ -15,7 +15,6 @@
                         <strong>{{manager.username}}</strong>
                     </a>
                     <ul class="bg-manager-sidebar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New Post</a></li>
                         <li><a class="dropdown-item" href="{% url 'manager-dashboard' request.user.username %}">Dashboard</a></li>
                         <li><a class="dropdown-item" href="{% url 'manager-profile' request.user.username %}">Profile</a></li>
                         <li><hr class="dropdown-divider"></li>

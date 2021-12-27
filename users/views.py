@@ -28,9 +28,11 @@ from .decorators import *
 from books.models import *
 from books.forms import *
 
+
 @visitors_only
 def homePage(request):
     return render(request, 'users/index.html')
+
 
 def isEmailAddressValid( email ):
     try:
@@ -38,6 +40,7 @@ def isEmailAddressValid( email ):
         return True
     except ValidationError:
         return False
+
 
 @unauthenticated_user
 def registrationPage(request):
@@ -140,6 +143,7 @@ def registrationPage(request):
     
     return render(request,'users/register.html')
 
+
 def accountActivate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -161,6 +165,7 @@ def accountActivate(request, uidb64, token):
         return render(request, 'users/activation_successful.html',context)
     else:
         return render(request, 'users/activation_failed.html',context)
+
 
 @unauthenticated_user
 def loginPage(request):
@@ -187,11 +192,13 @@ def loginPage(request):
     return render(request,'users/login.html',context)
 
 
+@login_required(login_url='login')
 def logoutPage(request):
     full_name = request.user.first_name+' '+request.user.last_name
     logout(request)
     messages.success(request, full_name+' Logout successfully!')
     return redirect('home')
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer','manager'])
@@ -236,6 +243,7 @@ def editUserProfile(request):
 
     context = {'myUser':request.user,'form':form,'customer':customer}
     return render(request,'users/edit_user_profile.html',context)
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
@@ -297,6 +305,7 @@ def changeUsername(request):
         return render(request,'users/email_sent.html',context)
 
     return render(request,'users/change_username.html',{'customer':customer})
+
 
 def changeUsernameConfirm(request, uidb64, token, username):
     try:
@@ -366,6 +375,7 @@ def changeEmail(request):
 
     return render(request,'users/change_email.html',{'customer':customer})
 
+
 def changeEmailConfirm(request, uidb64, token, email):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -434,14 +444,13 @@ def changePassword(request):
     return render(request,'users/change_password.html',context)
 
 
-
-
 ##################################
 # Admin User
+##################################
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin','manager'])
 def adminProfile(request, username):
     admin = Admin.objects.get(username=request.user)
     
@@ -469,7 +478,6 @@ def editAdminProfile(request):
 
     context = {'admin':admin,'myUser':myUser,'form':form,'flag':True}
     return render(request,'admin/edit_admin_profile.html',context)
-
 
 
 @login_required(login_url='login')
@@ -574,7 +582,6 @@ def createAdmin(request):
     return render(request,'admin/create_admin.html',context)
 
 
-
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def createManager(request):
@@ -651,7 +658,6 @@ def createManager(request):
     return render(request,'admin/create_manager.html',context)
 
 
-
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin','manager'])
 def manageAdministrators(request):
@@ -676,15 +682,13 @@ def manageAdministrators(request):
         return render(request,'manager/manager_manage_administrators.html',context)
 
 
-
-
 ##################################
 # Manager User
 ##################################
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['manager'])
+@allowed_users(allowed_roles=['admin','manager'])
 def managerProfile(request, username):
     manager = Manager.objects.get(username=request.user)
     
@@ -712,8 +716,6 @@ def editManagerProfile(request):
 
     context = {'manager':manager,'myUser':myUser,'form':form}
     return render(request,'manager/edit_manager_profile.html',context)
-
-
 
 
 @login_required(login_url='login')
@@ -753,6 +755,8 @@ def manageCustomers(request):
     return render(request,'manager/manage_customers.html',context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin','manager'])
 def deleteUser(request, username):
     myUser = User.objects.get(username=username)
     group = myUser.groups.all()[0].name
@@ -772,6 +776,8 @@ def deleteUser(request, username):
     return render(request,"temp/delete_object.html",context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin','manager'])
 def reactiveUser(request, username):
     myUser = User.objects.get(username=username)
     group = myUser.groups.all()[0].name
@@ -791,6 +797,8 @@ def reactiveUser(request, username):
     return render(request,"temp/reactive_object.html",context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def bookList(request):
     manager = Manager.objects.get(username=request.user)
     book_list = Book.objects.order_by('-created')
@@ -847,6 +855,8 @@ def createCategory(request):
     return render(request, 'manager/create_category.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def updateCategory(request,slug):
     task = "Update"
     manager  = Manager.objects.get(username=request.user)
@@ -868,6 +878,8 @@ def updateCategory(request,slug):
     return render(request, 'manager/update_category.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def deleteCategory(request,slug):
     category = Category.objects.get(slug=slug)
     name = category.name
