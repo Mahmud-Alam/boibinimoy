@@ -491,18 +491,18 @@ def adminPanel(request, username):
     else:
         flag = False
         admin = user
-    customer = Customer.objects.all()
-    customer_count = customer.count()
+    customer = User.objects.filter(groups__name='customer')
+    active_customer_count = customer.filter(is_active = True).count()
     book = Book.objects.all()
     book_count = book.count()
 
-    total_admin = User.objects.filter(groups__name='admin')
-    admin_count = total_admin.count()
-    total_manager = User.objects.filter(groups__name='manager')
-    manager_count = total_manager.count()
+    total_admin = User.objects.filter(groups__name='admin').order_by('-is_active')
+    active_admin_count = total_admin.filter(is_active = True).count()
+    total_manager = User.objects.filter(groups__name='manager').order_by('-is_active')
+    active_manager_count = total_manager.filter(is_active = True).count()
     
-    context = {'admin':admin,'flag':flag,'customer':customer,'customer_count':customer_count,'book':book,'book_count':book_count,
-                'total_admin':total_admin,'admin_count':admin_count,'total_manager':total_manager,'manager_count':manager_count}
+    context = {'admin':admin,'flag':flag,'customer':customer,'active_customer_count':active_customer_count,'book':book,'book_count':book_count,
+                'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count}
     return render(request,'admin/admin_panel.html',context)
 
 
@@ -661,8 +661,11 @@ def createManager(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin','manager'])
 def manageAdministrators(request):
-    total_admin = User.objects.filter(groups__name='admin')
-    total_manager = User.objects.filter(groups__name='manager')
+    total_admin = User.objects.filter(groups__name='admin').order_by('-is_active')
+    active_admin_count = total_admin.filter(is_active = True).count()
+    total_manager = User.objects.filter(groups__name='manager').order_by('-is_active')
+    active_manager_count = total_manager.filter(is_active = True).count()
+
     user = User.objects.get(username=request.user)
     user_group = user.groups.all()[0].name
 
@@ -674,11 +677,11 @@ def manageAdministrators(request):
         else:
             flag = False
             admin = user
-        context = {'total_admin':total_admin,'total_manager':total_manager,'admin':admin,'flag':flag}
+        context = {'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count,'admin':admin,'flag':flag}
         return render(request,'admin/admin_manage_administrators.html',context)
     elif user_group == 'manager':
         manager = Manager.objects.get(username=request.user)
-        context = {'total_admin':total_admin,'total_manager':total_manager,'manager':manager}
+        context = {'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count,'manager':manager}
         return render(request,'manager/manager_manage_administrators.html',context)
 
 
@@ -721,10 +724,15 @@ def editManagerProfile(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['manager'])
 def managerDashboard(request, username):
+    total_customer = User.objects.filter(groups__name='customer')
+    active_customer_count = total_customer.filter(is_active = True).count()
+
+    total_admin = User.objects.filter(groups__name='admin').order_by('-is_active')
+    active_admin_count = total_admin.filter(is_active = True).count()
+    total_manager = User.objects.filter(groups__name='manager').order_by('-is_active')
+    active_manager_count = total_manager.filter(is_active = True).count()
+
     manager = Manager.objects.get(username=request.user)
-    total_admin = User.objects.filter(groups__name='admin')
-    total_manager = User.objects.filter(groups__name='manager')
-    total_customer = Customer.objects.all()
     total_book = Book.objects.all()
 
     total_category = Category.objects.order_by('name')
@@ -736,8 +744,8 @@ def managerDashboard(request, username):
     category_dict =  zip(total_category,cat_book_count)
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
     
-    context = {'manager':manager,'total_admin':total_admin,'total_manager':total_manager,'total_customer':total_customer,
-                'total_book':total_book,'total_category':total_category,'category_dict':category_dict,'latest_books':latest_books}
+    context = {'manager':manager,'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count,'total_customer':total_customer,
+                'active_customer_count':active_customer_count,'total_book':total_book,'total_category':total_category,'category_dict':category_dict,'latest_books':latest_books}
     return render(request,'manager/manager_dashboard.html',context)
 
 
@@ -745,13 +753,15 @@ def managerDashboard(request, username):
 @allowed_users(allowed_roles=['manager'])
 def manageCustomers(request):
     manager = Manager.objects.get(username=request.user)
-    total_customer = Customer.objects.all()
-
-    customer_book_count = [cus.book_set.all().count() for cus in total_customer]
-    customer_dict = zip(total_customer,customer_book_count)
+    total_customer = User.objects.filter(groups__name='customer').order_by('-is_active')
+    active_customer_count = total_customer.filter(is_active = True).count()
+    
+    total_customer_obj = Customer.objects.all()
+    customer_book_count = [cus.book_set.all().count() for cus in total_customer_obj]
+    customer_dict = zip(total_customer_obj,customer_book_count)
     customer_dict = sorted(customer_dict, key = lambda t: t[1], reverse=True)
 
-    context = {'total_customer':total_customer,'manager':manager,'customer_dict':customer_dict}
+    context = {'total_customer':total_customer,'active_customer_count':active_customer_count,'manager':manager,'customer_dict':customer_dict}
     return render(request,'manager/manage_customers.html',context)
 
 
@@ -768,9 +778,12 @@ def deleteUser(request, username):
         if group == 'customer':
             messages.success(request, '"'+username+'" '+group+' is deleted successfully!')
             return redirect('manage-customers')
+        # elif group == 'admin':
+        #     messages.success(request, '"'+username+'" '+group+' is deleted successfully!')
+        #     return redirect('admin-panel', username = request.user)
         else:
             messages.success(request, '"'+username+'" '+group+' is deleted successfully!')
-            return redirect('manage-administrators')
+            return redirect('admin-panel', username = request.user)
 
     context = {'object':myUser}
     return render(request,"temp/delete_object.html",context)
@@ -789,9 +802,12 @@ def reactiveUser(request, username):
         if group == 'customer':
             messages.success(request, '"'+username+'" '+group+' is reactivated successfully!')
             return redirect('manage-customers')
+        # elif group == 'admin':
+        #     messages.success(request, '"'+username+'" '+group+' is reactivated successfully!')
+        #     return redirect('admin-panel', username = request.user)
         else:
             messages.success(request, '"'+username+'" '+group+' is reactivated successfully!')
-            return redirect('manage-administrators')
+            return redirect('admin-panel', username = request.user)
 
     context = {'myUser':myUser}
     return render(request,"temp/reactive_object.html",context)

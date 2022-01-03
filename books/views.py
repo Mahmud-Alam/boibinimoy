@@ -24,7 +24,8 @@ def books_home(request):
     books = bookFilter.qs
     books_count = books.count()
 
-    category_dict =  zip(categories,cat_book_count)
+    category_dict =  zip(categories,cat_book_count) 
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
 
     context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'category_dict':category_dict,'customer':customer}
     return render(request, "books/books_home.html", context)
@@ -165,7 +166,8 @@ def books_category(request,slug):
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
 
-    category_dict =  zip(categories,cat_book_count)
+    category_dict =  zip(categories,cat_book_count) 
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
 
     bookFilter = BookFilter(request.GET, queryset=books)
     books = bookFilter.qs

@@ -17,13 +17,13 @@
                         <strong>{{request.user}}</strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow bg-admin-card" aria-labelledby="dropdownUser1">
-                      <li><a class="dropdown-item" href="{% url 'admin-panel' request.user.username %}">Admin Panel</a></li>
+                      <li><a class="dropdown-item" href="{% url 'admin-panel' request.user.username %}"><i class="fas fa-tachometer-alt"></i> Admin Panel</a></li>
                       {% if flag == True %}
-                      <li><a class="dropdown-item" href="{% url 'admin-profile' request.user.username %}">Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'admin-profile' request.user.username %}"><i class="fas fa-user"></i> Profile</a></li>
                       {% endif %}
-                      <li><a class="dropdown-item" href="{% url 'create-admin' %}">Create Admin</a></li>
-                      <li><a class="dropdown-item" href="{% url 'create-manager' %}">Create Manager</a></li>
-                      <li><a class="dropdown-item" href="{% url 'manage-administrators' %}">Administrators</a></li>
+                      <li><a class="dropdown-item" href="{% url 'create-admin' %}"><i class="fas fa-user-plus"></i> Create Admin</a></li>
+                      <li><a class="dropdown-item" href="{% url 'create-manager' %}"><i class="fas fa-user-plus"></i> Create Manager</a></li>
+                      <li><a class="dropdown-item" href="{% url 'manage-administrators' %}"><i class="fas fa-user-shield"></i> Administrators</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     </ul>

@@ -35,10 +35,10 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">About us</a>
+                <a class="nav-link" href="#"><i class="fas fa-users"></i> About us</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link" href="#"><i class="fas fa-phone"></i> Contact</a>
               </li>
               {% endif %}
               
@@ -50,9 +50,9 @@
                         <strong>{{customer.username}}</strong>
                     </a>
                     <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
-                        <li><a class="dropdown-item" href="{% url 'create-post' %}">Create Post</a></li>
-                        <li><a class="dropdown-item" href="{% url 'books-home' %}">All Posts</a></li>
-                        <li><a class="dropdown-item" href="{% url 'user-profile' request.user.username %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'create-post' %}"><i class="fas fa-book"></i> Create Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'books-home' %}"><i class="fas fa-quote-right"></i> All Posts</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user-profile' request.user.username %}"><i class="fas fa-user"></i> Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     </ul>
