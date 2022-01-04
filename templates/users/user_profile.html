@@ -249,10 +249,75 @@
                             <a href="#"><i class="fa fa-microphone"></i></a>
                         </li>
                     </ul>
-                    <a href="{% url 'create-post' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Book</a>
+                    <div>
+                      <a href="{% url 'create-blog' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Blog</a>
+                      <a href="{% url 'create-post' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Book</a>
+                    </div>
                 </footer>
             </div>
             {% endif %}
+
+          <div class="tab-block">
+            {% if flag == True %}
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="" data-toggle="tab">Recent Blogs</a>
+              </li>
+            </ul>
+            {% else %}
+            <ul class="nav nav-tabs mt-3">
+              <li class="active">
+                <a href="" data-toggle="tab">{{customerInfo.username}}'s Recent Blogs</a>
+              </li>
+            </ul>
+            {% endif %}
+            <div class="tab-content p30 mb-5" >
+
+              {% if blogs %}
+              {% for blog in blogs %}
+              <div class="card mb-5">
+                {% if blog.image %}
+                  <img style="width: 40%; padding-top: 30px; margin-left: auto; margin-right: auto;" src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
+                {% endif %}
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <h2 class="">
+                          <a class="text-blue" href="#"> {{ blog.title }} </a>
+                        </h2>
+                  </div>
+                  <div class="mb-3">
+                    <span class="text-black text-capitalize me-3">
+                      <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
+                    </span>
+                    <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
+                      <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
+                    </a>
+                  </div>
+                  <p class="card-text">{{ blog.blog }}</p>
+                  
+                  <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
+                  
+                  <div class="d-flex justify-content-between">
+                    {% if flag == True %}
+                    <a href="#" class="btn btn-blue btn-icon">
+                      <i class="fas fa-edit"></i> Update Blog
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+
+              {% else %}
+              {% if flag == True %}
+              <p>You haven't post any Blog yet.</p>
+              {% else %}
+              <p>{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any Blog yet.</p>
+              {% endif %}
+              {% endif %}
+
+            </div>
+          </div>
 
           <div class="tab-block">
             {% if flag == True %}

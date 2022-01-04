@@ -218,8 +218,9 @@ def userProfile(request, username):
         flag=False
     
     books = customerInfo.book_set.order_by('-created')
+    blogs = customerInfo.username.blog_set.order_by('-created')
     
-    context = {'customer':customer,'manager':manager,'customerInfo':customerInfo,'books':books,'flag':flag}
+    context = {'customer':customer,'manager':manager,'customerInfo':customerInfo,'books':books,'blogs':blogs,'flag':flag}
     return render(request,'users/user_profile.html',context)
     
 
