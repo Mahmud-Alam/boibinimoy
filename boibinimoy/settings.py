@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
     'books.apps.BooksConfig',
+    'blogs.apps.BlogsConfig',
     'django_filters',
     'bootstrapform',
     'widget_tweaks',

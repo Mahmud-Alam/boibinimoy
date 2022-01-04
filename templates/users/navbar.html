@@ -25,7 +25,10 @@
                 <a class="nav-link" href="{% url 'user-profile' request.user.username %}"><i class="fas fa-user"></i> Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'books-home' %}"><i class="fas fa-quote-right"></i> Posts</a>
+                <a class="nav-link" href="{% url 'books-home' %}"><i class="fas fa-book"></i> Books</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'blogs-home' %}"><i class="fas fa-quote-right"></i> Blogs</a>
               </li>
               {% elif request.user.groups.all.0.name == 'manager' %}
               
