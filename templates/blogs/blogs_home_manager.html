@@ -1,0 +1,116 @@
+{% extends "users/main.html" %} 
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<style>
+  .bg-manager{
+    background-color: #250c61;
+  }
+  .bg-customer{
+    background-color: #0d4363;
+  }
+  .bg-manager-sidebar{
+    background-color: #18083d;
+  }
+</style>
+
+<div class="container">
+  <br><br>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row">
+        <div class="book-search-bg mb-4" style="background-color: #d4e7f5;">
+          <div class="panel-heading book-search-heading text-white bg-{{request.user.groups.all.0.name}}">
+            <h2 class="font-weight-700"><i class="fas fa-thumbtack"></i> Manager Pinned Blog Post({{manager_blogs.count}})</h2>
+          </div>
+          <div class="book-search-form">
+            
+            {% if manager_blogs %}
+              {% for blog in manager_blogs %}
+              <div class="col-lg-12 col-md-12 mb-4 book-post-bg">
+                <div class="blog-item d-flex">
+                  {% if blog.image %}
+                  <div class="blog-thumb">
+                    <a href="#">
+                      <img src="#" alt="{{ blog.title }}" class="img-thumbnail book-img"/>
+                    </a>
+                  </div>
+                  {% endif %}
+
+                  <div class="blog-item-content mx-4">
+                    <div>
+                        <div class="mb-3">
+                          <h2 class=""><a class="text-blue" href="{% url 'blogs-home-manager' %}"> {{ blog.title }} </a></h2>
+                        </div>
+                    
+                      <div class="mb-3">
+                        <span class="text-black text-capitalize me-3">
+                          <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
+                        </span>
+                        <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
+                          <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
+                        </a>
+                      </div>
+        
+                      <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
+
+                      <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <strong>There is no Blog Post from Manager yet.</strong>
+              {% endif %}
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      
+      <div class="book-side-bg ms-3 mb-4">
+        <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
+          <div class="panel-heading book-search-heading">
+            <h3 class="text-center text-muted font-weight-700"><i class="fas fa-bookmark"></i> Latest Books({{latest_books.count}})</h3>
+          </div>
+          <div class="sidebar-widget latest-post mb-3 px-4 py-2">
+            {% for book in latest_books %}
+            <div class="py-2">
+              <h6 class="my-2">
+                <a class="text-blue font-weight-700" href="{% url 'books-details' book.slug %}">
+                  {{ book.name }}
+                </a>
+              </h6>
+              <span class="text-sm text-muted" >
+                {{ book.created|date:"d N Y" }}
+            </span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="book-search-bg mb-4 ms-3">
+        <div class="panel-heading book-search-heading">
+          <h2 class="text-center font-weight-700">All Category({{category_count}})</h2>
+        </div>
+        <ul class="list-unstyled mb-3 px-4 py-2 my-2">
+          {% for cat,count in category_dict %}
+          <li class="align-items-center mt-3">
+            <a class="text-blue font-weight-700" href="{% url 'books-category' cat.slug %}">{{ cat.name }}({{count}})</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

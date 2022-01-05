@@ -7,13 +7,65 @@ from django.utils.text import slugify
 from .forms import *
 from users.decorators import *
 from users.models import *
+from books.models import *
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['customer'])
+@allowed_users(allowed_roles=['customer','manager'])
 def blogs_home(request):
-    context = {}
+    manager=customer=0
+    user = User.objects.get(username=request.user)
+    if user.groups.all()[0].name == 'manager':
+        manager = Manager.objects.get(username=request.user)
+    elif user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+
+    blogs = Blog.objects.order_by('-created')
+    manager_blogs = []
+    for blog in blogs:
+        if blog.creator.groups.all()[0].name == 'manager':
+            manager_blogs.append(blog)
+    
+    latest_manager_blogs = manager_blogs
+
+    latest_books = Book.objects.order_by('-created')[:5]
+    categories = Category.objects.order_by('name')
+    category_count = categories.count()
+    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    category_dict =  zip(categories,cat_book_count) 
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
+
+    context = {'manager':manager,'customer':customer,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,'category_dict':category_dict,'category_count':category_count}
     return render(request, "blogs/blogs_home.html", context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer','manager'])
+def blogs_home_manager(request):
+    manager=customer=0
+    user = User.objects.get(username=request.user)
+    if user.groups.all()[0].name == 'manager':
+        manager = Manager.objects.get(username=request.user)
+    elif user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+
+    blogs = Blog.objects.order_by('-created')
+    manager_blogs = []
+    for blog in blogs:
+        if blog.creator.groups.all()[0].name == 'manager':
+            manager_blogs.append(blog)
+    
+    latest_manager_blogs = manager_blogs
+
+    latest_books = Book.objects.order_by('-created')[:5]
+    categories = Category.objects.order_by('name')
+    category_count = categories.count()
+    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    category_dict =  zip(categories,cat_book_count) 
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
+
+    context = {'manager':manager,'customer':customer,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,'category_dict':category_dict,'category_count':category_count}
+    return render(request, "blogs/blogs_home_manager.html", context)
 
 
 @login_required(login_url='login')

@@ -30,11 +30,29 @@
             <div class="media-body va-m">
                 <div class="d-flex justify-content-between">
                     <h1>Personal Info</h1>
-                    {% if flag == True %}
+
+                    <div class="d-flex align-items-center">
+                      <ul class="navbar-nav">
+                        {% if flag == True %}
+                        <li class="nav-item">
+                          <div class="dropdown">
+                              <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-edit"></i>
+                              </a>
+                              <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                  <li><a class="dropdown-item" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit Profile</a></li>
+                              </ul>
+                          </div>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+
+                    <!-- {% if flag == True %}
                     <div class="d-flex align-items-center">
                         <a class="btn btn-blue" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
                     </div>
-                    {% endif %}
+                    {% endif %} -->
                 </div>
                 <br>
                 <div class="row">
@@ -78,11 +96,24 @@
           <div class="media-body va-m">
               <div class="d-flex justify-content-between">
                   <h1>Personal Info</h1>
-                  {% if flag == True %}
+
                   <div class="d-flex align-items-center">
-                      <a class="btn btn-blue" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit profile</a>
+                    <ul class="navbar-nav">
+                      {% if flag == True %}
+                      <li class="nav-item">
+                        <div class="dropdown">
+                            <a href="/" class="d-flex align-items-center text-muted text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                <li><a class="dropdown-item" href='{% url "edit-user-profile" %}'><i class="fas fa-edit"></i> Edit Profile</a></li>
+                            </ul>
+                        </div>
+                      </li>
+                      {% endif %}
+                    </ul>
                   </div>
-                  {% endif %}
+
               </div>
               <br>
               <div class="row">
@@ -250,8 +281,27 @@
                         </li>
                     </ul>
                     <div>
+                      <ul class="navbar-nav">
+                        {% if flag == True %}
+                        <li class="nav-item">
+                          <div class="dropdown">
+                              <a href="/" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <strong><i class="fas fa-quote-left"></i> Create Post</strong>
+                              </a>
+                              <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                  <li><a class="dropdown-item" href="{% url 'create-blog' %}"><i class="fas fa-quote-right"></i> Post New Blog</a></li>
+                                  <li><hr class="dropdown-divider"></li>
+                                  <li><a class="dropdown-item" href="{% url 'create-post' %}"><i class="fas fa-book"></i> Post New Book</a></li>
+                                </ul>
+                              </div>
+                            </li>
+                            {% endif %}
+                          </ul>
+                          
+                      <!-- <a class="dropdown-item" href="{% url 'create-post' %}"><i class="fas fa-book"></i> Create Post</a>
                       <a href="{% url 'create-blog' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Blog</a>
-                      <a href="{% url 'create-post' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Book</a>
+                      <a href="{% url 'create-post' %}" class="btn btn-blue"><i class="far fa-paper-plane"></i> Post New Book</a> -->
+                    
                     </div>
                 </footer>
             </div>
@@ -276,15 +326,36 @@
               {% if blogs %}
               {% for blog in blogs %}
               <div class="card mb-5">
+                
                 {% if blog.image %}
                   <img style="width: 40%; padding-top: 30px; margin-left: auto; margin-right: auto;" src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
                 {% endif %}
                   <div class="card-body">
-                    <div class="mb-3">
+                    <div class="mb-3 d-flex justify-content-between">
                       <h2 class="">
                           <a class="text-blue" href="#"> {{ blog.title }} </a>
-                        </h2>
-                  </div>
+                      </h2>
+
+                      <div class="d-flex align-items-center">
+                        <ul class="navbar-nav">
+                          {% if flag == True %}
+                          <li class="nav-item">
+                            <div class="dropdown">
+                                <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="fas fa-edit"></i>
+                                </a>
+                                <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Update Blog</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
+                                  </ul>
+                                </div>
+                              </li>
+                              {% endif %}
+                            </ul>
+                      </div>
+
+                    </div>
                   <div class="mb-3">
                     <span class="text-black text-capitalize me-3">
                       <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
@@ -293,17 +364,10 @@
                       <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
                     </a>
                   </div>
-                  <p class="card-text">{{ blog.blog }}</p>
+                  <p class="card-text">{{ blog.blog | linebreaksbr }}</p>
                   
                   <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
                   
-                  <div class="d-flex justify-content-between">
-                    {% if flag == True %}
-                    <a href="#" class="btn btn-blue btn-icon">
-                      <i class="fas fa-edit"></i> Update Blog
-                    </a>
-                    {% endif %}
-                  </div>
                 </div>
               </div>
               {% endfor %}
@@ -338,7 +402,30 @@
               {% if books %}
               {% for book in books %}
               <div class="card mb-5">
-                  <img style="width: 40%; padding-top: 30px; margin-left: auto; margin-right: auto;" src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
+                  <div class="mb-3 d-flex justify-content-between">
+                    <img style="width: 40%; padding-top: 30px; margin-left: auto; margin-right: auto;" src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
+
+                    <div class="p-3">
+                      <ul class="navbar-nav">
+                        {% if flag == True %}
+                        <li class="nav-item">
+                          <div class="dropdown">
+                              <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-edit"></i>
+                              </a>
+                              <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                  <li><a class="dropdown-item" href="{% url 'update-post' book.id %}"><i class="fas fa-edit"></i> Update Post</a></li>
+                                  <li><hr class="dropdown-divider"></li>
+                                  <li><a class="dropdown-item" href="{% url 'delete-post' book.id %}"><i class="fas fa-trash-alt"></i> Delete Post</a></li>
+                                </ul>
+                              </div>
+                            </li>
+                            {% endif %}
+                          </ul>
+                    </div>
+
+                  </div>
+                  
                   <div class="card-body">
                     <div class="mb-3">
                       <h2 class="">
@@ -388,11 +475,11 @@
                     <a href="{% url 'books-details' book.slug %}" class="btn btn-blue btn-icon">
                       See Details <i class="fas fa-angle-double-right"></i>
                     </a>
-                    {% if flag == True %}
+                    <!-- {% if flag == True %}
                     <a href="{% url 'update-post' book.id %}" class="btn btn-blue btn-icon">
                       <i class="fas fa-edit"></i> Update Post
                     </a>
-                    {% endif %}
+                    {% endif %} -->
                   </div>
                 </div>
               </div>

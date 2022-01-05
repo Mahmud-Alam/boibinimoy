@@ -3,117 +3,122 @@
 {% load widget_tweaks %}
 {% block content %}
 
+<style>
+  .bg-manager{
+    background-color: #250c61;
+  }
+  .bg-customer{
+    background-color: #0d4363;
+  }
+  .bg-manager-sidebar{
+    background-color: #18083d;
+  }
+</style>
+
 <div class="container">
   <br><br>
   <div class="row">
     <div class="col-lg-8">
       <div class="row">
-        <div class="book-search-bg mb-4">
-          <div class="panel-heading book-search-heading">
-            <h2 class="font-weight-700"><i class="fas fa-search"></i> Search Your Books: {{books_count}} Books</h2>
-          </div>
-          <div class="book-search-form">
-            <form action="" method="get">
-              <!-- {{bookFilter.form.as_p }} -->
-              <div class="row form-group">
-                  <div class="col-md-9 mb-3">
-                      <h6 class="text-muted mb-3">Book Name</h6>
-                      {{ bookFilter.form.name|add_class:"form-control" }}
-                  </div>
-                  <div class="col-md-3 mb-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-blue"><i class="fas fa-search"></i> Search</button>
-                  </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- <div class="book-search-bg mb-4">
-          {% if search_books_count %}
-          <p class="text-muted mb-3">Search found {{search_books_count}} books.</p>
-          {% else %}
-          <p class="text-muted mb-3">Total Post : {{all_books_count}}</p>
-          {% endif %}
-        </div> -->
-
-        {% for book in books %}
-        <div class="col-lg-12 col-md-12 mb-4 book-post-bg">
+    
+        {% for blog in blogs %}
+        {% if blog.creator.groups.all.0.name == 'manager' %}
+        <div class="col-lg-12 col-md-12 mb-4 book-post-bg" style="background-color: #d4e7f5;">
           <div class="blog-item d-flex">
+            {% if blog.image %}
             <div class="blog-thumb">
-              <a href="{% url 'books-details' book.slug %}">
-                <img src="{{ book.bookImageURL }}" alt="{{ book.name }}" class="img-thumbnail book-img"/>
+              <a href="#">
+                <img src="#" alt="{{ blog.name }}" class="img-thumbnail book-img"/>
               </a>
             </div>
+            {% endif %}
 
             <div class="blog-item-content mx-4">
               <div>
                   <div class="mb-3">
-                    <h2 class="">
-                        <a class="text-blue" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
-                      </h2>
-                      <h6 class="text-blue"> by {{book.author}} (Author)</h6>
-                </div>
-                <div class="blog-item-meta mb-2">
-                  <span class="text-black text-capitalize me-3">
-                    <i class="fas fa-book mr-2"></i> {{ book.edition }} Edition
-                  </span>
-                  <!-- <span class="text-capitalize me-3">
-                    <i class="fas fa-bookmark mr-2"></i> {{ book.category.category }} Category
-                  </span> -->
-                  {% for cat in book.category.all %}
-                      <span class="text-capitalize me-3">
-                        &bull; {{ cat.name }}
-                      </span>
-                  {%endfor%}
-                </div>
+                    <h2 class=""><a class="text-blue" href="{% url 'blogs-home-manager' %}"> {{ blog.title }} </a></h2>
+                  </div>
+              
                 <div class="mb-3">
                   <span class="text-black text-capitalize me-3">
-                    <i class="far fa-calendar-alt mr-2"></i> {{ book.created|date:"d N Y" }}
+                    <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
                   </span>
-                  <a href="{% url 'user-profile' book.creator.username %}" class="text-blue text-capitalize mr-3">
-                    <i class="fa fa-user mr-2"></i> {{ book.creator.first_name }}
+                  <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
+                    <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
                   </a>
                 </div>
   
-                <p class="mb-3">{{ book.description|truncatechars:250 }}</p>
+                <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
 
-                <div class="d-flex align-items-end">
-                  {% if book.exchange == 'Yes' %}
-                  <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;" class="font-weight-900 text-blue">{{book.exchange}}</span></p>
-                  {% else %}
-                  <!-- <p class="font-weight-700">Exchange: <span style="font-size: 1.5em;">{{book.exchange}}</span></p> -->
-                  {% endif%}
-                  {% if book.price != None %}
-                  <p class="font-weight-700 ms-3">Price: <span class="font-weight-900 text-blue" style="font-size: 2em;">&#2547;</span><span style="font-size: 1.5em;" class="font-weight-900 text-blue">{{book.price}}</span></p>
-                  {% else %}
-                  <!-- <p class="font-weight-700 ms-3">Price: <span style="font-size: 1.5em;">{{book.price}}</span></p> -->
-                  {% endif%}
-                </div>
-
-                <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
+                <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
               </div>
 
-              <div class="mt-3">
-                <a href="{% url 'books-details' book.slug %}" class="btn btn-blue btn-icon">
-                  See Details <i class="fas fa-angle-double-right"></i>
-                </a>
-              </div>
             </div>
           </div>
         </div>
+        {% else %}
+        <div class="col-lg-12 col-md-12 mb-4 book-post-bg">
+          <div class="blog-item d-flex">
+            {% if blog.image %}
+            <div class="blog-thumb">
+              <a href="#">
+                <img src="#" alt="{{ blog.name }}" class="img-thumbnail book-img"/>
+              </a>
+            </div>
+            {% endif %}
+
+            <div class="blog-item-content mx-4">
+              <div>
+                  <div class="mb-3">
+                    <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
+                  </div>
+              
+                <div class="mb-3">
+                  <span class="text-black text-capitalize me-3">
+                    <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
+                  </span>
+                  <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
+                    <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
+                  </a>
+                </div>
+  
+                <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
+
+                <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
         {% endfor %}
       </div>
     </div>
 
     <div class="col-lg-4">
+      <div class="book-side-bg ms-3 mb-4" style="background-color: #d4e7f5;">
+        <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
+          <div class="panel-heading book-search-heading bg-{{request.user.groups.all.0.name}}">
+            <h3 class="text-center text-white font-weight-700"><i class="fas fa-thumbtack"></i> Manager Pinned Post({{latest_manager_blogs.count}})</h3>
+          </div>
+          <div class="sidebar-widget latest-post mb-3 px-4 py-2">
+            {% for blog in latest_manager_blogs %}
+            <div class="py-2">
+              <h6 class="my-2">
+                <a class="text-blue font-weight-700" href="{% url 'blogs-home-manager' %}">
+                  {{ blog.title }}
+                </a>
+              </h6>
+              <span class="text-sm text-muted" >
+                {{ blog.created|date:"d N Y" }}
+            </span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
       <div class="book-side-bg ms-3 mb-4">
-        <!-- <div class="d-flex justify-content-center">
-          <a href="{% url 'create-post' %}" class="btn btn-blue my-4"
-            ><i class="fa fa-plus"></i>
-            <span> Post a New Book</span>
-          </a>
-        </div> -->
-
         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
           <div class="panel-heading book-search-heading">
             <h3 class="text-center text-muted font-weight-700"><i class="fas fa-bookmark"></i> Latest Books({{latest_books.count}})</h3>
