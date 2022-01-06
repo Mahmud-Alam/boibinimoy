@@ -13,6 +13,15 @@
   .bg-manager-sidebar{
     background-color: #18083d;
   }
+  .bg-blog{
+    background-color: rgb(255, 255, 255);
+  }
+  .bg-manager-blog{
+    background-color: #d4e7f5;
+  }
+  .username-text{
+    color: #6c757d;
+  }
 </style>
 
 <div class="container">
@@ -22,74 +31,49 @@
       <div class="row">
     
         {% for blog in blogs %}
-        {% if blog.creator.groups.all.0.name == 'manager' %}
-        <div class="col-lg-12 col-md-12 mb-4 book-post-bg" style="background-color: #d4e7f5;">
-          <div class="blog-item d-flex">
-            {% if blog.image %}
-            <div class="blog-thumb">
-              <a href="#">
-                <img src="#" alt="{{ blog.name }}" class="img-thumbnail book-img"/>
-              </a>
-            </div>
-            {% endif %}
-
-            <div class="blog-item-content mx-4">
+        {% if blog.creator.groups.all.0.name == 'customer' %}
+          
+          <div class="sidebar-wrap">
+            <div class="panel-heading book-search-heading d-flex align-items-center">
+              {% for cus in all_customer %}
+              {% if cus.username == blog.creator %}
+              <img src='{{cus.customerImageURL}}' alt="" width="50" height="50" class="rounded-circle me-2">
               <div>
-                  <div class="mb-3">
-                    <h2 class=""><a class="text-blue" href="{% url 'blogs-home-manager' %}"> {{ blog.title }} </a></h2>
-                  </div>
-              
-                <div class="mb-3">
-                  <span class="text-black text-capitalize me-3">
-                    <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
-                  </span>
-                  <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
-                    <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
-                  </a>
-                </div>
-  
-                <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
-
-                <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
+                <h4 class="font-weight-700 ps-2"><a class="username-text" href="{% url 'user-profile' blog.creator %}"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a></h4>
+                <h6 class="text-capitalize ps-2">
+                  <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
+                </h6>
               </div>
-
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="sidebar-widget latest-post px-4 py-2 bg-blog" style="border-bottom: 1px solid #e2e2e2;">
+                <div class="mb-3">
+                  <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
+                </div>
+                <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
+                <p class="card-text mb-2"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
             </div>
           </div>
-        </div>
-        {% else %}
-        <div class="col-lg-12 col-md-12 mb-4 book-post-bg">
-          <div class="blog-item d-flex">
-            {% if blog.image %}
-            <div class="blog-thumb">
-              <a href="#">
-                <img src="#" alt="{{ blog.name }}" class="img-thumbnail book-img"/>
-              </a>
-            </div>
-            {% endif %}
 
-            <div class="blog-item-content mx-4">
-              <div>
-                  <div class="mb-3">
-                    <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
-                  </div>
-              
-                <div class="mb-3">
-                  <span class="text-black text-capitalize me-3">
-                    <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
-                  </span>
-                  <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
-                    <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
-                  </a>
-                </div>
-  
-                <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
-
-                <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
-              </div>
-
+          <div class="col-lg-12 col-md-12 mb-4">
+            <div class="p-3 d-flex justify-content-end" style="background-color: #fafafa; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <div class="dropdown">
+                      <a href="/" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                          <strong><i class="fas fa-quote-left"></i> Create Comment</strong>
+                      </a>
+                      <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                          <li><a class="dropdown-item" href="{% url 'create-blog' %}"><i class="fas fa-quote-right"></i> Post New Blog</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{% url 'create-post' %}"><i class="fas fa-book"></i> Post New Book</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>          
             </div>
           </div>
-        </div>
         {% endif %}
         {% endfor %}
       </div>
