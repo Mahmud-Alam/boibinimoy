@@ -15,3 +15,12 @@ class BlogCommentForm(forms.ModelForm):
         widgets = {
           'comment': forms.Textarea(attrs={'rows':3, 'cols':100}),
         }
+
+class ProfileBlogCommentForm(forms.ModelForm):
+    class Meta:
+        model = BlogComment
+        fields = '__all__'
+        exclude = ['creator']
+        widgets = {
+          'comment': forms.Textarea(attrs={'rows':3, 'cols':90}),
+        }

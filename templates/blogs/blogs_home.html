@@ -53,7 +53,7 @@
                   {% elif comment.creator.groups.all.0.name == 'manager' %}
                   {% for commentman in all_manager %}
                   {% if commentman.username == comment.creator %}
-                  <img src='{{commentman.managerImageURL}}' alt="" width="40" height="40" class="rounded-circle me-2">
+                  <img src='{{commentman.managerImageURL}}' alt="" width="34" height="34" class="rounded-circle me-2">
                   {% endif %}
                   {% endfor %}
                   {% endif %}

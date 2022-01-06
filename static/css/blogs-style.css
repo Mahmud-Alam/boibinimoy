@@ -28,3 +28,18 @@
 .margin-zero{
     margin: 0;
 }
+.border-all{
+    border: 1px solid #e2e2e2;
+}
+.border-top{
+    border-top: 1px solid #e2e2e2;
+}
+.border-bottom{
+    border-bottom: 1px solid #e2e2e2;
+}
+.border-left{
+    border-left: 1px solid #e2e2e2;
+}
+.border-right{
+    border-right: 1px solid #e2e2e2;
+}

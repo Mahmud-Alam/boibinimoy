@@ -321,55 +321,103 @@
               </li>
             </ul>
             {% endif %}
-            <div class="tab-content p30 mb-5" >
+            <div class="tab-content p30 mb-5">
 
+              <!-- Customer Blog Section -->
               {% if blogs %}
               {% for blog in blogs %}
-              <div class="card mb-5">
-                
-                {% if blog.image %}
-                  <img style="width: 40%; padding-top: 30px; margin-left: auto; margin-right: auto;" src="{{ book.bookImageURL }}" class="card-img-top" alt="{{ book.name }}">
-                {% endif %}
-                  <div class="card-body">
-                    <div class="mb-3 d-flex justify-content-between">
-                      <h2 class="">
-                          <a class="text-blue" href="#"> {{ blog.title }} </a>
-                      </h2>
-
-                      <div class="d-flex align-items-center">
-                        <ul class="navbar-nav">
-                          {% if flag == True %}
-                          <li class="nav-item">
-                            <div class="dropdown">
-                                <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  <i class="fas fa-edit"></i>
-                                </a>
-                                <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Update Blog</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
-                                  </ul>
-                                </div>
-                              </li>
-                              {% endif %}
-                            </ul>
-                      </div>
-
-                    </div>
-                  <div class="mb-3">
-                    <span class="text-black text-capitalize me-3">
+              
+              <div class="sidebar-wrap">
+                <div class="panel-heading book-search-heading d-flex align-items-center border-all">
+                  <img src='{{customerInfo.customerImageURL}}' alt="" width="50" height="50" class="rounded-circle me-2">
+                  <div>
+                    <h4 class="font-weight-700 ps-2"><a class="username-text" href="{% url 'user-profile' blog.creator %}"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a></h4>
+                    <h6 class="text-capitalize ps-2 font-small">
                       <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
-                    </span>
-                    <a href="{% url 'user-profile' blog.creator.username %}" class="text-blue text-capitalize mr-3">
-                      <i class="fa fa-user mr-2"></i> {{ blog.creator.first_name }}
-                    </a>
+                    </h6>
                   </div>
-                  <p class="card-text">{{ blog.blog | linebreaksbr }}</p>
-                  
-                  <p class="card-text"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
-                  
+                </div>
+                <div class="sidebar-widget latest-post px-4 py-2 bg-blog border-bottom border-left border-right">
+                    <div class="mb-3">
+                      <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
+                    </div>
+                    <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
+                    <p class="card-text mb-2"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
                 </div>
               </div>
+    
+              <!-- Customer Blog Old Comment Section -->
+              {% if blog.blogcomment_set.all %}
+              <div class="col-lg-12 col-md-12">
+                <div class="p-3 border-left border-right" style="background-color: #fafafa;">
+                  <p class="text-muted fw-bold">All Comments</p>
+                  {% for comment in blog.blogcomment_set.all %}
+                  <div class="pt-2 pb-2" style="border-bottom: 1px solid #e2e2e2;">
+                    <div class="d-flex align-items-center">
+                      {% if comment.creator.groups.all.0.name == 'customer' %}
+                      {% for commentCus in all_customer %}
+                      {% if commentCus.username == comment.creator %}
+                      <img src='{{commentCus.customerImageURL}}' alt="" width="34" height="34" class="rounded-circle me-2">
+                      {% endif %}
+                      {% endfor %}
+                      {% elif comment.creator.groups.all.0.name == 'manager' %}
+                      {% for commentman in all_manager %}
+                      {% if commentman.username == comment.creator %}
+                      <img src='{{commentman.managerImageURL}}' alt="" width="34" height="34" class="rounded-circle me-2">
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+    
+                      <div>
+                        <h6 class="ps-2"><a class="username-text" href="{% url 'user-profile' comment.creator %}"> {{comment.creator.first_name}} {{comment.creator.last_name}} </a></h6>
+                        <h6 class="text-muted ps-2 font-tiny">
+                          <i class="far fa-calendar-alt mr-2"></i> {{ comment.created|date:"d N Y" }}
+                        </h6>
+                      </div>
+                    </div>
+                    <p class="margin-zero">{{comment.comment}}</p>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+    
+              <!-- Blog Create Comment Section -->
+              <div class="col-lg-12 col-md-12 mb-4">
+                <div class="p-3 d-flex justify-content-end border-bottom border-left border-right" style="background-color: #fafafa; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                  <ul class="navbar-nav" style="width: 100%;">
+                    <li class="nav-item">
+                      <div class="dropdown">
+                          <a href="/" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                              <strong><i class="fas fa-quote-left"></i> Create Comment</strong>
+                          </a>
+                          <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953; width: 100%;">
+                              
+                            <div class="m-2">
+                              <form method="POST" action="" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="p-3">
+                                  {% for field in commentForm %}
+                                  {% if field.label == 'Blog' %}
+                                  <input type="hidden" id="blogTitle" name="blogTitle" id="replyingto_id" value="{{ blog }}">
+                                  {% else %}
+                                  <div>
+                                    {{field}}
+                                  </div>
+                                  {% endif %}
+                                  {% endfor %}
+                                </div>
+                                <input class="btn btn--sub btn--lg  my-md btn-blue" type="submit" value="Submit" />
+                              </form>
+                            </div>
+                            
+                          </ul>
+                      </div>
+                    </li>
+                  </ul>          
+                </div>
+              </div>
+
               {% endfor %}
 
               {% else %}
