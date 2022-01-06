@@ -12,3 +12,6 @@ class BlogCommentForm(forms.ModelForm):
         model = BlogComment
         fields = '__all__'
         exclude = ['creator']
+        widgets = {
+          'comment': forms.Textarea(attrs={'rows':3, 'cols':100}),
+        }

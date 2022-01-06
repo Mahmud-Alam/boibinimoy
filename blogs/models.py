@@ -16,6 +16,7 @@ class Blog(models.Model):
 
 class BlogComment(models.Model):
     creator = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, null=True, blank=True, on_delete=models.CASCADE)
     comment = models.TextField()
     image = models.ImageField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)

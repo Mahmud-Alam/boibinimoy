@@ -1,6 +1,7 @@
 {% extends "users/main.html" %} 
 {% load static %}
 {% load widget_tweaks %}
+{% load bootstrap %}
 {% block content %}
 
 <style>
@@ -22,6 +23,15 @@
   .username-text{
     color: #6c757d;
   }
+  .font-small{
+    font-size: 12px;
+  }
+  .font-tiny{
+    font-size: 10px;
+  }
+  .margin-zero{
+    margin: 0;
+  }
 </style>
 
 <div class="container">
@@ -40,7 +50,7 @@
               <img src='{{cus.customerImageURL}}' alt="" width="50" height="50" class="rounded-circle me-2">
               <div>
                 <h4 class="font-weight-700 ps-2"><a class="username-text" href="{% url 'user-profile' blog.creator %}"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a></h4>
-                <h6 class="text-capitalize ps-2">
+                <h6 class="text-capitalize ps-2 font-small">
                   <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
                 </h6>
               </div>
@@ -56,22 +66,75 @@
             </div>
           </div>
 
+          <!-- Blog Old Comment Section -->
+          {% if blog.blogcomment_set.all %}
+          <div class="col-lg-12 col-md-12">
+            <div class="p-3" style="background-color: #fafafa;">
+              <p class="text-muted fw-bold">All Comments</p>
+              {% for comment in blog.blogcomment_set.all %}
+              <div class="pt-2 pb-2" style="border-bottom: 1px solid #e2e2e2;">
+                <div class="d-flex align-items-center">
+                  {% if comment.creator.groups.all.0.name == 'customer' %}
+                  {% for commentCus in all_customer %}
+                  {% if commentCus.username == comment.creator %}
+                  <img src='{{commentCus.customerImageURL}}' alt="" width="34" height="34" class="rounded-circle me-2">
+                  {% endif %}
+                  {% endfor %}
+                  {% elif comment.creator.groups.all.0.name == 'manager' %}
+                  {% for commentman in all_manager %}
+                  {% if commentman.username == comment.creator %}
+                  <img src='{{commentman.managerImageURL}}' alt="" width="40" height="40" class="rounded-circle me-2">
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+
+                  <div>
+                    <h6 class="ps-2"><a class="username-text" href="{% url 'user-profile' comment.creator %}"> {{comment.creator.first_name}} {{comment.creator.last_name}} </a></h6>
+                    <h6 class="text-muted ps-2 font-tiny">
+                      <i class="far fa-calendar-alt mr-2"></i> {{ comment.created|date:"d N Y" }}
+                    </h6>
+                  </div>
+                </div>
+                <p class="margin-zero">{{comment.comment}}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Blog Create Comment Section -->
           <div class="col-lg-12 col-md-12 mb-4">
             <div class="p-3 d-flex justify-content-end" style="background-color: #fafafa; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-              <ul class="navbar-nav">
+              <ul class="navbar-nav" style="width: 100%;">
                 <li class="nav-item">
                   <div class="dropdown">
                       <a href="/" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                           <strong><i class="fas fa-quote-left"></i> Create Comment</strong>
                       </a>
-                      <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
-                          <li><a class="dropdown-item" href="{% url 'create-blog' %}"><i class="fas fa-quote-right"></i> Post New Blog</a></li>
-                          <li><hr class="dropdown-divider"></li>
-                          <li><a class="dropdown-item" href="{% url 'create-post' %}"><i class="fas fa-book"></i> Post New Book</a></li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>          
+                      <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953; width: 100%;">
+                          
+                        <div class="m-2">
+                          <form method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="p-3">
+                              {% for field in commentForm %}
+                              {% if field.label == 'Blog' %}
+                              <input type="hidden" id="blogTitle" name="blogTitle" id="replyingto_id" value="{{ blog }}">
+                              {% else %}
+                              <div>
+                                {{field}}
+                              </div>
+                              {% endif %}
+                              {% endfor %}
+                            </div>
+                            <input class="btn btn--sub btn--lg  my-md btn-blue" type="submit" value="Submit" />
+                          </form>
+                        </div>
+                        
+                      </ul>
+                  </div>
+                </li>
+              </ul>          
             </div>
           </div>
         {% endif %}

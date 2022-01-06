@@ -37,16 +37,24 @@ def blogs_home(request):
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
 
+    comments = BlogComment.objects.filter()
+
     # Comment Part
     commentForm = BlogCommentForm()
     if request.method == 'POST':
+        blogTitle = request.POST.get('blogTitle')
+        blog = Blog.objects.get(title = blogTitle)
         commentForm = BlogCommentForm(request.POST, request.FILES)
         if commentForm.is_valid():
             obj = commentForm.save()
             obj.creator = user
+            obj.blog = blog
             obj.save()
+            return redirect('blogs-home')
 
-    context = {'manager':manager,'customer':customer,'all_customer':all_customer,'all_manager':all_manager,'commentForm':commentForm,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,'category_dict':category_dict,'category_count':category_count}
+    context = {'manager':manager,'customer':customer,'all_customer':all_customer,'all_manager':all_manager,
+                'commentForm':commentForm,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,
+                'category_dict':category_dict,'category_count':category_count}
     return render(request, "blogs/blogs_home.html", context)
 
 
