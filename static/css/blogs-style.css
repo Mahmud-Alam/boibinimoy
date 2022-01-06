@@ -1,0 +1,30 @@
+.bg-manager{
+    background-color: #250c61;
+}
+.bg-customer{
+    background-color: #0d4363;
+}
+.bg-pinned{
+    background-color: #0b3953;
+}
+.bg-manager-sidebar{
+    background-color: #18083d;
+}
+.bg-blog{
+    background-color: rgb(255, 255, 255);
+}
+.bg-manager-blog{
+    background-color: #d4e7f5;
+}
+.username-text{
+    color: #6c757d;
+}
+.font-small{
+    font-size: 12px;
+}
+.font-tiny{
+    font-size: 10px;
+}
+.margin-zero{
+    margin: 0;
+}

@@ -4,36 +4,6 @@
 {% load bootstrap %}
 {% block content %}
 
-<style>
-  .bg-manager{
-    background-color: #250c61;
-  }
-  .bg-customer{
-    background-color: #0d4363;
-  }
-  .bg-manager-sidebar{
-    background-color: #18083d;
-  }
-  .bg-blog{
-    background-color: rgb(255, 255, 255);
-  }
-  .bg-manager-blog{
-    background-color: #d4e7f5;
-  }
-  .username-text{
-    color: #6c757d;
-  }
-  .font-small{
-    font-size: 12px;
-  }
-  .font-tiny{
-    font-size: 10px;
-  }
-  .margin-zero{
-    margin: 0;
-  }
-</style>
-
 <div class="container">
   <br><br>
   <div class="row">
@@ -146,7 +116,7 @@
       <div class="book-side-bg ms-3 mb-4" style="background-color: #d4e7f5;">
         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
           <div class="panel-heading book-search-heading bg-{{request.user.groups.all.0.name}}">
-            <h3 class="text-center text-white font-weight-700"><i class="fas fa-thumbtack"></i> Manager Pinned Post({{latest_manager_blogs.count}})</h3>
+            <h3 class="text-center text-white font-weight-700"><i class="fas fa-thumbtack"></i> Manager Pinned Post({{latest_manager_blogs|length}})</h3>
           </div>
           <div class="sidebar-widget latest-post mb-3 px-4 py-2">
             {% for blog in latest_manager_blogs %}
