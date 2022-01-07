@@ -353,9 +353,9 @@
                                   <i class="fas fa-edit"></i>
                                 </a>
                                 <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Update Blog</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'update-blog' blog.id %}"><i class="fas fa-edit"></i> Update Blog</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'delete-blog' blog.id %}"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
                                   </ul>
                                 </div>
                               </li>

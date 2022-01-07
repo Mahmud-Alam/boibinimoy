@@ -143,3 +143,57 @@ def create_blog(request):
     }
 
     return render(request, 'blogs/create_blog_post.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager','customer'])
+def update_blog(request,pk):
+    user = User.objects.get(username=request.user)
+    manager=customer=0
+    
+    if user.groups.all()[0].name == 'manager':
+        manager = Manager.objects.get(username=request.user)
+    elif user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+
+    task = "Update"
+    blog = Blog.objects.get(id=pk)
+    form = BlogForm(instance=blog)
+
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES, instance=blog)
+        if form.is_valid():
+            form.save()
+            full_name = user.first_name+' '+user.last_name
+            messages.success(request,'"'+full_name+'", your blog post updated successfully!')
+
+            if user.groups.all()[0].name == 'manager':
+                return redirect('manager-dashboard', username = request.user)
+            elif user.groups.all()[0].name == 'customer':
+                return redirect('user-profile', username = request.user)
+
+    context = {
+        'task': task,
+        'form': form,
+        'manager':manager,
+        'customer':customer,
+    }
+
+    return render(request, 'blogs/create_blog_post.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager','customer'])
+def delete_blog(request,pk):
+    blog = Blog.objects.get(id=pk)
+    title = "Delete Blog"
+    text1 = "delete blog"
+
+    if request.method == 'POST':
+        blog.delete()
+        full_name = request.user.first_name+' '+request.user.last_name
+        messages.success(request, full_name+', your blog deleted!')
+        return redirect('user-profile', username = request.user)
+
+    context = {'blog':blog,'title':title,'text1':text1}
+    return render(request,"blogs/delete_blog_post.html",context)

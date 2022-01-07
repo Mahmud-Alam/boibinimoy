@@ -18,12 +18,12 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
-                <p class="card-text"><span class="span-name">{{book.creator.first_name}} {{book.creator.last_name}}</span>, are you sure you want to {{text1}} <span class="span-name">"{{book.name}}"</span>?</p>
+                <p class="card-text"><span class="span-name">{{blog.creator.first_name}} {{blog.creator.last_name}}</span>, are you sure you want to {{text1}} <span class="span-name">"{{blog.title}}"</span>?</p>
                 <br>
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="d-flex justify-content-evenly">
-                        <a href="{% url 'user-profile' book.creator.username %}" class="btn btn-darkred">Cancel</a>
+                        <a href="{% url 'user-profile' blog.creator %}" class="btn btn-darkred">Cancel</a>
                         <input type="submit" class="btn btn-darkred" value="{{title}}">
                     </div>
                 </form>
