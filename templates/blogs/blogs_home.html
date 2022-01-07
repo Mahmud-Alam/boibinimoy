@@ -32,6 +32,9 @@
                   <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
                 </div>
                 <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
+                {% if blog.image %}
+                <img src="{{blog.image.url}}" alt="">
+                {% endif %}
                 <p class="card-text mb-2"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
             </div>
           </div>

@@ -728,8 +728,24 @@ def manageAdministrators(request):
 @allowed_users(allowed_roles=['admin','manager'])
 def managerProfile(request, username):
     manager = Manager.objects.get(username=request.user)
-    
-    context = {'manager':manager}
+    blogs = manager.username.blog_set.order_by('-created')
+    all_customer = Customer.objects.all()
+    all_manager = Manager.objects.all()
+
+    # Comment Part
+    commentForm = BlogCommentForm()
+    if request.method == 'POST':
+        blogTitle = request.POST.get('blogTitle')
+        blog = Blog.objects.get(title = blogTitle)
+        commentForm = BlogCommentForm(request.POST, request.FILES)
+        if commentForm.is_valid():
+            obj = commentForm.save()
+            obj.creator = request.user
+            obj.blog = blog
+            obj.save()
+            return redirect('manager-profile', manager.username)
+
+    context = {'manager':manager,'blogs':blogs,'commentForm':commentForm,'all_customer':all_customer,'all_manager':all_manager}
     return render(request,'manager/manager_profile.html',context)
 
 

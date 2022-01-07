@@ -165,7 +165,7 @@ def books_details(request, slug):
             obj.creator = request.user
             obj.book = book
             obj.save()
-            return redirect('books-home')
+            return redirect('books-details',book.slug)
 
     context = {'book': book,'flag':flag,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,'commentForm':commentForm}
     return render(request, "books/books_details.html", context)
