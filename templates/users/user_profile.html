@@ -338,8 +338,30 @@
                   </div>
                 </div>
                 <div class="sidebar-widget latest-post px-4 py-2 bg-blog border-bottom border-left border-right">
-                    <div class="mb-3">
-                      <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
+                  <!-- Blog title and blog edit dropdown -->
+                    <div class="mb-3 d-flex justify-content-between">
+                      <h2 class="">
+                          <a class="text-blue" href="#"> {{ blog.title }} </a>
+                      </h2>
+
+                      <div class="d-flex align-items-center">
+                        <ul class="navbar-nav">
+                          {% if flag == True %}
+                          <li class="nav-item">
+                            <div class="dropdown">
+                                <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="fas fa-edit"></i>
+                                </a>
+                                <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Update Blog</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
+                                  </ul>
+                                </div>
+                              </li>
+                              {% endif %}
+                            </ul>
+                      </div>
                     </div>
                     <p class="mb-3">{{ blog.blog | linebreaksbr }}</p>
                     <p class="card-text mb-2"><small class="text-muted">Last Updated: {{ blog.updated }}</small></p>
@@ -376,6 +398,10 @@
                       </div>
                     </div>
                     <p class="margin-zero">{{comment.comment}}</p>
+                    {% if comment.image %}
+                    <br>
+                    <img src="{{comment.image.url}}" alt="">
+                    {% endif %}
                   </div>
                   {% endfor %}
                 </div>

@@ -71,6 +71,10 @@
                       </div>
                     </div>
                     <p class="margin-zero">{{comment.comment}}</p>
+                    {% if comment.image %}
+                    <br>
+                      <img src="{{comment.image.url}}" alt="">
+                    {% endif %}
                   </div>
                   {% endfor %}
                 </div>
