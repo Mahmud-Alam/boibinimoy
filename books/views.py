@@ -10,24 +10,46 @@ from users.models import *
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['customer'])
+@allowed_users(allowed_roles=['customer','manager'])
 def books_home(request):
-    customer = Customer.objects.get(username=request.user)
+    manager=customer=0
+    user = User.objects.get(username=request.user)
+    if user.groups.all()[0].name == 'manager':
+        manager = Manager.objects.get(username=request.user)
+    elif user.groups.all()[0].name == 'customer':
+        customer = Customer.objects.get(username=request.user)
+
+    all_customer = Customer.objects.all()
+    all_manager = Manager.objects.all()
+
     books = Book.objects.order_by('-created')
     latest_books = Book.objects.order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
-
+    category_dict =  zip(categories,cat_book_count) 
+    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
 
     bookFilter = BookFilter(request.GET, queryset=books)
     books = bookFilter.qs
     books_count = books.count()
 
-    category_dict =  zip(categories,cat_book_count) 
-    category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
-
-    context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'category_dict':category_dict,'customer':customer}
+    # Comment Part
+    commentForm = BookCommentForm()
+    if request.method == 'POST':
+        bookName = request.POST.get('bookName')
+        book = Book.objects.get(name = bookName)
+        commentForm = BookCommentForm(request.POST, request.FILES)
+        if commentForm.is_valid():
+            obj = commentForm.save()
+            obj.creator = user
+            obj.book = book
+            obj.save()
+            return redirect('books-home')
+    
+    context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,
+                'category_dict':category_dict,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,
+                'commentForm':commentForm}
     return render(request, "books/books_home.html", context)
 
 
@@ -129,8 +151,23 @@ def books_details(request, slug):
     else:
         flag=False
 
+    all_customer = Customer.objects.all()
+    all_manager = Manager.objects.all()
+    
+    # Comment Part
+    commentForm = BookDetailsCommentForm()
+    if request.method == 'POST':
+        bookName = request.POST.get('bookName')
+        book = Book.objects.get(name = bookName)
+        commentForm = BookDetailsCommentForm(request.POST, request.FILES)
+        if commentForm.is_valid():
+            obj = commentForm.save()
+            obj.creator = request.user
+            obj.book = book
+            obj.save()
+            return redirect('books-home')
 
-    context = {'book': book,'flag':flag,'customer':customer,'manager':manager}
+    context = {'book': book,'flag':flag,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,'commentForm':commentForm}
     return render(request, "books/books_details.html", context)
 
 

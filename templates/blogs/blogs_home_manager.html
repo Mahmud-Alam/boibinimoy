@@ -24,7 +24,7 @@
                   {% if manager.username == blog.creator %}
                   <img src='{{manager.managerImageURL}}' alt="" width="50" height="50" class="rounded-circle me-2">
                   <div>
-                    <h4 class="font-weight-700 ps-2"><a class="username-text" href="#"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a></h4>
+                    <h4 class="font-weight-700 ps-2"><a class="username-text" href="#"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a><span><i class="fas fa-check-circle text-primary"></i></span></h4>
                     <h6 class="text-capitalize ps-2 font-small">
                       <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
                     </h6>
@@ -64,7 +64,11 @@
                       {% endif %}
     
                       <div>
+                        {% if comment.creator.groups.all.0.name == 'customer' %}
                         <h6 class="ps-2"><a class="username-text" href="{% url 'user-profile' comment.creator %}"> {{comment.creator.first_name}} {{comment.creator.last_name}} </a></h6>
+                        {% elif comment.creator.groups.all.0.name == 'manager' %}
+                        <h6 class="ps-2"><a class="username-text" href="#"> {{comment.creator.first_name}} {{comment.creator.last_name}} </a><span><i class="fas fa-check-circle text-primary"></i></span></h6>
+                        {% endif %}
                         <h6 class="text-muted ps-2 font-tiny">
                           <i class="far fa-calendar-alt mr-2"></i> {{ comment.created|date:"d N Y" }}
                         </h6>

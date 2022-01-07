@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Customer
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -62,3 +63,16 @@ class Book(models.Model):
         except:
             img = ''
         return img
+
+
+class BookComment(models.Model):
+    creator = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, null=True, blank=True, on_delete=models.CASCADE)
+    comment = models.TextField()
+    image = models.ImageField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.comment
+

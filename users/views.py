@@ -225,20 +225,35 @@ def userProfile(request, username):
     all_customer = Customer.objects.all()
     all_manager = Manager.objects.all()
     # Comment Part
-    commentForm = ProfileBlogCommentForm()
+    blogCommentForm = ProfileBlogCommentForm()
+    bookCommentForm = ProfileBookCommentForm()
     if request.method == 'POST':
-        blogTitle = request.POST.get('blogTitle')
-        blog = Blog.objects.get(title = blogTitle)
-        commentForm = ProfileBlogCommentForm(request.POST, request.FILES)
-        if commentForm.is_valid():
-            obj = commentForm.save()
-            obj.creator = request.user
-            obj.blog = blog
-            obj.save()
-            return redirect('user-profile', username = request.user)
+        commentFlag = request.POST.get('commentFlag')
+        if commentFlag == 'blog':
+            print('******',commentFlag)
+            blogTitle = request.POST.get('blogTitle')
+            blog = Blog.objects.get(title = blogTitle)
+            blogCommentForm = ProfileBlogCommentForm(request.POST, request.FILES)
+            if blogCommentForm.is_valid():
+                obj = blogCommentForm.save()
+                obj.creator = request.user
+                obj.blog = blog
+                obj.save()
+                return redirect('user-profile', username = request.user)
+        elif commentFlag == 'book':
+            print('******',commentFlag)
+            bookName = request.POST.get('bookName')
+            book = Book.objects.get(name = bookName)
+            bookCommentForm = ProfileBookCommentForm(request.POST, request.FILES)
+            if bookCommentForm.is_valid():
+                obj = bookCommentForm.save()
+                obj.creator = request.user
+                obj.book = book
+                obj.save()
+                return redirect('user-profile', username = request.user)
     
     context = {'customer':customer,'manager':manager,'customerInfo':customerInfo,'books':books,'blogs':blogs,'flag':flag,
-                'all_customer':all_customer,'all_manager':all_manager,'commentForm':commentForm}
+                'all_customer':all_customer,'all_manager':all_manager,'blogCommentForm':blogCommentForm,'bookCommentForm':bookCommentForm}
     return render(request,'users/user_profile.html',context)
     
 

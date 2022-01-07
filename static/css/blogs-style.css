@@ -1,3 +1,6 @@
+.bg-white{
+    background-color: white;
+}
 .bg-manager{
     background-color: #250c61;
 }
@@ -42,4 +45,11 @@
 }
 .border-right{
     border-right: 1px solid #e2e2e2;
+}
+.border-radius-10{
+    border-radius: 10px;
+}
+.border-bottom-radius-none{
+    border-bottom-left-radius: 0; 
+    border-bottom-right-radius: 0;
 }

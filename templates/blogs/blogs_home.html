@@ -59,7 +59,11 @@
                   {% endif %}
 
                   <div>
+                    {% if comment.creator.groups.all.0.name == 'customer' %}
                     <h6 class="ps-2"><a class="username-text" href="{% url 'user-profile' comment.creator %}"> {{comment.creator.first_name}} {{comment.creator.last_name}} </a></h6>
+                    {% elif comment.creator.groups.all.0.name == 'manager' %}
+                    <h6 class="ps-2"><a class="username-text" href="#"> {{comment.creator.first_name}} {{comment.creator.last_name}} </a><span><i class="fas fa-check-circle text-primary"></i></span></h6>
+                    {% endif %}
                     <h6 class="text-muted ps-2 font-tiny">
                       <i class="far fa-calendar-alt mr-2"></i> {{ comment.created|date:"d N Y" }}
                     </h6>
