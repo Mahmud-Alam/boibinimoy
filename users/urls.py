@@ -31,7 +31,7 @@ urlpatterns = [
     path('update-category/<str:slug>/', views.updateCategory, name='update-category'),
     path('delete-category/<str:slug>/', views.deleteCategory, name='delete-category'),
     path('category-list/', views.categoryList, name='category-list'),
-    path('book-list/', views.bookList, name='book-list'),
+    path('pending-post/', views.pendingPost, name='pending-post'),
 
     path('delete-user/<str:username>/', views.deleteUser, name='delete-user'),
     path('reactive-user/<str:username>/', views.reactiveUser, name='reactive-user'),

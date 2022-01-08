@@ -36,6 +36,7 @@ def blogs_home(request):
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     # Comment Part
     commentForm = BlogCommentForm()
@@ -52,7 +53,7 @@ def blogs_home(request):
 
     context = {'manager':manager,'customer':customer,'all_customer':all_customer,'all_manager':all_manager,
                 'commentForm':commentForm,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,
-                'category_dict':category_dict,'category_count':category_count}
+                'category_dict':category_dict,'category_count':category_count,'pending_blog_posts':pending_blog_posts}
     return render(request, "blogs/blogs_home.html", context)
 
 
@@ -82,6 +83,7 @@ def blogs_home_manager(request):
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     # Comment Part
     commentForm = BlogCommentForm()
@@ -98,7 +100,7 @@ def blogs_home_manager(request):
 
     context = {'manager':manager,'customer':customer,'all_customer':all_customer,'all_manager':all_manager,
                 'commentForm':commentForm,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,
-                'category_dict':category_dict,'category_count':category_count}
+                'category_dict':category_dict,'category_count':category_count,'pending_blog_posts':pending_blog_posts}
     return render(request, "blogs/blogs_home_manager.html", context)
 
 
@@ -106,6 +108,7 @@ def blogs_home_manager(request):
 @allowed_users(allowed_roles=['manager','customer'])
 def create_blog(request):
     user = User.objects.get(username=request.user)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     manager=customer=0
     
     if user.groups.all()[0].name == 'manager':
@@ -140,6 +143,7 @@ def create_blog(request):
         'form': form,
         'manager':manager,
         'customer':customer,
+        'pending_blog_posts':pending_blog_posts,
     }
 
     return render(request, 'blogs/create_blog_post.html', context)
@@ -149,6 +153,7 @@ def create_blog(request):
 @allowed_users(allowed_roles=['manager','customer'])
 def update_blog(request,pk):
     user = User.objects.get(username=request.user)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     manager=customer=0
     
     if user.groups.all()[0].name == 'manager':
@@ -177,6 +182,7 @@ def update_blog(request,pk):
         'form': form,
         'manager':manager,
         'customer':customer,
+        'pending_blog_posts':pending_blog_posts
     }
 
     return render(request, 'blogs/create_blog_post.html', context)
@@ -192,8 +198,29 @@ def delete_blog(request,pk):
     if request.method == 'POST':
         blog.delete()
         full_name = request.user.first_name+' '+request.user.last_name
-        messages.success(request, full_name+', your blog deleted!')
-        return redirect('user-profile', username = request.user)
+        if request.user.groups.all()[0].name == 'customer':
+            messages.success(request, full_name+', your blog deleted!')
+            return redirect('user-profile', username = request.user)
+        elif request.user.groups.all()[0].name == 'manager':
+            messages.success(request, full_name+', your blog deleted!')
+            return redirect('pending-post')
 
     context = {'blog':blog,'title':title,'text1':text1}
     return render(request,"blogs/delete_blog_post.html",context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def accept_blog(request,pk):
+    blog = Blog.objects.get(id=pk)
+    title = "Accept Blog"
+    text1 = "accept blog"
+
+    if request.method == 'POST':
+        blog.review = "True"
+        blog.save()
+        messages.success(request,'Blog accepted!')
+        return redirect('pending-post')
+
+    context = {'blog':blog,'title':title,'text1':text1}
+    return render(request,"blogs/accept_blog_post.html",context)

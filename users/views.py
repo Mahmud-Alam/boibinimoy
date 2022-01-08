@@ -699,6 +699,7 @@ def manageAdministrators(request):
     active_admin_count = total_admin.filter(is_active = True).count()
     total_manager = User.objects.filter(groups__name='manager').order_by('-is_active')
     active_manager_count = total_manager.filter(is_active = True).count()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     user = User.objects.get(username=request.user)
     user_group = user.groups.all()[0].name
@@ -715,7 +716,8 @@ def manageAdministrators(request):
         return render(request,'admin/admin_manage_administrators.html',context)
     elif user_group == 'manager':
         manager = Manager.objects.get(username=request.user)
-        context = {'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count,'manager':manager}
+        context = {'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count,
+                    'manager':manager,'pending_blog_posts':pending_blog_posts}
         return render(request,'manager/manager_manage_administrators.html',context)
 
 
@@ -731,6 +733,7 @@ def managerProfile(request, username):
     blogs = manager.username.blog_set.order_by('-created')
     all_customer = Customer.objects.all()
     all_manager = Manager.objects.all()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     # Comment Part
     commentForm = BlogCommentForm()
@@ -745,7 +748,7 @@ def managerProfile(request, username):
             obj.save()
             return redirect('manager-profile', manager.username)
 
-    context = {'manager':manager,'blogs':blogs,'commentForm':commentForm,'all_customer':all_customer,'all_manager':all_manager}
+    context = {'manager':manager,'blogs':blogs,'commentForm':commentForm,'all_customer':all_customer,'all_manager':all_manager,'pending_blog_posts':pending_blog_posts}
     return render(request,'manager/manager_profile.html',context)
 
 
@@ -754,6 +757,7 @@ def managerProfile(request, username):
 def editManagerProfile(request):
     manager = Manager.objects.get(username=request.user)
     myUser = User.objects.get(username=request.user)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     form = ManagerForm(instance=manager)
     if request.method == 'POST':
@@ -767,7 +771,7 @@ def editManagerProfile(request):
             messages.success(request, full_name+' Profile updated successfully!')
             return redirect('manager-profile', username = request.user)
 
-    context = {'manager':manager,'myUser':myUser,'form':form}
+    context = {'manager':manager,'myUser':myUser,'form':form,'pending_blog_posts':pending_blog_posts}
     return render(request,'manager/edit_manager_profile.html',context)
 
 
@@ -776,6 +780,7 @@ def editManagerProfile(request):
 def managerDashboard(request, username):
     total_customer = User.objects.filter(groups__name='customer')
     active_customer_count = total_customer.filter(is_active = True).count()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     total_admin = User.objects.filter(groups__name='admin').order_by('-is_active')
     active_admin_count = total_admin.filter(is_active = True).count()
@@ -793,9 +798,11 @@ def managerDashboard(request, username):
     # sorted(zipped, key = lambda t: t[1])
     category_dict =  zip(total_category,cat_book_count)
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
+
     
     context = {'manager':manager,'total_admin':total_admin,'active_admin_count':active_admin_count,'total_manager':total_manager,'active_manager_count':active_manager_count,'total_customer':total_customer,
-                'active_customer_count':active_customer_count,'total_book':total_book,'total_category':total_category,'category_dict':category_dict,'latest_books':latest_books}
+                'active_customer_count':active_customer_count,'total_book':total_book,'total_category':total_category,'category_dict':category_dict,'latest_books':latest_books,
+                'pending_blog_posts':pending_blog_posts}
     return render(request,'manager/manager_dashboard.html',context)
 
 
@@ -805,13 +812,14 @@ def manageCustomers(request):
     manager = Manager.objects.get(username=request.user)
     total_customer = User.objects.filter(groups__name='customer').order_by('-is_active')
     active_customer_count = total_customer.filter(is_active = True).count()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     
     total_customer_obj = Customer.objects.all()
     customer_book_count = [cus.book_set.all().count() for cus in total_customer_obj]
     customer_dict = zip(total_customer_obj,customer_book_count)
     customer_dict = sorted(customer_dict, key = lambda t: t[1], reverse=True)
 
-    context = {'total_customer':total_customer,'active_customer_count':active_customer_count,'manager':manager,'customer_dict':customer_dict}
+    context = {'total_customer':total_customer,'active_customer_count':active_customer_count,'manager':manager,'customer_dict':customer_dict,'pending_blog_posts':pending_blog_posts}
     return render(request,'manager/manage_customers.html',context)
 
 
@@ -865,12 +873,15 @@ def reactiveUser(request, username):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['manager'])
-def bookList(request):
+def pendingPost(request):
     manager = Manager.objects.get(username=request.user)
     book_list = Book.objects.order_by('-created')
 
-    context = {'manager':manager,'book_list':book_list}
-    return render(request, "manager/book_list.html", context)
+    all_customer = Customer.objects.all()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+
+    context = {'manager':manager,'pending_blog_posts':pending_blog_posts,'all_customer':all_customer}
+    return render(request, "manager/pending_post.html", context)
 
 
 @login_required(login_url='login')
@@ -879,6 +890,7 @@ def categoryList(request):
     manager = Manager.objects.get(username=request.user)
     total_category = Category.objects.order_by('name')
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in total_category]
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     # Zip sorted
     # sorted(zipped, key = lambda t: t[1])
@@ -886,7 +898,7 @@ def categoryList(request):
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
 
 
-    context = {'total_category':total_category,'category_dict':category_dict,'manager':manager}
+    context = {'total_category':total_category,'category_dict':category_dict,'manager':manager,'pending_blog_posts':pending_blog_posts}
     return render(request, "manager/category_list.html", context)
 
 
@@ -894,6 +906,7 @@ def categoryList(request):
 @allowed_users(allowed_roles=['manager'])
 def createCategory(request):
     manager = Manager.objects.get(username=request.user)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     task = "Create"
 
     if request.method == 'POST':
@@ -917,6 +930,7 @@ def createCategory(request):
     context = {
                 'task': task,
                 'manager':manager,
+                'pending_blog_posts':pending_blog_posts,
             }
     return render(request, 'manager/create_category.html', context)
 
@@ -927,6 +941,7 @@ def updateCategory(request,slug):
     task = "Update"
     manager  = Manager.objects.get(username=request.user)
     category = Category.objects.get(slug=slug)
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     form = CategoryForm(instance=category)
     if request.method == 'POST':
@@ -940,6 +955,7 @@ def updateCategory(request,slug):
                 'task': task,
                 'form':form,
                 'manager':manager,
+                'pending_blog_posts':pending_blog_posts,
             }
     return render(request, 'manager/update_category.html', context)
 

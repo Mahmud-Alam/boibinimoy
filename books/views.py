@@ -7,6 +7,7 @@ from .filters import *
 from .forms import *
 from users.decorators import *
 from users.models import *
+from blogs.models import *
 
 
 @login_required(login_url='login')
@@ -21,6 +22,7 @@ def books_home(request):
 
     all_customer = Customer.objects.all()
     all_manager = Manager.objects.all()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
 
     books = Book.objects.order_by('-created')
     latest_books = Book.objects.order_by('-created')[:5]
@@ -49,7 +51,7 @@ def books_home(request):
     
     context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,
                 'category_dict':category_dict,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,
-                'commentForm':commentForm}
+                'commentForm':commentForm,'pending_blog_posts':pending_blog_posts}
     return render(request, "books/books_home.html", context)
 
 

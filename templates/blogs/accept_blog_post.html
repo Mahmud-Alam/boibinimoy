@@ -13,22 +13,18 @@
     <div class="container">
         <br><br><br><br>
         <div style="margin: 0 200px;" class="card text-center">
-            <div class="card-header bg-darkred d-flex align-items-center justify-content-center height-200">
-                <img class="height-100" src='{% static "images/times-circle-regular-white.png" %}' alt="">
+            <div class="card-header bg-blue d-flex align-items-center justify-content-center height-200">
+                <img class="height-100" src='{% static "images/check-circle-regular-white.png" %}' alt="">
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
-                <p class="card-text"><span class="span-name">{{request.user.first_name}} {{request.user.last_name}}</span>, are you sure you want to {{text1}} <span class="span-name">"{{blog.title}}"</span>?</p>
+                <p class="card-text"><span class="text-primary fw-bold">{{request.user.first_name}} {{request.user.last_name}}</span>, are you sure you want to {{text1}} <span class="text-primary fw-bold">"{{blog.title}}"</span>?</p>
                 <br>
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="d-flex justify-content-evenly">
-                        {% if request.user.groups.all.0.name == 'customer' %}
-                        <a href="{% url 'user-profile' blog.creator %}" class="btn btn-darkred">Cancel</a>
-                        {% elif request.user.groups.all.0.name == 'manager' %}
-                        <a href="{% url 'pending-post' %}" class="btn btn-darkred">Cancel</a>
-                        {% endif %}
-                        <input type="submit" class="btn btn-darkred" value="{{title}}">
+                        <a href="{% url 'pending-post' %}" class="btn btn-blue">Cancel</a>
+                        <input type="submit" class="btn btn-blue" value="{{title}}">
                     </div>
                 </form>
             </div>

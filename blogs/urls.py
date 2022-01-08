@@ -7,6 +7,7 @@ urlpatterns = [
     path('create-blog/', create_blog, name='create-blog'),
     path('update-blog/<str:pk>/', update_blog, name='update-blog'),
     path('delete-blog/<str:pk>/', delete_blog, name='delete-blog'),
+    path('accept-blog/<str:pk>/', accept_blog, name='accept-blog'),
     # path('details/<str:slug>/', books_details, name='books-details'),
     # path('category/<str:slug>/', books_category, name='books-category'),
 ]

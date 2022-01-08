@@ -326,6 +326,7 @@
               <!-- Customer Blog Section -->
               {% if blogs %}
               {% for blog in blogs %}
+              {% if blog.review == 'True' %}
               
               <div class="sidebar-wrap">
                 <div class="panel-heading book-search-heading d-flex align-items-center border-all">
@@ -451,7 +452,18 @@
                   </ul>          
                 </div>
               </div>
-
+              
+              {% else %}
+                {% if flag == True %}
+                <div class="p-3 mb-3 bg-white border-all border-radius-10">
+                  <strong class="text-muted">Your Blog Post <span class="text-blue">"{{blog.title}}"</span> still not reviewed by Manager. We appreciate your patience. Thank you.</strong>
+                </div>
+                {% else %}
+                <div class="p-3 mb-3 bg-white border-all border-radius-10">
+                  <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}}'s Blog Post <span class="text-blue">"{{blog.title}}"</span> still not reviewed by Manager.</strong>
+                </div>
+                {% endif %}
+              {% endif %}
               {% endfor %}
 
               {% else %}

@@ -9,12 +9,14 @@
   <div class="row">
     <div class="col-lg-8">
       <div class="row">
-    
+        
+        {% if blogs %}
         {% for blog in blogs %}
+        {% if blog.review == 'True' %}
         {% if blog.creator.groups.all.0.name == 'customer' %}
           
           <div class="sidebar-wrap">
-            <div class="panel-heading book-search-heading d-flex align-items-center">
+            <div class="panel-heading book-search-heading d-flex align-items-center border-all">
               {% for cus in all_customer %}
               {% if cus.username == blog.creator %}
               <img src='{{cus.customerImageURL}}' alt="" width="50" height="50" class="rounded-circle me-2">
@@ -27,7 +29,7 @@
               {% endif %}
               {% endfor %}
             </div>
-            <div class="sidebar-widget latest-post px-4 py-2 bg-blog" style="border-bottom: 1px solid #e2e2e2;">
+            <div class="sidebar-widget latest-post px-4 py-2 bg-blog border-bottom border-left border-right">
                 <div class="mb-3">
                   <h2 class=""><a class="text-blue" href="#"> {{ blog.title }} </a></h2>
                 </div>
@@ -42,10 +44,10 @@
           <!-- Blog Old Comment Section -->
           {% if blog.blogcomment_set.all %}
           <div class="col-lg-12 col-md-12">
-            <div class="p-3" style="background-color: #fafafa;">
+            <div class="p-3 border-right border-left" style="background-color: #fafafa;">
               <p class="text-muted fw-bold">All Comments</p>
               {% for comment in blog.blogcomment_set.all %}
-              <div class="pt-2 pb-2" style="border-bottom: 1px solid #e2e2e2;">
+              <div class="pt-2 pb-2 border-bottom">
                 <div class="d-flex align-items-center">
                   {% if comment.creator.groups.all.0.name == 'customer' %}
                   {% for commentCus in all_customer %}
@@ -85,7 +87,7 @@
 
           <!-- Blog Create Comment Section -->
           <div class="col-lg-12 col-md-12 mb-4">
-            <div class="p-3 d-flex justify-content-end" style="background-color: #fafafa; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+            <div class="p-3 d-flex justify-content-end border-left border-right border-bottom" style="background-color: #fafafa; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
               <ul class="navbar-nav" style="width: 100%;">
                 <li class="nav-item">
                   <div class="dropdown">
@@ -119,12 +121,21 @@
             </div>
           </div>
         {% endif %}
+
+        {% else %}
+        <div class="p-3 mb-3 bg-white border-all border-radius-10">
+          <strong class="text-muted"><span class="text-blue">"{{blog.title}}"</span> blog posts still not reviewed by Manager. We appreciate your patience. Thank you.</strong>
+        </div>
+        {% endif %}
         {% endfor %}
+        {% else %}
+        <strong>There is no Blog Post from Customer yet.</strong>
+        {% endif %}
       </div>
     </div>
 
     <div class="col-lg-4">
-      <div class="book-side-bg ms-3 mb-4" style="background-color: #d4e7f5;">
+      <div class="book-side-bg ms-3 mb-4" style="background-color: #d4e7f5;border: 1px solid #b5dcf8;">
         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
           <div class="panel-heading book-search-heading bg-{{request.user.groups.all.0.name}}">
             <h3 class="text-center text-white font-weight-700"><i class="fas fa-thumbtack"></i> Manager Pinned Post({{latest_manager_blogs|length}})</h3>
