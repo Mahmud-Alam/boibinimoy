@@ -23,9 +23,10 @@ def books_home(request):
     all_customer = Customer.objects.all()
     all_manager = Manager.objects.all()
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 
     books = Book.objects.order_by('-created')
-    latest_books = Book.objects.order_by('-created')[:5]
+    latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
@@ -51,7 +52,7 @@ def books_home(request):
     
     context = {'books':books,'latest_books':latest_books,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,
                 'category_dict':category_dict,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,
-                'commentForm':commentForm,'pending_blog_posts':pending_blog_posts}
+                'commentForm':commentForm,'pending_blog_posts':pending_blog_posts,'pending_book_posts':pending_book_posts}
     return render(request, "books/books_home.html", context)
 
 
@@ -155,6 +156,8 @@ def books_details(request, slug):
 
     all_customer = Customer.objects.all()
     all_manager = Manager.objects.all()
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
     
     # Comment Part
     commentForm = BookDetailsCommentForm()
@@ -169,12 +172,13 @@ def books_details(request, slug):
             obj.save()
             return redirect('books-details',book.slug)
 
-    context = {'book': book,'flag':flag,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,'commentForm':commentForm}
+    context = {'book': book,'flag':flag,'customer':customer,'manager':manager,'all_customer':all_customer,'all_manager':all_manager,
+                'commentForm':commentForm,'pending_blog_posts':pending_blog_posts,'pending_book_posts':pending_book_posts}
     return render(request, "books/books_details.html", context)
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['customer'])
+@allowed_users(allowed_roles=['customer','manager'])
 def delete_post(request,pk):
     book = Book.objects.get(id=pk)
     title = "Delete Post"
@@ -204,6 +208,8 @@ def books_category(request,slug):
     categories = Category.objects.order_by('name')
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
@@ -212,7 +218,8 @@ def books_category(request,slug):
     books = bookFilter.qs
     books_count = books.count()
 
-    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,'category_count':category_count,'customer':customer,'manager':manager}
+    context = {'books': books,'category':category,'category_dict':category_dict,'bookFilter':bookFilter,'books_count':books_count,
+                'category_count':category_count,'customer':customer,'manager':manager,'pending_blog_posts':pending_blog_posts,'pending_book_posts':pending_book_posts}
     return render(request, "books/books_category.html", context)
 
 

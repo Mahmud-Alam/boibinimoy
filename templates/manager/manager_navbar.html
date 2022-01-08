@@ -9,7 +9,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav align-items-center">
               <li class="nav-item me-5">
-                <a href="{% url 'pending-post' %}"><i class="fas fa-bell text-white"></i><span class="text-danger"> {{pending_blog_posts.count}}</span></a>
+                <a href="{% url 'pending-post' %}"><i class="fas fa-bell text-white"></i><span class="text-danger"> {{pending_blog_posts.count|add:pending_book_posts.count}}</span></a>
               </li>
               <li class="nav-item">
                 <div class="dropdown">

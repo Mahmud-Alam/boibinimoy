@@ -30,13 +30,14 @@ def blogs_home(request):
 
     all_customer = Customer.objects.all()
     all_manager = Manager.objects.all()
-    latest_books = Book.objects.order_by('-created')[:5]
+    latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 
     # Comment Part
     commentForm = BlogCommentForm()
@@ -53,7 +54,7 @@ def blogs_home(request):
 
     context = {'manager':manager,'customer':customer,'all_customer':all_customer,'all_manager':all_manager,
                 'commentForm':commentForm,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,
-                'category_dict':category_dict,'category_count':category_count,'pending_blog_posts':pending_blog_posts}
+                'category_dict':category_dict,'category_count':category_count,'pending_blog_posts':pending_blog_posts,'pending_book_posts':pending_book_posts,}
     return render(request, "blogs/blogs_home.html", context)
 
 
@@ -77,13 +78,14 @@ def blogs_home_manager(request):
     all_manager = Manager.objects.all()
     latest_manager_blogs = manager_blogs
 
-    latest_books = Book.objects.order_by('-created')[:5]
+    latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
     cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 
     # Comment Part
     commentForm = BlogCommentForm()
@@ -100,7 +102,7 @@ def blogs_home_manager(request):
 
     context = {'manager':manager,'customer':customer,'all_customer':all_customer,'all_manager':all_manager,
                 'commentForm':commentForm,'blogs':blogs,'manager_blogs':manager_blogs,'latest_books':latest_books,'latest_manager_blogs':latest_manager_blogs,
-                'category_dict':category_dict,'category_count':category_count,'pending_blog_posts':pending_blog_posts}
+                'category_dict':category_dict,'category_count':category_count,'pending_blog_posts':pending_blog_posts,'pending_book_posts':pending_book_posts,}
     return render(request, "blogs/blogs_home_manager.html", context)
 
 
@@ -109,6 +111,7 @@ def blogs_home_manager(request):
 def create_blog(request):
     user = User.objects.get(username=request.user)
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
     manager=customer=0
     
     if user.groups.all()[0].name == 'manager':
@@ -144,6 +147,7 @@ def create_blog(request):
         'manager':manager,
         'customer':customer,
         'pending_blog_posts':pending_blog_posts,
+        'pending_book_posts':pending_book_posts,
     }
 
     return render(request, 'blogs/create_blog_post.html', context)
@@ -154,6 +158,7 @@ def create_blog(request):
 def update_blog(request,pk):
     user = User.objects.get(username=request.user)
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
+    pending_book_posts = Book.objects.filter(review='False').order_by('-created')
     manager=customer=0
     
     if user.groups.all()[0].name == 'manager':
@@ -182,7 +187,8 @@ def update_blog(request,pk):
         'form': form,
         'manager':manager,
         'customer':customer,
-        'pending_blog_posts':pending_blog_posts
+        'pending_blog_posts':pending_blog_posts,
+        'pending_book_posts':pending_book_posts,
     }
 
     return render(request, 'blogs/create_blog_post.html', context)
@@ -223,4 +229,21 @@ def accept_blog(request,pk):
         return redirect('pending-post')
 
     context = {'blog':blog,'title':title,'text1':text1}
-    return render(request,"blogs/accept_blog_post.html",context)
+    return render(request,"blogs/accept_post.html",context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
+def accept_book(request,pk):
+    book = Book.objects.get(id=pk)
+    title = "Accept Book"
+    text1 = "accept book"
+
+    if request.method == 'POST':
+        book.review = "True"
+        book.save()
+        messages.success(request,'Blog accepted!')
+        return redirect('pending-post')
+
+    context = {'book':book,'title':title,'text1':text1}
+    return render(request,"blogs/accept_post.html",context)

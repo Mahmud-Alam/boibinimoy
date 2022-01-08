@@ -20,7 +20,7 @@
 
         <div class="card m-4">
             <div class="card-header fw-bold text-white bg-manager-card">
-                <i class="fas fa-book"></i> Blog List({{pending_blog_posts.count}})
+                <i class="fas fa-bell"></i> Pending Blog Posts({{pending_blog_posts.count}})
             </div>
             <div>
             {% if pending_blog_posts %}
@@ -53,7 +53,7 @@
                                   <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-edit"></i>
                                   </a>
-                                  <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #0b3953;">
+                                  <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #18083d;">
                                       <li><a class="dropdown-item" href="{% url 'accept-blog' blog.id %}"><i class="fas fa-edit"></i> Accept Blog</a></li>
                                       <li><hr class="dropdown-divider"></li>
                                       <li><a class="dropdown-item" href="{% url 'delete-blog' blog.id %}"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
@@ -73,17 +73,21 @@
 
             {% endfor %}
             {% else %}
-            <strong>No Pending Blog Post Request.</strong>
+            <div class="p-3 m-3 bg-white border-all border-radius-10">
+                <strong class="text-muted">No Pending Blog Post Request.</strong>
+            </div>
             {% endif %}
             </div>
         </div>
 
         <div class="card m-4">
             <div class="card-header fw-bold text-white bg-manager-card">
-                <i class="fas fa-book"></i> Book List({{book_list.count}})
+                <i class="fas fa-bell"></i> Pending Book Posts({{pending_book_posts.count}})
             </div>
             <div>
-            {% for book in book_list %}
+            
+            {% if pending_book_posts %}
+            {% for book in pending_book_posts %}
             <div class="col-lg-12 col-md-12 p-4 book-post-bg">
             <div class="blog-item d-flex">
                 <div class="blog-thumb" style="height: 300px; width: 300px;">
@@ -94,12 +98,32 @@
 
                 <div class="blog-item-content mx-4">
                 <div>
-                    <div class="mb-3">
-                        <h2 class="">
-                            <a class="text-violet" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
-                        </h2>
-                        <h6 class="text-violet"> by {{book.author}} (Author)</h6>
+                    <!-- Blog title and blog edit dropdown -->
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <h2>
+                                <a class="text-violet" href="{% url 'books-details' book.slug %}"> {{ book.name }} </a>
+                            </h2>
+                            <h6 class="text-violet"> by {{book.author}} (Author)</h6>
+                        </div>
+                        <div class="d-flex align-items-center">
+                          <ul class="navbar-nav">
+                            <li class="nav-item">
+                              <div class="dropdown">
+                                  <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-edit"></i>
+                                  </a>
+                                  <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #18083d;">
+                                      <li><a class="dropdown-item" href="{% url 'accept-book' book.id %}"><i class="fas fa-edit"></i> Accept Book</a></li>
+                                      <li><hr class="dropdown-divider"></li>
+                                      <li><a class="dropdown-item" href="{% url 'delete-post' book.id %}"><i class="fas fa-trash-alt"></i> Delete Book</a></li>
+                                    </ul>
+                                  </div>
+                                </li>
+                              </ul>
+                        </div>
                     </div>
+
                     <div class="blog-item-meta mb-2">
                     <span class="text-black text-capitalize me-3">
                         <i class="fas fa-book mr-2"></i> {{ book.edition }} Edition
@@ -140,15 +164,20 @@
                     <p class="card-text"><small class="text-muted">Last Updated: {{ book.updated }}</small></p>
                 </div>
 
-                <div class="mt-3">
+                <!-- <div class="mt-3">
                     <a href="{% url 'books-details' book.slug %}" class="btn btn-violet btn-icon">
                     See Details <i class="fas fa-angle-double-right"></i>
                     </a>
-                </div>
+                </div> -->
                 </div>
             </div>
             </div><hr>
-        {% endfor %}
+            {% endfor %}
+            {% else %}
+            <div class="p-3 m-3 bg-white border-all border-radius-10">
+                <strong class="text-muted">No Pending Book Post Request.</strong>
+            </div>
+            {% endif %}
         </div>
     </div>
 

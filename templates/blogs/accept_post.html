@@ -18,7 +18,11 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
+                {% if title == "Accept Book" %}
+                <p class="card-text"><span class="text-primary fw-bold">{{request.user.first_name}} {{request.user.last_name}}</span>, are you sure you want to {{text1}} <span class="text-primary fw-bold">"{{book.name}}"</span>?</p>
+                {% elif title == "Accept Blog" %}
                 <p class="card-text"><span class="text-primary fw-bold">{{request.user.first_name}} {{request.user.last_name}}</span>, are you sure you want to {{text1}} <span class="text-primary fw-bold">"{{blog.title}}"</span>?</p>
+                {% endif %}
                 <br>
                 <form action="" method="POST">
                     {% csrf_token %}

@@ -8,7 +8,7 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = '__all__'
-        exclude = ['creator', 'slug']
+        exclude = ['creator','review','slug']
 
 
 class CategoryForm(forms.ModelForm):    

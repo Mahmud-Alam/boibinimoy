@@ -48,7 +48,7 @@
                 </div>
                 <div class="admin-head-div text-center">
                 <span class="text-muted"><i class="fas fa-bell"></i> Pending Blogs</span>
-                <h2>{{pending_blog_posts.count}}</h2>
+                <h2>{{pending_blog_posts.count|add:pending_book_posts.count}}</h2>
                 </div>
             </div>
         </div>

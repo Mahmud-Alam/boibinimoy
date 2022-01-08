@@ -45,6 +45,7 @@ class Book(models.Model):
     author = models.CharField(max_length=200, null=True, blank=True)
     edition = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(default='default.jpg', null=True, blank=True)
+    review = models.CharField(max_length=50, default="False", null = True, blank=True)
     slug = models.CharField(max_length=255, null=True, blank=True)
     category = models.ManyToManyField(Category, blank=True)
     description = models.TextField(null = True, blank=True)

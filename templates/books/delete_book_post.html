@@ -18,7 +18,7 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
-                <p class="card-text"><span class="span-name">{{book.creator.first_name}} {{book.creator.last_name}}</span>, are you sure you want to {{text1}} <span class="span-name">"{{book.name}}"</span>?</p>
+                <p class="card-text"><span class="span-name">{{request.user.first_name}} {{request.user.last_name}}</span>, are you sure you want to {{text1}} <span class="span-name">"{{book.name}}"</span>?</p>
                 <br>
                 <form action="" method="POST">
                     {% csrf_token %}
