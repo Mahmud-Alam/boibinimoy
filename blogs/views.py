@@ -33,7 +33,7 @@ def blogs_home(request):
     latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
-    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    cat_book_count = [Book.objects.filter(category=cat, review='True').count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
@@ -81,7 +81,7 @@ def blogs_home_manager(request):
     latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
-    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    cat_book_count = [Book.objects.filter(category=cat, review='True').count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')

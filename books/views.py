@@ -25,11 +25,11 @@ def books_home(request):
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 
-    books = Book.objects.order_by('-created')
+    books = Book.objects.filter(review='True').order_by('-created')
     latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
     categories = Category.objects.order_by('name')
     category_count = categories.count()
-    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    cat_book_count = [Book.objects.filter(category=cat, review='True').count() for cat in categories]
     category_dict =  zip(categories,cat_book_count) 
     category_dict = sorted(category_dict, key = lambda t: t[1], reverse=True)
 
@@ -204,10 +204,10 @@ def books_category(request,slug):
         customer = Customer.objects.get(username=request.user)
     
     category = Category.objects.get(slug=slug)
-    books = Book.objects.filter(category=category).order_by('-created')
+    books = Book.objects.filter(category=category, review='True').order_by('-created')
     categories = Category.objects.order_by('name')
     category_count = categories.count()
-    cat_book_count = [Book.objects.filter(category=cat).count() for cat in categories]
+    cat_book_count = [Book.objects.filter(category=cat, review='True').count() for cat in categories]
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 

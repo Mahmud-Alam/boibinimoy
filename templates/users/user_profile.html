@@ -459,18 +459,16 @@
                   <strong class="text-muted">Your Blog Post <span class="text-blue">"{{blog.title}}"</span> still not reviewed by Manager. We appreciate your patience. Thank you.</strong>
                 </div>
                 {% else %}
-                <div class="p-3 mb-3 bg-white border-all border-radius-10">
-                  <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}}'s Blog Post <span class="text-blue">"{{blog.title}}"</span> still not reviewed by Manager.</strong>
-                </div>
+                <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any Blog yet.</strong>
                 {% endif %}
               {% endif %}
               {% endfor %}
 
               {% else %}
               {% if flag == True %}
-              <p>You haven't post any Blog yet.</p>
+              <strong class="text-muted">You haven't post any Blog yet.</strong>
               {% else %}
-              <p>{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any Blog yet.</p>
+              <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any Blog yet.</strong>
               {% endif %}
               {% endif %}
 
@@ -661,18 +659,16 @@
                   <strong class="text-muted">Your book post <span class="text-blue">"{{book.name}}"</span> still not reviewed by Manager. We appreciate your patience. Thank you.</strong>
                 </div>
                 {% else %}
-                <div class="p-3 mb-3 bg-white border-all border-radius-10">
-                  <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}}'s book post <span class="text-blue">"{{book.name}}"</span> still not reviewed by Manager.</strong>
-                </div>
+                <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any Blog yet.</strong>
                 {% endif %}
               {% endif %}
               {% endfor %}
 
               {% else %}
               {% if flag == True %}
-              <p>You haven't post any book yet. Please post your unused books here for selling or exchanging. Thank you.</p>
+              <strong class="text-muted">You haven't post any book yet. Please post your unused books here for selling or exchanging. Thank you.</strong>
               {% else %}
-              <p>{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any book yet.</p>
+              <strong class="text-muted">{{customerInfo.first_name}} {{customerInfo.last_name}} hasn't post any book yet.</strong>
               {% endif %}
               {% endif %}
 

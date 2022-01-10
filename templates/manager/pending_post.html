@@ -32,7 +32,7 @@
                   {% if customer.username == blog.creator %}
                   <img src='{{customer.customerImageURL}}' alt="" width="50" height="50" class="rounded-circle me-2">
                   <div>
-                    <h4 class="font-weight-700 ps-2"><a class="username-text" href="#"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a></h4>
+                    <h4 class="font-weight-700 ps-2"><a class="username-text" href="{% url 'user-profile' blog.creator %}"> {{blog.creator.first_name}} {{blog.creator.last_name}} </a></h4>
                     <h6 class="text-capitalize ps-2 font-small text-muted">
                       <i class="far fa-calendar-alt mr-2"></i> {{ blog.created|date:"d N Y" }}
                     </h6>

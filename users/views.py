@@ -529,7 +529,7 @@ def adminPanel(request, username):
         admin = user
     customer = User.objects.filter(groups__name='customer')
     active_customer_count = customer.filter(is_active = True).count()
-    book = Book.objects.all()
+    book = Book.objects.filter(review='True')
     book_count = book.count()
 
     total_admin = User.objects.filter(groups__name='admin').order_by('-is_active')
@@ -795,10 +795,10 @@ def managerDashboard(request, username):
     active_manager_count = total_manager.filter(is_active = True).count()
 
     manager = Manager.objects.get(username=request.user)
-    total_book = Book.objects.all()
+    total_book = Book.objects.filter(review='True')
 
     total_category = Category.objects.order_by('name')
-    cat_book_count = [Book.objects.filter(category=cat).count() for cat in total_category]
+    cat_book_count = [Book.objects.filter(category=cat, review='True').count() for cat in total_category]
     latest_books = Book.objects.filter(review='True').order_by('-created')[:5]
 
     # Zip sorted
@@ -898,7 +898,7 @@ def pendingPost(request):
 def categoryList(request):
     manager = Manager.objects.get(username=request.user)
     total_category = Category.objects.order_by('name')
-    cat_book_count = [Book.objects.filter(category=cat).count() for cat in total_category]
+    cat_book_count = [Book.objects.filter(category=cat, review='True').count() for cat in total_category]
     pending_blog_posts = Blog.objects.filter(review='False').order_by('-created')
     pending_book_posts = Book.objects.filter(review='False').order_by('-created')
 
