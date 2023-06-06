@@ -30,6 +30,9 @@
     padding: 20px;
     height: 80px;
 }
+.category-details-heading{
+    height: 120px;
+}
 .book-form{
     background-color: rgb(230, 230, 230);
     margin: 0px 0px 60px 0;

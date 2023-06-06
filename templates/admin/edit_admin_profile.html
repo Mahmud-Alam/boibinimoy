@@ -7,8 +7,8 @@
 {% block context %}       
 <div class="container">
     <div class="form-div">
-        <h1 class="text-center text-darkgreen">Edit Admin Profile</h1><br>
-        <a class="btn btn-darkgreen width-full" href='{% url "change-password" %}'><i class="fas fa-edit"></i> Change Password</a><br><br>
+        <h1 class="text-center text-darkgreen"><i class="fas fa-user-shield"></i> Edit Admin Profile</h1><br>
+        <!-- <a class="btn btn-darkgreen width-full" href='{% url "change-password" %}'><i class="fas fa-pencil-alt"></i> Change Password</a><br><br> -->
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
         

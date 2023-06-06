@@ -10,7 +10,10 @@
 .bg-admin-primary{
     background-color: #20d8aa;
 }
-
+.star-red{
+  color: crimson;
+  font-weight: bolder;
+}
 
 
 .bg-manager-sidebar{

@@ -23,8 +23,11 @@
     {% endblock %}
 
     {% if request.user.groups.all.0.name == 'manager' %}
+    
     {% else %}
+    
     {% include 'users/footer.html' %}
+    
     {% endif %}
 
     <script src="{% static 'js/fontawesome.js' %}"></script>

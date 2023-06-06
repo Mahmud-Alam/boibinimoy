@@ -45,7 +45,7 @@
                             <td>{{admin.first_name}}</td>
                             <td>{{admin.last_name}}</td>
                             <td>{{admin.phone}}</td>
-                            <td><a href="{% url 'reactive-user' admin.username %}" class="btn btn-primary"><i class="fas fa-edit"></i> Reactive</a></td>
+                            <td><a href="{% url 'reactive-user' admin.username %}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Reactive</a></td>
                         </tr>
                         {% else %}
                         <tr>
@@ -91,7 +91,7 @@
                             <td>{{manager.first_name}}</td>
                             <td>{{manager.last_name}}</td>
                             <td>{{manager.phone}}</td>
-                            <td><a href="{% url 'reactive-user' manager.username %}" class="btn btn-primary"><i class="fas fa-edit"></i> Reactive</a></td>
+                            <td><a href="{% url 'reactive-user' manager.username %}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Reactive</a></td>
                         </tr>
                         {% else %}
                         <tr>

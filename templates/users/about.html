@@ -1,0 +1,45 @@
+{% extends 'users/main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .about-pic{
+        width: 70%;
+    }
+    .about-text{
+        text-align: justify;
+    }
+</style>
+<div class="banner-div">
+    <div class="container">
+    {% for message in messages %}
+        <div class="alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+        <div class="banner-text"><br>
+            <h1 class="text-dark text-center pt-5 mt-5 fw-900">— About Us —</h1><br>
+            <div class="row">
+                <div class="col-8">
+                    <p class="about-text text-dark">
+                        I'm Md. Mahmud Alam, founder and CEO of <span class="text-primary fw-bold">"BOI-BINIMOY Application"</span>. I have completed my bachelor’s degree with the academic award "𝗠𝗮𝗴𝗻𝗮 𝗖𝘂𝗺 𝗟𝗮𝘂𝗱𝗲" in Computer Science and Engineering from East West University. I seek to work with a company that values innovation, creativity, and social impact and encourages me to think outside the box to develop solutions that make a difference. My ultimate goal is to leverage my technical skills to create products and technologies that have a positive impact on society and contribute to a sustainable future. 
+                        <br><br>
+                        I have good knowledge of statistical data analysis and machine learning. I really love to play with data, finding interesting correlations among those data, parameter tuning to get the best accuracy, and plotting them graphically. I am so fortunate that I got a chance to work on some model-building projects with real datasets at our university.
+                        <br><br>
+                        Also, I'm a web developer and have some knowledge of Django and React.JS frameworks. I did some demo projects with these frameworks. Besides that, I am passionate about developing WordPress themes. I love to make different kinds of website that can grow client’s businesses and change people’s lives.
+                        <br><br>
+                        <a class="text-dark" href="https://mahmudalam.com/" target="_blank">For more information, visit my personal website: <span class="text-primary fw-bold">"www.mahmudalam.com"</span>.</a>
+                        Thank you.
+                    </p>
+                </div>
+                <div class="col-4">
+                    <a class="text-dark" href="https://mahmudalam.com/" target="_blank"><img class="about-pic" src="../../static/images/mahmud-alam.jpg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><br><br><br><br><br><br>
+
+{% endblock %}

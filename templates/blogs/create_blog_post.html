@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container">
     <div class="form-div">
-        <h1 class="text-center text-blue">{{task}} Blog</h1><br>
+        <h1 class="text-center text-blue"><i class="fas fa-edit"></i> {{task}} Blog</h1><br>
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             

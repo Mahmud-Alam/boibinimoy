@@ -10,7 +10,7 @@
       <div class="row">
         <div class="mb-4">
           <div class="panel-heading book-search-heading text-white bg-{{request.user.groups.all.0.name}}">
-            <h2 class="font-weight-700"><i class="fas fa-thumbtack"></i> Manager Pinned Blog Post({{manager_blogs|length}})</h2>
+            <h2 class="font-weight-700"><i class="fas fa-thumbtack"></i> Manager's Pinned Blog Posts({{manager_blogs|length}})</h2>
           </div>
           
           <div class="">
@@ -163,7 +163,7 @@
       
       <div class="book-search-bg mb-4 ms-3">
         <div class="panel-heading book-search-heading">
-          <h2 class="text-center font-weight-700">All Category({{category_count}})</h2>
+          <h2 class="text-center font-weight-700"><i class="fa fa-list-ul" aria-hidden="true"></i> All Category({{category_count}})</h2>
         </div>
         <ul class="list-unstyled mb-3 px-4 py-2 my-2">
           {% for cat,count in category_dict %}

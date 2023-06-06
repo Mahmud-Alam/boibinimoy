@@ -117,8 +117,8 @@
         </div> -->
 
         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0 my-5">
-          <div class="panel-heading book-search-heading">
-            <h3 class="text-center text-muted font-weight-700">{{category}}</h3>
+          <div class="panel-heading book-search-heading category-details-heading d-flex align-items-center justify-content-center">
+            <h3 class="text-center text-muted font-weight-700"><i class="fa fa-bookmark" aria-hidden="true"></i> {{category}}</h3>
           </div>
           <div class="sidebar-widget latest-post mb-3 px-4 py-2">
             <!-- {% for book in latest_books %}
@@ -140,7 +140,7 @@
       
       <div class="book-search-bg mb-4 ms-3">
         <div class="panel-heading book-search-heading">
-          <h2 class="text-center font-weight-700">All Category({{category_count}})</h2>
+          <h2 class="text-center font-weight-700"><i class="fa fa-list-ul" aria-hidden="true"></i> All Category({{category_count}})</h2>
         </div>
         <ul class="list-unstyled mb-3 px-4 py-2 my-2">
           {% for cat,count in category_dict %}

@@ -32,7 +32,7 @@
                 </div>                      
                 <div class="media-body va-m">
                     <div class="d-flex justify-content-between">
-                        <h1>Personal Info</h1>
+                        <h1><i class="fas fa-user-cog"></i> Personal Info</h1>
       
                         <div class="d-flex align-items-center">
                           <ul class="navbar-nav">
@@ -40,10 +40,10 @@
                             <li class="nav-item">
                               <div class="dropdown">
                                   <a href="/" class="d-flex align-items-center text-muted text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-pencil-alt"></i>
                                   </a>
                                   <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #18083d;">
-                                      <li><a class="dropdown-item" href='{% url "edit-manager-profile" %}'><i class="fas fa-edit"></i> Edit Profile</a></li>
+                                      <li><a class="dropdown-item" href='{% url "edit-manager-profile" %}'><i class="fas fa-pencil-alt"></i> Edit Profile</a></li>
                                   </ul>
                               </div>
                             </li>
@@ -114,10 +114,10 @@
                             <li class="nav-item">
                               <div class="dropdown">
                                   <a href="/" class="d-flex align-items-center text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-pencil-alt"></i>
                                   </a>
                                   <ul class="bg-navbar dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="background-color: #18083d;">
-                                      <li><a class="dropdown-item" href="{% url 'update-blog' blog.id %}"><i class="fas fa-edit"></i> Update Blog</a></li>
+                                      <li><a class="dropdown-item" href="{% url 'update-blog' blog.id %}"><i class="fas fa-pencil-alt"></i> Update Blog</a></li>
                                       <li><hr class="dropdown-divider"></li>
                                       <li><a class="dropdown-item" href="{% url 'delete-blog' blog.id %}"><i class="fas fa-trash-alt"></i> Delete Blog</a></li>
                                     </ul>

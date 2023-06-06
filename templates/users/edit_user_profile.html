@@ -5,10 +5,10 @@
 {% block content %}
 <div class="container">
     <div class="form-div">
-        <h1 class="text-center">Edit Profile</h1><br>
-        <a class="btn btn-blue width-full" href='{% url "change-username" %}'><i class="fas fa-edit"></i> Change Username</a><br><br>
-        <a class="btn btn-blue width-full" href='{% url "change-email" %}'><i class="fas fa-edit"></i> Change Email Address</a><br><br>
-        <a class="btn btn-blue width-full" href='{% url "change-password" %}'><i class="fas fa-edit"></i> Change Password</a><br><br>
+        <h1 class="text-center"><i class="fas fa-user"></i> Edit Profile</h1><br>
+        <a class="btn btn-blue width-full" href='{% url "change-username" %}'><i class="fas fa-pencil-alt"></i> Change Username</a><br><br>
+        <a class="btn btn-blue width-full" href='{% url "change-email" %}'><i class="fas fa-pencil-alt"></i> Change Email Address</a><br><br>
+        <a class="btn btn-blue width-full" href='{% url "change-password" %}'><i class="fas fa-pencil-alt"></i> Change Password</a><br><br>
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
         

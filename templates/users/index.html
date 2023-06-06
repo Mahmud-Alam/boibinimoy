@@ -7,7 +7,7 @@
         background:linear-gradient(0deg, rgba(11,57,83, 0.7), rgba(11,57,83, 0.7)), url("{% static 'images/books-cover.png' %}");
     }
 </style>
-<div class="banner-div">
+<div class="banner-div mb-5">
     <div class="container">
     {% for message in messages %}
     <div class="alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
@@ -23,8 +23,9 @@
     </div>
     {% else %}
     <div class="banner-text">
+        <br><br><br><br>
         <h1>Welcome to Boi-Binimoy!</h1>
-        <h4>You can find you desire book from our website.</h4>
+        <h4>You can find you desire book from our website.</h4><br>
     </div>
     <div class="row">
         <div class="col-sm-2"></div>
@@ -50,6 +51,6 @@
         </div>
     {% endif %}
     </div>
-</div>
+</div><br><br><br><br>
 
 {% endblock %}

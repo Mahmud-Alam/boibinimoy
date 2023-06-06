@@ -11,7 +11,7 @@ from django.core.mail import send_mail, EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 from django.utils.text import slugify
 
 from .tokens import generate_token
@@ -35,6 +35,11 @@ from blogs.forms import *
 def homePage(request):
     return render(request, 'users/index.html')
 
+def aboutPage(request):
+    return render(request, 'users/about.html')
+
+def contactPage(request):
+    return render(request, 'users/contact.html')
 
 def isEmailAddressValid( email ):
     try:
@@ -148,7 +153,7 @@ def registrationPage(request):
 
 def accountActivate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         myUser = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         myUser = None
@@ -345,7 +350,7 @@ def changeUsername(request):
 
 def changeUsernameConfirm(request, uidb64, token, username):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         myUser = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         myUser = None
@@ -414,7 +419,7 @@ def changeEmail(request):
 
 def changeEmailConfirm(request, uidb64, token, email):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         myUser = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         myUser = None
