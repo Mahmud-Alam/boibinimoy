@@ -1,12 +1,79 @@
-{% extends 'users/main.html' %}
-{% load static %}
+{% extends 'users/main.html' %} 
+{% load static %} 
 
 {% block content %}
 <style>
-    body{
-        background-color: #0d4363;
-    }
+  .contact-section {
+    height: 100vh;
+  }
+  .contact-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    color: black;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .btn-submit {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .btn-submit:hover {
+    background-color: #d62828;
+  }
 </style>
-<br><br><br><br><br><br>
 
+<div class="contact-container">
+  <h2 class="text-center">Get in Touch ✨</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="form-control"
+        placeholder="Enter your name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        placeholder="Enter your email"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea
+        id="message"
+        name="message"
+        class="form-control"
+        placeholder="Enter your message"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-blue">Send Message</button>
+  </form>
+</div>
 {% endblock %}
