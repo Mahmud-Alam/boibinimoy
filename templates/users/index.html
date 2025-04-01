@@ -1,56 +1,112 @@
-{% extends 'users/main.html' %}
+{% extends 'users/main.html' %} 
 {% load static %}
 
 {% block content %}
 <style>
-    body{
-        background:linear-gradient(0deg, rgba(11,57,83, 0.7), rgba(11,57,83, 0.7)), url("{% static 'images/books-cover.png' %}");
-    }
+  body {
+    background: linear-gradient(to right, #0b3953, #1c4966);
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+  }
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    background: url("{% static 'images/books-cover.png' %}") no-repeat center;
+    background-size: cover;
+    position: relative;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 57, 83, 0.6);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .hero p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+  }
+  .card-custom {
+    background: #ffffff10;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+  }
+  .card-custom h3 {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .card-custom p {
+    margin-bottom: 20px;
+  }
+  .card-custom:hover {
+    transform: translateY(-8px);
+  }
 </style>
-<div class="banner-div mb-5">
-    <div class="container">
+
+<div class="hero">
+  <div class="hero-content">
     {% for message in messages %}
-    <div class="alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div
+      class="alert  alert-{{ message.tags}} alert-dismissible fade show"
+      role="alert"
+    >
+      {{message}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
     </div>
-    {% endfor %}
-
-    {% if request.user.is_authenticated %}
-    <div class="banner-text">
-        <h1>Welcome {{request.user.first_name}} {{request.user.last_name}} to Boi-Binimoy!</h1>
-        <h4>You can find you desire book from our website.</h4>
-    </div>
+    {% endfor %} {% if request.user.is_authenticated %}
+    <h1>
+      Welcome, {{ request.user.first_name }} {{ request.user.last_name }}!
+    </h1>
+    <p>Find your desired book from our platform.</p>
     {% else %}
-    <div class="banner-text">
-        <br><br><br><br>
-        <h1>Welcome to Boi-Binimoy!</h1>
-        <h4>You can find you desire book from our website.</h4><br>
+    <h1>Welcome to Boi-Binimoy!</h1>
+    <p>Find your desired book from our platform.</p>
+    <div class="container text-center mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-5 mb-3">
+          <div class="card-custom">
+            <h3>New Here?</h3>
+            <p>Sign up and start buy/sell books today!</p>
+            <a href="{% url 'register' %}" class="btn btn-blue"
+              ><i class="fas fa-share-square"></i> Register</a
+            >
+          </div>
+        </div>
+        <div class="col-md-5 mb-3">
+          <div class="card-custom">
+            <h3>Already a Member?</h3>
+            <p>Login your account and explore book!</p>
+            <a href="{% url 'login' %}" class="btn btn-blue"
+              ><i class="fas fa-sign-in-alt"></i> Login</a
+            >
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-4">
-            <div class="card light-white">
-            <div class="card-body">
-                <h5 class="card-title">Become a Member!</h5>
-                <p class="card-text">Are you new in Boi-Binimoy? <br>Please register yourself.</p>
-                <a href="{% url 'register' %}" class="btn btn-blue"><i class="fas fa-share-square"></i> Register</a>
-            </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="card light-white">
-            <div class="card-body">
-                <h5 class="card-title">Already a Member!</h5>
-                <p class="card-text">Are you already a member of Boi-Binimoy? <br>Please Login your profile.</p>
-                <a href="{% url 'login' %}" class="btn btn-blue"><i class="fas fa-sign-in-alt"></i> Login</a>
-            </div>
-            </div>
-        </div>
-        <div class="col-sm-2"></div>
-        </div>
     {% endif %}
-    </div>
-</div><br><br><br><br>
-
+  </div>
+</div>
 {% endblock %}
