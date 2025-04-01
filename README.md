@@ -39,6 +39,73 @@ In addition to customer functionalities, BoiBinimoy includes **Admin and Manager
 
 ---
 
+## 📸 Project Screenshots
+
+### 🏠 Home Page
+The Landing Page of the BoiBinimoy Platform.
+![Home Page](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/01.png)
+
+### 📝 Register Page
+New users can register here.
+![Register Page](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/02.png)
+
+### 🔑 Login Page
+Users can log in to their accounts.
+![Login Page](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/03.png)
+
+### 👤 User Profile
+- Logged-in user profile page.
+![User Profile](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/04.1.png)
+
+- Click on the profile image in the navbar to open a dropdown menu for more options, like Logout.
+![Navbar Profile Dropdown](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/04.2.png)
+
+- User Profile’s blog section, where they can update or delete their created blogs.
+![User Blogs](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/04.3.png)
+
+- Confirmation dialog box when deleting a blog.
+![Delete Confirmation](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/04.4.png)
+
+- Users can visit other user's profile, but their own profile icon always remains in the navbar for easy access.
+![Visit Other Profiles](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/04.5.png)
+
+### 📚 Book Post Section
+Users can post books for exchange or sale.
+![Book Post](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/05.png)
+
+### 📖 Book Details
+View detailed information about a book.
+![Book Details](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/06.png)
+
+### 💬 Book Comments
+Users can comment on book posts.
+![Book Comments](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/07.png)
+
+### 🔍 Search Books
+Search for books by their titles.
+![Search Books](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/08.png)
+
+### ✍️ Blog Section
+Users can read and write blogs related to book exchange.
+![Blog Section](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/09.png)
+
+### 🛠️ Manager Dashboard
+Managers have access to a dashboard to manage content.
+![Manager Dashboard](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/10.png)
+
+### 👨‍💼 Manager Profile
+Manager’s profile.
+![Manager Profile](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/11.png)
+
+### 🏛️ Admin Dashboard
+Admins have access to an advanced dashboard.
+![Admin Dashboard](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/12.1.png)
+
+- Admins can delete other admins or managers.
+![Admin Manage Users](https://github.com/Mahmud-Alam/boibinimoy/blob/main/screenshots/12.2.png)
+
+---
+
 ## 🏗️ Project Structure
 ```
 BoiBinimoy/
