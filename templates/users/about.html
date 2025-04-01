@@ -3,6 +3,9 @@
 
 {% block content %}
 <style>
+    .about-section{
+        height: 100vh;
+    }
     .about-pic{
         width: 70%;
     }
@@ -10,7 +13,7 @@
         text-align: justify;
     }
 </style>
-<div class="banner-div">
+<div class="about-section">
     <div class="container">
     {% for message in messages %}
         <div class="alert  alert-{{ message.tags}} alert-dismissible fade show" role="alert">
@@ -19,7 +22,7 @@
         </div>
     {% endfor %}
 
-        <div class="banner-text"><br>
+        <div class="banner-text">
             <h1 class="text-dark text-center pt-5 mt-5 fw-900">— About Us —</h1><br>
             <div class="row">
                 <div class="col-8">
@@ -40,6 +43,5 @@
             </div>
         </div>
     </div>
-</div><br><br><br><br><br><br>
-
+</div>
 {% endblock %}
